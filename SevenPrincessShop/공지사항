@@ -1,0 +1,51 @@
+
+
+각각 폴더 밑 프로젝트에
+'읽어주세요.txt' 가 있습니다.
+한번씩 읽어주세요.
+
+이 텍스트 파일에는 모두가 글을 적어서 올려주셔도 됩니다
+서꼬인거, 질문, 에러처리 곤란 아이디어 등등
+
+서로서로 모르는거 도와가며 잘 진행해봅시다!!
+
+
+
+05.01 MasterBrach 변동사항
+- 프로젝트생성
+- Sample 회원가입예제 및 프레임 구성
+- 각종 디펜던시 추가 
+- 상세는 각각 하위폴더 txt파일 확인
+
+conmment: 이제 각자 시작하면 될듯 셋팅끝.
+
+////////////////////////////////////////////////////////////////05.01 찬호
+
+
+
+
+
+
+
+
+
+Info
+Project : SevenPrincessShop
+Develop : GitHub
+FrameWork : Spring MVC
+ServerLanguage : java
+DBconnect : Mybatis
+DataBase : Mysql
+html : HTML5
+css : css3,bootstrap
+sideScript : javaScript, jqeury
+
+team : SevenPrincess
+이찬호
+정혜인
+임명훈
+신동호
+전예솜
+최가슬
+최유정
+

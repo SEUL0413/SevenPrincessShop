@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sps.dao.MybatisSampleDAO">
+
+	
+	
+	
+	<insert id="insertMember" parameterType="com.sps.vo.ClientVO">
+		insert into client (client_name, client_id, client_password, client_birthday, client_phoneNumber, client_address, client_registerDate)
+		values (#{client_name}, #{client_id}, #{client_password}, #{client_birthday}, #{client_phoneNumber}, #{client_address}, #{client_registerDate})
+	</insert>
+	
+	<select id="countMember" resultType="int">
+		select count(*) from client
+	</select>
+
+	<select id="selectMember" parameterType="int" resultType="com.sps.vo.ClientVO">
+		SELECT * FROM CLIENT WHERE client_idx = #{param1};
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

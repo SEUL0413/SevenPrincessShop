@@ -1,0 +1,15 @@
+지금까지 추가한 디펜던시 목록
+
+1.  MySql
+2.  MyBatis
+3.  MyBatis-Spring
+4.  Spring-jdbc
+5.  commons-dbcp
+6.  Spring-test
+7.  메세지 컨버터용 jackson
+8.  JQuery
+9.  JSON 1.4.2
+10. coolsms SDK2.2
+
+추가시에는 pom.xml에 주석달고 여기에 추가사항 적어주세요!!
+////////////////////////////////////////////////////////////////05.01 찬호
