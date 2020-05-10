@@ -2,8 +2,8 @@ package com.sps.vo;
 
 public class Aboard {
 
-	private int aboard_idx;			// ?‹µë³? ?¸?±?Š¤
-	private int aboard_qboard_idx;	// ?•´?‹¹ ?‹µë³??˜ ì§ˆë¬¸ ?¸?±?Š¤
-	private String aboard_title;	// ?‹µë³? ? œëª?
-	private String aboard_content;	// ?‹µë³? ?‚´?š©
+	private int aboard_idx;			// ë‹µë³€ê¸€ idx
+	private int aboard_qboard_idx;	// ì§ˆë¬¸ê¸€ idx
+	private String aboard_title;	// ì œëª©
+	private String aboard_content;	// ë‚´ìš©
 }

@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class ReviewVO {
 
-	private int review_idx; 				// ?šŒ?›?˜ fk?—¬?„œ idxê°? 3ê°œê? ?“¤?–´ê°?
+	private int review_idx; 				// ë¦¬ë·° idx
 	private int review_client_idx;			// ê³ ê° idx
-	private int review_product_idx;			// ?ƒ?’ˆ idx
-	private String review_title;			// ë¦¬ë·° ? œëª?
-	private String review_content;			// ë¦¬ë·° ?‚´?š©
-	private int review_productGrade;		// ë¦¬ë·° ë³„ì 	// String => intë¡? ë³?ê²?
-//	private String review_client_id;		// ë¦¬ë·°?•œ ?šŒ?› ?•„?´?”” - ?šŒ?› ?•„?´?””?Š” ?„œë¸Œì¿¼ë¦¬ë¡œ ë¶ˆëŸ¬?˜¬ ?ˆ˜ ?ˆ?–´?„œ ?—†?–´?„ ? ?“¯... 
-	private Date review_writeDate;			// ë¦¬ë·° ?‚ ì§?
-	private String review_imgPath;			// ?ƒ?’ˆ ?´ë¯¸ì? ê²½ë¡œ
+	private int review_product_idx;			// í•´ë‹¹ ìƒí’ˆì˜ idx
+	private String review_title;			// ì œëª©
+	private String review_content;			// ë‚´ìš©
+	private int review_productGrade;		// ë³„ì 	// String => intï¿½? ï¿½?ï¿½?
+//	private String review_client_id;		// 
+	private Date review_writeDate;			// ì‘ì„±ì¼
+	private String review_imgPath;			// ë¦¬ë·° ì´ë¯¸ì§€ ê²½ë¡œ
 	
 }

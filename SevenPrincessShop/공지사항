@@ -24,6 +24,16 @@ conmment: 이제 각자 시작하면 될듯 셋팅끝.
 
 
 
+헤더 푸터 네브 링크 카드 인클루드 완성
+
+-메인 index 페이지 탄생
+-헤더의 각 버튼별 페이지 링크연결 완료
+-로그인 Test진행 : 마이바티스 다중 매퍼 테스트 / 세션변수 저장 테스트
+	> Test 진행순서 '/' > shopController > index.jsp > 로그인버튼 > memberController > 
+		>login.jsp > 제출버튼 클릭 > memberController > DAO > Mapper > DB > memberController > session에 저장 > index.jsp
+
+////////////////////////////////////////////////////////////////05.10 찬호
+
 
 
 

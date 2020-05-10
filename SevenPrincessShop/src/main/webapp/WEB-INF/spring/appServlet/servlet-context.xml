@@ -35,19 +35,45 @@
 	
 	
 	<!-- 위위 빈 참조하여 매퍼 연결 빈 -->
-	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<beans:bean id="memberSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<!-- 데이터베이스 연결정보를 참조하는 bean 설정 -->
 		<beans:property name="dataSource" ref="dataSource"/>
 		<!-- 실행할 sql 명령이 저장된 xml 파일의 경로설정 => value -->
 		<!-- value 속성이 xml이 위치한 패키지 이름과 파일 이름을 입력한다. -->
-		<beans:property name="mapperLocations" value="classpath:com/sps/dao/joinSample.xml"/>
+		<beans:property name="mapperLocations" value="classpath:com/sps/dao/memberMapper.xml"/>
+	</beans:bean>
+	
+	
+	<beans:bean id="adminSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 데이터베이스 연결정보를 참조하는 bean 설정 -->
+		<beans:property name="dataSource" ref="dataSource"/>
+		<!-- 실행할 sql 명령이 저장된 xml 파일의 경로설정 => value -->
+		<!-- value 속성이 xml이 위치한 패키지 이름과 파일 이름을 입력한다. -->
+		<beans:property name="mapperLocations" value="classpath:com/sps/dao/adminMapper.xml"/>
+	</beans:bean>
+	
+	
+	<beans:bean id="shopSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 데이터베이스 연결정보를 참조하는 bean 설정 -->
+		<beans:property name="dataSource" ref="dataSource"/>
+		<!-- 실행할 sql 명령이 저장된 xml 파일의 경로설정 => value -->
+		<!-- value 속성이 xml이 위치한 패키지 이름과 파일 이름을 입력한다. -->
+		<beans:property name="mapperLocations" value="classpath:com/sps/dao/shopMapper.xml"/>
 	</beans:bean>
 	
 	
 	
 	<!-- 오토와이어드를 위한 sqlSession 빈 -->
-	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
+	<beans:bean id="memberSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="memberSqlSessionFactory"/>
+	</beans:bean>
+	
+	<beans:bean id="adminSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="adminSqlSessionFactory"/>
+	</beans:bean>
+	
+	<beans:bean id="shopSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="shopSqlSessionFactory"/>
 	</beans:bean>
 
 

@@ -9,7 +9,8 @@ public class ClientVO {
 	private String client_id;				
 	private String client_password;			
 	private String client_birthday;			
-	private String client_phoneNumber;		
+	private String client_phoneNumber;	
+	private String client_email;
 	private String client_address;			
 	private String client_registerDate;		
 	

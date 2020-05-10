@@ -1,51 +1,69 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+    
 <!DOCTYPE html>
 <html>
 <head>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <meta charset="UTF-8">
-<title>header</title>
-
-<!-- css 적용 코드 -->
-<link href="${path}/resources/css/header.css" rel="stylesheet"/>
-
+<title>Insert title here</title>
 </head>
 <body>
 
-<!-- header 1 -->
-<div class="topBar">
-	<ul class="topBarMenu pull-right">
-		<li><a href="/home">HOME</a></li>
-		<li><a href="/member/join" style="position:relative">조인</a></li>
-		<li><a href="/login/">LOGIN</a></li>
-		<li><a href="/cart/">CART</a></li>
-	</ul>
-</div>
 
-<!-- header 2 -->
-<div class="col-xs-12 topArea">
-	<div class="contentLimit">
-		<div class="col-xs-12 col-lg-8 col-lg-offset-2 ">
-			<div class="col-xs-12 col-sm-6 col-sm-offset-3 text-center topCI">
-			<center>
-				<a class="" href="/"><img src="images/maravillosaLogo.png"></a>
-			</center>
-			</div>
-			<div class="col-xs-12 col-sm-3">
-				<form action="/product/search" method="get" name="searchForm" accept-charset="utf-8">
-					<div class="input-group input-group-sm searchArea">						
-						<input type="text" name="key" id="key" class="form-control" value="" placeholder="Search for...">
-						<span class="input-group-btn">
-							<button class="btn"><i class="glyphicon glyphicon-search"></i></button>
-						</span>
-					</div>
-				</form>
-			</div>
-		</div>		
-	</div>
-</div>
+
+
+
+
+<!-- top bar -->
+
+	  <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
+		  <div class="container-fluid">
+		  	<a class="navbar-brand" href="#">SenvePrincessShop</a>
+		  	
+		  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+		  	
+		  	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			    <ul class="nav navbar-nav ml-auto">
+			    	<li class="nav-item">
+			    		<c:if test="${empty sessionScope.nowUser}">
+			        		<a class="nav-link" href="login">로그인</a>
+			        	</c:if>
+			        	<c:if test="${not empty sessionScope.nowUser}">
+			        		<a class="nav-link" href="logout">로그아웃</a>
+			        	</c:if>
+				    </li>
+				    <li class="nav-item">
+				    	<a class="nav-link" href="myPage">마이페이지</a>
+				    </li>
+				    <li class="nav-item">
+				    	<a class="nav-link" href="myBasket">장바구니</a>
+				    </li>
+				    <li class="nav-item">
+				    	<a class="nav-link" href="customerService">고객센터</a>
+				    </li>
+		   	 	</ul>
+		  	</div>
+		</div>
+	</nav>
+	<!-- top bar 끝 -->
+	
+	
+	
+	<!-- 메인 배너 -->
+	<div class="jumbotron text-center mb-0">
+		<h1><br/>SEVEN PRINCESS SHOP</h1>
+		<p>대한민국 No.1 여성의류 쇼핑몰</p>
+	</div> 
+	<!-- 메인 배너 끝-->
+
+
+
+
+
+
 
 </body>
 </html>
