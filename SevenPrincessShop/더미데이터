@@ -25,12 +25,23 @@ VALUES
 INSERT INTO STOCK
 (stock_product_idx, stock_size, stock_color, stock_stock)
 VALUES
-(1, 'F', '살구', 10);
+(1, 'S', '살구', 10);
 
 INSERT INTO STOCK
 (stock_product_idx, stock_size, stock_color, stock_stock)
 VALUES
-(1, 'F', '블랙', 8);
+(1, 'S', '블랙', 8);
+
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'M', '살구', 6);
+
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'M', '블랙', 5);
+
 
 # PRODUCT테이블 stock 수정
 UPDATE PRODUCT 
