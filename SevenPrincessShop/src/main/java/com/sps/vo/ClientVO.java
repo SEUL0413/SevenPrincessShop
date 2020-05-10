@@ -1,18 +1,18 @@
 package com.sps.vo;
 
-import java.sql.Date;
 
 public class ClientVO {
 
-	private int client_idx; 			
-	private String client_name;			
-	private String client_id;				
-	private String client_password;			
-	private String client_birthday;			
-	private String client_phoneNumber;	
-	private String client_email;
-	private String client_address;			
-	private String client_registerDate;		
+	private int client_idx; 				// 고객 인덱스			
+	private String client_name;				// 고객 이름
+	private String client_id;				// 고객 아이디			
+	private String client_email;			// 고객 이메일			
+	private String client_password;			// 고객 비밀번호
+	private String client_birthday;			// 고객 생일
+	private String client_phoneNumber;		// 고객 핸드폰번호
+	private String client_address;			// 고객 주소
+	private String client_dateilAddress;	// 고객 상세 주소
+	private String client_registerDate;		// 고객 가입 날짜
 	
 	
 	public int getClient_idx() {
