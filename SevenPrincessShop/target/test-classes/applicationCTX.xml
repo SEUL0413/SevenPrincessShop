@@ -5,7 +5,13 @@
 
 
 	<bean id="clientVO" class="com.sps.vo.ClientVO"/>
-	<bean id="mybatisSampleDAO" class="com.sps.dao.MybatisSampleDAO"/>
+	<bean id="spsDAO" class="com.sps.dao.spsDAO"/>
 	
+	<bean id="clientListVO" class="com.sps.vo.ClientListVO"/>
+	
+	<bean id="orderListVO" class="com.sps.vo.OrderListVO"/>
+	<bean id="productVO" class="com.sps.vo.ProductVO"/>
+	
+	<bean id="joinVO" class="com.sps.vo.JoinVO"/> 
 
 </beans>

@@ -11,7 +11,7 @@ public class ClientVO {
 	private String client_birthday;			// 고객 생일
 	private String client_phoneNumber;		// 고객 핸드폰번호
 	private String client_address;			// 고객 주소
-	private String client_dateilAddress;	// 고객 상세 주소
+	private String client_detailAddress;	// 고객 상세 주소
 	private String client_registerDate;		// 고객 가입 날짜
 	
 	
@@ -92,6 +92,25 @@ public class ClientVO {
 
 	public void setClient_registerDate(String client_registerDate) {
 		this.client_registerDate = client_registerDate;
+	}
+
+	public String getClient_email() {
+		return client_email;
+	}
+
+
+	public void setClient_email(String client_email) {
+		this.client_email = client_email;
+	}
+
+
+	public String getClient_detailAddress() {
+		return client_detailAddress;
+	}
+
+
+	public void setClient_detailAddress(String client_detailAddress) {
+		this.client_detailAddress = client_detailAddress;
 	}
 
 
