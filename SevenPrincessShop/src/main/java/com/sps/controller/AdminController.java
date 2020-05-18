@@ -40,6 +40,19 @@ public class AdminController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//전체회원 목록보기 
 	@RequestMapping(value = "/memberList")
 	public String memberList(HttpServletRequest request, Model model, ClientListVO clientList) {	
@@ -105,6 +118,32 @@ public class AdminController {
 	
 	
 	
+	//	CHECK! 05-18 
+	//	전송버튼 좀만 우측으로(폼이랑 겹침)
+	//	조회 조건 변경시(select)돌아오면 기존 select 값 유지 x > 수정 가능하시면 해주시면 감사하겠습니당
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//특정 회원 주문 내역 보기
 	@RequestMapping(value = "/clientOrderList")
 	public String clientOrderList(HttpServletRequest request, Model model) {	
@@ -112,6 +151,8 @@ public class AdminController {
 		
 		//location.href='clientOrderList?client_idx=${client.client_idx}' 로 넘어오는 client_idx값을 받아온다
 		int client_idx = Integer.parseInt(request.getParameter("client_idx"));
+		
+		System.out.println(client_idx);
 		
 		//넘어온 해당 client_idx값에 해당하는 회원의 주문내역을 불러온다.
 		List<JoinVO> list = mapper.selectOrderList(client_idx);
@@ -123,7 +164,28 @@ public class AdminController {
 		
 		return "admin/clientOrderList";
 	}
+//	CHECK! 05-18
+//	탐색기능 다 잘 작동 > orderList 테이블 접근자들이랑 status 상의해서 확실히 맞추기 
 
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//판매목록 => 검색기능 구현
@@ -143,9 +205,15 @@ public class AdminController {
 		//검색값 받아오기
 		String searchKey = request.getParameter("searchKey");
 		String searchValue = request.getParameter("searchValue");
+		
+		
+		
 		//검색한 값을 화면에 유지하기위해 값을 보내놓는다.
 		model.addAttribute("key", searchKey);
 		model.addAttribute("value",searchValue);
+		
+		
+		
 		
 		//기간 검색 값 받아오기
 		String startDate = request.getParameter("startDate");
@@ -158,6 +226,8 @@ public class AdminController {
 		else joinList.setStartDate(startDate);
 		if(endDate == null) joinList.setEndDate("");
 		else joinList.setEndDate(endDate);
+		
+		
 		
 		System.out.println("startDate : " + joinList.getStartDate() + " endDate : " + joinList.getEndDate());
 		System.out.println("searchKey : " +   searchKey);
@@ -193,7 +263,24 @@ public class AdminController {
 		
 		return "admin/salesTable";
 	}
+	
+	
+	
+//	CHECK! 05-18
+//	기능은 다 정상!    기간 검색 기가 막힘
 
+//	판매상태 업데이트 버튼 해주실 수 있으십니까.
+//		> status가 payOK 면 확인 버튼을 눌러 상품 준비중이라는 status 로 업데이트
+//		   상품준비중인 상품에 대해 send 버튼을 눌러 status 상태를 발송완료 로 업데이트
+
+	
+//	매출조회 기능 추가하면 진짜 멋질텐데 다른거로도 바쁘니 무리해선 하지말고 짬짬히 추후에라도 해주실 수 있으시면..부탁 드립니당
+//	ex) 당일, 월별, 년별, 총매출 
+//		회원별 검색시 회원별 총 구매금액 
+//		제품명 조건 검색시 당 제품의 총 판매액 등등
+	
+	
+	
 	
 	
 	

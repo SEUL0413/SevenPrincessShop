@@ -1,70 +1,70 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="utf-8">
 <title>Insert title here</title>
 <script type="text/javascript">
 
-//	¼­¹ö¿Í Åë½Å¿¡ »ç¿ëÇÒ °´Ã¼¸¦ ¼±¾ğÇÑ´Ù.
-//	XMLHttpRequest : ÀÚ¹Ù½ºÅ©¸³Æ® object·Î http¸¦ ÅëÇÑ ¼Û¼ö½ÅÀ» Áö¿øÇØ ÁÖ´Â °´Ã¼
+//	ì„œë²„ì™€ í†µì‹ ì— ì‚¬ìš©í•  ê°ì²´ë¥¼ ì„ ì–¸í•œë‹¤.
+//	XMLHttpRequest : ìë°”ìŠ¤í¬ë¦½íŠ¸ objectë¡œ httpë¥¼ í†µí•œ ì†¡ìˆ˜ì‹ ì„ ì§€ì›í•´ ì£¼ëŠ” ê°ì²´
 	var searchRequest = new XMLHttpRequest();
 		
-//	ajax ¿äÃ» ÇÔ¼ö
+//	ajax ìš”ì²­ í•¨ìˆ˜
 	function searchFunction() {
 //		alert(document.getElementById("userName").value);
-//		XMLHttpRequest°´Ã¼.open("¿äÃ»¹æ½Ä", µ¥ÀÌÅÍ, µ¿±â¹æ¹ı)
-//		µ¿±â ¹æ¹ı : µ¿±â½Ä => false, ºñµ¿±â½Ä => true
-//		encodeURIComponent() : ¹®ÀÚ¿­À» À¯´ÏÄÚµå·Î ÀÎÄÚµù ÇÑ´Ù.
-//		decodeURIComponent() : encodeURIComponent() ÇÔ¼ö·Î ÀÎÄÚµùµÈ ¹®ÀÚ¿­À» µğÄÚµù ÇÑ´Ù.
+//		XMLHttpRequestê°ì²´.open("ìš”ì²­ë°©ì‹", ë°ì´í„°, ë™ê¸°ë°©ë²•)
+//		ë™ê¸° ë°©ë²• : ë™ê¸°ì‹ => false, ë¹„ë™ê¸°ì‹ => true
+//		encodeURIComponent() : ë¬¸ìì—´ì„ ìœ ë‹ˆì½”ë“œë¡œ ì¸ì½”ë”© í•œë‹¤.
+//		decodeURIComponent() : encodeURIComponent() í•¨ìˆ˜ë¡œ ì¸ì½”ë”©ëœ ë¬¸ìì—´ì„ ë””ì½”ë”© í•œë‹¤.
 		var url = "/ajax?name=" + encodeURIComponent(document.getElementById("name").value)
 		searchRequest.open("post", url, true);
-//		onreadystatechange : ajax ¿äÃ»ÀÌ ¿Ï·áµÇ¸é ½ÇÇàÇÒ Äİ¹é ÇÔ¼ö¸¦ ÁöÁ¤ÇÑ´Ù.
+//		onreadystatechange : ajax ìš”ì²­ì´ ì™„ë£Œë˜ë©´ ì‹¤í–‰í•  ì½œë°± í•¨ìˆ˜ë¥¼ ì§€ì •í•œë‹¤.
 		searchRequest.onreadystatechange = searchProcess;
-//		send() : ¿äÃ»ÇÑ´Ù.
+//		send() : ìš”ì²­í•œë‹¤.
 		searchRequest.send(null);
 	}
 	
-//	ajax ¿äÃ»¿¡ ÀÇÇØ Ã³¸®µÈ °á°ú¸¦ ¹Ş¾Æ¼­ È­¸é¿¡ Ãâ·ÂÇÏ´Â ÀÛ¾÷ÀÌ ½ÇÇàµÇ´Â ÇÔ¼ö
+//	ajax ìš”ì²­ì— ì˜í•´ ì²˜ë¦¬ëœ ê²°ê³¼ë¥¼ ë°›ì•„ì„œ í™”ë©´ì— ì¶œë ¥í•˜ëŠ” ì‘ì—…ì´ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
 	function searchProcess() {
-//		alert("³ª´Â searchFunction() ÇÔ¼ö¿¡¼­ È£ÃâµÇ´Â Äİ¹é ÇÔ¼ö");
+//		alert("ë‚˜ëŠ” searchFunction() í•¨ìˆ˜ì—ì„œ í˜¸ì¶œë˜ëŠ” ì½œë°± í•¨ìˆ˜");
 
-//		onreadystatechange·Î ÁöÁ¤ÇÑ Äİ¹é ÇÔ¼öÀÇ readyState
-//		0 : ½ÇÇàµÇÁö ¾ÊÀ½
-//		1 : ·Îµå Áß
-//		2 : ·Îµù µÊ
-//		3 : Åë½Å µÊ
-//		4 : Åë½Å ¿Ï·á
+//		onreadystatechangeë¡œ ì§€ì •í•œ ì½œë°± í•¨ìˆ˜ì˜ readyState
+//		0 : ì‹¤í–‰ë˜ì§€ ì•ŠìŒ
+//		1 : ë¡œë“œ ì¤‘
+//		2 : ë¡œë”© ë¨
+//		3 : í†µì‹  ë¨
+//		4 : í†µì‹  ì™„ë£Œ
 
-//		onreadystatechange·Î ÁöÁ¤ÇÑ Äİ¹é ÇÔ¼öÀÇ status
-//		200 : ¼ö½Å ¼º°ø
-//		300 : ±İÁö
-//		400 : ÆäÀÌÁö ¾øÀ½
-//		500 : ¼­¹ö ¿À·ù
+//		onreadystatechangeë¡œ ì§€ì •í•œ ì½œë°± í•¨ìˆ˜ì˜ status
+//		200 : ìˆ˜ì‹  ì„±ê³µ
+//		300 : ê¸ˆì§€
+//		400 : í˜ì´ì§€ ì—†ìŒ
+//		500 : ì„œë²„ ì˜¤ë¥˜
 
 		if(searchRequest.readyState == 4 && searchRequest.status == 200) {
 			
-//			¼­ºí¸´¿¡¼­ ¼ö½ÅÇÑ µ¥ÀÌÅÍ¸¦ Ãâ·ÂÇÏ±â À§ÇØ ±âÁ¸¿¡ Ç¥½ÃµÇ´ø µ¥ÀÌÅÍ¸¦ Á¦°ÅÇÑ´Ù.
+//			ì„œë¸”ë¦¿ì—ì„œ ìˆ˜ì‹ í•œ ë°ì´í„°ë¥¼ ì¶œë ¥í•˜ê¸° ìœ„í•´ ê¸°ì¡´ì— í‘œì‹œë˜ë˜ ë°ì´í„°ë¥¼ ì œê±°í•œë‹¤.
 			var table = document.getElementById("ajaxTable");
 			table.innerHTML = "";
 			
-//			¼­ºí¸´¿¡¼­ ¸®ÅÏµÈ ¹®ÀÚ¿­ µ¥ÀÌÅÍ¸¦ json Å¸ÀÔÀ¸·Î º¯È¯ÇÏ±â À§ÇØ °ıÈ£¸¦ ºÙ¿©¼­ ¹Ş¾Æ °´Ã¼¿¡ ÀúÀåÇÑ´Ù.
-//			eval() : ÀÎ¼ö·Î ÁöÁ¤µÈ ¹®ÀÚ¿­·Î ±¸¼ºÇÑ ÀÚ¹Ù½ºÅ©¸³Æ®¸¦ ½ÇÇàÇÑ´Ù.
-			var object = eval("(" + searchRequest.responseText + ")");	// ÁÖÀÇ¿ä¸Á...
-//			json °´Ã¼¿¡¼­ result ¶ó´Â ÀÌ¸§ÀÌ ÁöÁ¤µÈ µ¥ÀÌÅÍ¸¦ ¾ò¾î¿Â´Ù. => È­¸é¿¡ Ãâ·ÂÇÒ µ¥ÀÌÅÍ
+//			ì„œë¸”ë¦¿ì—ì„œ ë¦¬í„´ëœ ë¬¸ìì—´ ë°ì´í„°ë¥¼ json íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•˜ê¸° ìœ„í•´ ê´„í˜¸ë¥¼ ë¶™ì—¬ì„œ ë°›ì•„ ê°ì²´ì— ì €ì¥í•œë‹¤.
+//			eval() : ì¸ìˆ˜ë¡œ ì§€ì •ëœ ë¬¸ìì—´ë¡œ êµ¬ì„±í•œ ìë°”ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì‹¤í–‰í•œë‹¤.
+			var object = eval("(" + searchRequest.responseText + ")");	// ì£¼ì˜ìš”ë§...
+//			json ê°ì²´ì—ì„œ result ë¼ëŠ” ì´ë¦„ì´ ì§€ì •ëœ ë°ì´í„°ë¥¼ ì–»ì–´ì˜¨ë‹¤. => í™”ë©´ì— ì¶œë ¥í•  ë°ì´í„°
 			var result = object.result;
 //			alert(result.length);
 
-//			°Ë»öµÇ¼­ ³Ñ¾î¿Â µ¥ÀÌÅÍÀÇ °³¼ö ¸¸Å­ ¹İº¹ÇÑ´Ù.
+//			ê²€ìƒ‰ë˜ì„œ ë„˜ì–´ì˜¨ ë°ì´í„°ì˜ ê°œìˆ˜ ë§Œí¼ ë°˜ë³µí•œë‹¤.
 			for (var i = 0; i < result.length; i++) {
-//				tbody¿¡ ³Ö¾îÁÙ ÇàÀ» ¸¸µç´Ù.
+//				tbodyì— ë„£ì–´ì¤„ í–‰ì„ ë§Œë“ ë‹¤.
 				var row = table.insertRow(0);
-//				ÇÑ Çà¿¡ Ãâ·ÂÇÒ ¿­ÀÇ °³¼ö ¸¸Å­ ¹İº¹ÇÑ´Ù.
+//				í•œ í–‰ì— ì¶œë ¥í•  ì—´ì˜ ê°œìˆ˜ ë§Œí¼ ë°˜ë³µí•œë‹¤.
 				for (var j = 0; j < result[i].length - 1; j++) {
-//					Çà¿¡ ³Ö¾îÁÙ ¿­À» ¸¸µç´Ù.
+//					í–‰ì— ë„£ì–´ì¤„ ì—´ì„ ë§Œë“ ë‹¤.
 					var cell = row.insertCell(j);
-//					¿­¿¡ È­¸é¿¡ Ç¥½ÃµÉ µ¥ÀÌÅÍ¸¦ ³Ö¾îÁØ´Ù.
+//					ì—´ì— í™”ë©´ì— í‘œì‹œë  ë°ì´í„°ë¥¼ ë„£ì–´ì¤€ë‹¤.
 					cell.innerHTML = result[i][j + 1].value;
 				}
 			}
@@ -72,7 +72,7 @@
 		} // if
 	} // searchProcess()
 		
-//		ÆäÀÌÁö°¡ ·ÎµåµÇÀÚ¸¶ÀÚ È­¸é¿¡ µ¥ÀÌÅÍ°¡ º¸¿©¾ß ÇÏ±â ¶§¹®¿¡ onload ÀÌº¥Æ®¿¡¼­ searchFunction() ÇÔ¼ö¸¦ ½ÇÇàÇÑ´Ù.
+//		í˜ì´ì§€ê°€ ë¡œë“œë˜ìë§ˆì í™”ë©´ì— ë°ì´í„°ê°€ ë³´ì—¬ì•¼ í•˜ê¸° ë•Œë¬¸ì— onload ì´ë²¤íŠ¸ì—ì„œ searchFunction() í•¨ìˆ˜ë¥¼ ì‹¤í–‰í•œë‹¤.
 		onload = function() {
 			searchFunction()
 		}
@@ -89,7 +89,7 @@
 				<input class="form-control" type="text" size="20" id="name" onkeyup="searchFunction()"/>
 			</div>
 			<div class="col-xs-2">
-				<button class="btn btn-primary" type="button" onclick="searchFunction()">°Ë»ö</button>
+				<button class="btn btn-primary" type="button" onclick="searchFunction()">ê²€ìƒ‰</button>
 			</div>
 		</div>
 	</div>
@@ -97,10 +97,10 @@
 	<table class="table" align="center" style="text-align: center; border: 1px solid #dddddd">
 		<thead>
 			<tr>
-				<th style="background-color: #fafafa; text-align: center;">¾ÆÀÌµğ</th>
-				<th style="background-color: #fafafa; text-align: center;">ÀÌ¸§</th>
-				<th style="background-color: #fafafa; text-align: center;">»ıÀÏ</th>
-				<th style="background-color: #fafafa; text-align: center;">ÀÌ¸ŞÀÏ</th>
+				<th style="background-color: #fafafa; text-align: center;">ì•„ì´ë””</th>
+				<th style="background-color: #fafafa; text-align: center;">ì´ë¦„</th>
+				<th style="background-color: #fafafa; text-align: center;">ìƒì¼</th>
+				<th style="background-color: #fafafa; text-align: center;">ì´ë©”ì¼</th>
 			</tr>
 		</thead>
 		<tbody id="ajaxTable">
