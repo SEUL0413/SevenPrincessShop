@@ -36,6 +36,46 @@ conmment: 이제 각자 시작하면 될듯 셋팅끝..
 
 
 
+회원목록, 해당회원 주문목록, 판매목록 구현
+http://localhost:8080/controller/admin 으로 테스트
+
+AdminController 수정
+	-memberMain 메소드 생성  //실행을 위한 테스트 메소드(지울것)
+	-memberList 메소드 생성
+	-salesTable 메소드 생성
+	-clientOrderList 메소드 생성
+
+ClientListVO 수정
+JoinVO 생성
+JoinListVO 생성
+
+adminMapper 수정
+
+view
+adminMain //테스트를 위한 페이지(지울것)
+memberList //회원목록
+clientOrderList //해당 회원 주문 목록
+salesTable   //판매목록
+
+
+판매목록 수정할점
+	컬럼명 클릭 시 정렬할것,
+	페이징 버튼 css 수정할 것,
+	orderList_idx 를 rownum으로 대체할것
+
+회원목록 수정할 점
+	컬럼명 클릭 시 정렬할것,
+	페이징 버튼 css 수정할 것,
+	client_idx를 rownum으로 대체할것
+	날짜 검색기능 구현할 것
+
+주문내역 수정할 점
+	css 수정
+
+또 수정할점이나 부족한점 알려주세용ㅠ
+
+////////////////////////////////////////////////////////////////05.16 가슬
+
 
 
 

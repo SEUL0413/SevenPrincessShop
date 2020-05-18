@@ -227,7 +227,7 @@ caption {
 }
 
 th {
-  text-align: inherit;
+  text-align: center;
 }
 
 label {
@@ -9064,7 +9064,46 @@ a.text-dark:hover, a.text-dark:focus {
 .navbar { padding: 1; background: #444; backface-visibility: hidden; }
 
 
+/****************************************************************************가슬*/
+/* 테이블의 th 태그 */
+.mf .container{
+	width: 70%
+}
 
+/* 테이블의 th 태그 */
+.fc .form-control{
+	width: 200px;
+	}
+.sf .form-control{
+	width: 174px;
+}
+
+.ta .container{
+	width: 80%;
+}
+
+.ta .container #listNum{ text-align: right; }
+
+/* 테이블의 th 태그 */
+.tm .container .table th{text-align: center;}
+
+
+#rec td{
+	text-align: center;
+	vertical-align: middle;
+}
+.ta .container .table #taCoTaTd {text-align: right;}
+
+
+/* 폼 설정 */
+.gs {
+	width: 80%;
+	
+}
+
+
+
+/****************************************************************************가슬*/
 
 
 /*# sourceMappingURL=bootstrap.css.map */

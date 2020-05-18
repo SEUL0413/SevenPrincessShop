@@ -4,4 +4,220 @@
 
 <mapper namespace="com.sps.dao.spsDAO">
 
+	<insert id="insertMember" parameterType="com.sps.vo.ClientVO">
+		insert into client (client_name, client_id, client_password, client_birthday, client_phoneNumber, client_address, client_registerDate)
+		values (#{client_name}, #{client_id}, #{client_password}, #{client_birthday}, #{client_phoneNumber}, #{client_address}, #{client_registerDate})
+	</insert>
+	
+
+	<select id="selectMember" parameterType="int" resultType="com.sps.vo.ClientVO">
+		SELECT * FROM CLIENT WHERE client_idx = #{param1};
+	</select>
+	
+
+	<!-- 전체 회원 수 -->
+	<select id="countMember" resultType="int">
+		select count(*) from client
+	</select>
+	
+	
+	
+	
+	
+	
+
+<!-- @@@@@@@@@@@@@@관리자 페이지@@@@@@@@@@@@@@ -->
+
+	
+	<!-- Join하기 위한 준비 -->	
+	<resultMap type="com.sps.vo.OrderListVO" id="orderMap">
+		<id property="orderList_idx" column="orderList_idx"/>
+		<id property="orderList_client_idx" column="orderList_client_idx"/>
+		<id property="orderList_product_idx" column="orderList_product_idx"/>
+		<id property="orderList_status" column="orderList_status"/>
+		<id property="orderList_orderDate" column="orderList_orderDate"/>
+		<id property="orderList_size" column="orderList_size"/>
+		<id property="orderList_color" column="orderList_color"/>
+		<id property="orderList_stock" column="orderList_stock"/>
+		
+		
+	</resultMap>
+	 
+ 	<resultMap type="com.sps.vo.ClientVO" id="clientMap">
+ 		<id property="client_idx" column="client_idx"/>
+ 		<id property="client_id" column="client_id"/>
+ 		<id property="client_name" column="client_name"/>
+ 		<id property="client_password" column="client_password"/>
+ 		<id property="client_birthday" column="client_birthday"/>
+ 		<id property="client_phoneNumber" column="client_phoneNumber"/>
+ 		<id property="client_address" column="client_address"/>
+ 		<id property="client_registerDate" column="client_registerDate"/>
+ 		<id property="client_email" column="client_email"/>
+ 		<id property="client_detailAddress" column="client_detailAddress"/>
+ 	</resultMap>
+
+ 	<resultMap type="com.sps.vo.ProductVO" id="productMap">
+ 		<id property="product_idx" column="product_idx"/>
+ 		<id property="product_name" column="product_name"/>
+ 		<id property="product_price" column="product_price"/>
+ 		<id property="product_category" column="product_category"/>
+ 		<id property="product_registerDate" column="product_registerDate"/>
+ 		<id property="product_hit" column="product_hit"/>
+ 		<id property="product_imgPath" column="product_imgPath"/>
+ 		<id property="product_Sstock" column="product_Sstock"/>
+ 		<id property="product_Mstock" column="product_Mstock"/>
+ 		<id property="product_Lstock" column="product_Lstock"/>
+ 		<id property="product_Fstock" column="product_Fstock"/>
+ 		<id property="product_stock" column="product_stock"/>
+ 	</resultMap>
+	
+ 	<resultMap type="com.sps.vo.JoinVO" id="joinMap">
+ 		<collection property="orderListVO" resultMap="orderMap"/>
+ 		<collection property="clientVO" resultMap="clientMap"/>
+ 		<collection property="productVO" resultMap="productMap"/>			
+ 	</resultMap>
+
+	
+	<!-- 판매기록 개수 가져오기 -->
+	<!-- resultType이 int일 경우 null 에러가 나서 Integer로 설정  -->
+		<!-- 
+			처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+			처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+		  -->
+	<select id="countSales" parameterType="map" resultType="java.lang.Integer">		
+		select 
+			count(*) AS count 
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			<if test="searchKey != null">
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and !endDate.equals('')">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+			</if>
+	</select> 
+	
+	
+	
+	
+	<!-- 판매기록 조인문 -->
+		<!-- 
+		처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+		처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+	  -->
+	<select id="selectSales" parameterType="map" resultMap="joinMap">
+		select 
+			O.orderList_idx,
+			P.product_imgPath,
+			P.product_name,
+			O.orderList_status,
+			C.client_id,
+			P.product_price,
+			O.orderList_orderDate
+			<!-- 
+				더이상 데이터베이스에 추가할 컬럼이 없으면 select * from 으로 하기
+				(DB에 컬럼이 계속 추가되는거 같아서 지금은 검색할 컬럼을 하나하나 지정해주었는데 나중에 변경할것!)			
+			-->
+	
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			<if test="searchKey != null">
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and startDate != null 
+							and !endDate.equals('') and startDate != null">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+			</if>
+			
+			order by O.orderList_idx
+			LIMIT #{startPage}, #{pageSize}	
+	</select> 
+
+	
+
+
+	<!-- 회원목록의 전체 개수 -->
+	<select id="countClient" parameterType="java.util.HashMap" resultType="int">
+		select count(*) from client
+		<if test="!searchKey .equals('')">
+			<if test="searchValue !=null and !searchValue.equals('') ">
+			where
+				${searchKey} LIKE '%${searchValue}%'
+			</if>
+		</if>
+	</select>
+	
+	
+	
+	<!-- 회원목록 select -->
+	<select id="selectClientList" parameterType="map" resultType="com.sps.vo.ClientVO">
+	
+		<![CDATA[
+			select 
+				*		 
+			from 
+				client
+			where
+				client_idx > 0 and ${searchKey} LIKE '%${searchValue}%'
+			order by client_idx desc
+			LIMIT #{startPage}, #{pageSize}
+		]]>
+
+	</select>
+	
+	
+
+
+	<!-- 해당 회원 주문내역 조인문 -->
+	<select id="selectOrderList" parameterType="int" resultMap="joinMap">
+
+		select 
+			O.orderList_orderDate,
+			O.orderList_color,
+			O.orderList_size,
+			O.orderList_status,
+			O.orderList_stock,
+			C.client_idx,
+			C.client_id,
+			C.client_name,
+			P.product_price,
+			P.product_name,
+			P.product_imgPath
+			<!-- 
+				더이상 데이터베이스에 추가할 컬럼이 없으면 select * from 으로 하기
+				(DB에 컬럼이 계속 추가되는거 같아서 지금은 검색할 컬럼을 하나하나 지정해주었는데 나중에 변경할것!)			
+			-->
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and C.client_idx = #{client_idx}
+			and O.orderList_status != 'cart'
+			
+	</select>
+	
+	
+		
+	
+
 </mapper>
