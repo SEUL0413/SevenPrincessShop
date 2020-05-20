@@ -66,7 +66,7 @@
 						${clientList.totalCount}(${clientList.currentPage}/${clientList.totalPage})
 					</td>
 				</tr>
-				<tr>
+				<tr>	
 					<th>client_idx</th>
 					<th>이름</th>
 					<th>ID</th>

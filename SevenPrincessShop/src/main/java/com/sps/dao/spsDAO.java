@@ -1,7 +1,6 @@
 package com.sps.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,13 @@ public interface spsDAO {
 
 
 
+	
+	
+	
+	
+	
+	
+	
 	
 	//판매 목록
 //	List<JoinVO> selectSales(Map<String, String> map);
@@ -44,6 +50,27 @@ public interface spsDAO {
 	
 	//해당 회원의 주문 내역 
 	List<JoinVO> selectOrderList(int client_idx);
+
+
+
+
+
+	int monthSalesCount(String date);
+	int monthCancelCount(String date);
+
+	Integer monthSalesPrice(String date);
+
+	int selectGoodsIdx();
+
+	
+	
+	
+	
+	int countSalesPayOK(Map<String, Object> map);
+
+	List<JoinVO> payOKTable(Map<String, Object> map);
+
+
 
 	
 	

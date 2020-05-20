@@ -9,6 +9,8 @@
 
 	<a href="memberList">회원목록 test<br/>
 	<a href="salesTable">판매기록 test<br/>
+	<a href="payOKTable">payOK test<br/>
+	
 
 
 

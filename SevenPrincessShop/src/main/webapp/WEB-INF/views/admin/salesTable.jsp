@@ -62,13 +62,13 @@
 			<div id="listNum">${count}개</div>
 			<table class="table table-hover">
 				<tr>
-					<th><a href="salesTable">orderList_idx</a></th>
-					<th><a href="salesTable">판매제품</a></th>
-					<th><a href="salesTable">제품명</a></th>
-					<th><a href="salesTable">판매상태</a></th>
-					<th><a href="salesTable">고객 ID></a></th>
-					<th><a href="salesTable">금액</a></th>	
-					<th><a href="salesTable">판매일자</a></th>	 
+					<th><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
+					<th>판매제품</th>
+					<th><a href="salesTable?orderby=product_name">제품명</a></th>
+					<th><a href="salesTable?orderby=orderList_status">판매상태</a></th>
+					<th><a href="salesTable?orderby=client_id">고객 ID</a></th>
+					<th><a href="salesTable?orderby=product_price">금액</a></th>	
+					<th><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
 				</tr>
 				
 				<c:forEach var="test" items="${joinList.joinList}"> 

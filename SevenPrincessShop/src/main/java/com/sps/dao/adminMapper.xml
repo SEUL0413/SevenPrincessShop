@@ -147,7 +147,7 @@
 				</if>
 			</if>
 			
-			order by O.orderList_idx
+			order by ${orderby}
 			LIMIT #{startPage}, #{pageSize}	
 	</select> 
 
@@ -216,6 +216,109 @@
 			
 	</select>
 	
+	
+	
+	
+		<!-- 월별 판매 건수 그래프 "%"+#{param2}+"%"   '+1+"%"' -->
+	<select id="monthSalesCount" parameterType="String" resultType="int">
+		select count(*) from orderlist 
+		where orderlist_orderDate like CONCAT('%', #{param1}, '%')
+				and (orderlist_status = 'payOK' or orderlist_status = 'send')
+	</select>
+	
+	
+		<!-- 월별 판매 취소 건수 그래프 -->
+	<select id="monthCancelCount" parameterType="String" resultType="int">
+		select count(*) from orderlist 
+		where orderlist_orderDate like CONCAT('%', #{param1}, '%')
+				and orderlist_status = 'cancel'
+	</select>
+	
+	
+	<!-- 월별 판매 금액 그래프 -->
+	<select id="monthSalesPrice" parameterType="String" resultType="java.lang.Integer">
+		select SUM(O.orderList_stock*P.product_price) 
+		from OrderList O, Product P
+		where O.orderList_product_idx = P.product_idx
+		 and O.orderlist_orderDate like CONCAT('%', #{param1}, '%')			
+	</select>
+	
+	
+	
+		<!-- 판매기록 개수 가져오기 -->
+	<!-- resultType이 int일 경우 null 에러가 나서 Integer로 설정  -->
+		<!-- 
+			처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+			처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+		  -->
+	<select id="countSalesPayOK" parameterType="map" resultType="java.lang.Integer">		
+		select 
+			count(*) AS count 
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and orderList_status = "payOK"
+			<if test="searchKey != null">
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and !endDate.equals('')">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+			</if>
+	</select> 
+	
+	
+	
+	
+	<!-- 판매기록 조인문 -->
+		<!-- 
+		처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+		처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+	  -->
+	<select id="payOKTable" parameterType="map" resultMap="joinMap">
+		select 
+			O.orderList_idx,
+			P.product_imgPath,
+			P.product_name,
+			O.orderList_status,
+			C.client_id,
+			P.product_price,
+			O.orderList_orderDate
+			<!-- 
+				더이상 데이터베이스에 추가할 컬럼이 없으면 select * from 으로 하기
+				(DB에 컬럼이 계속 추가되는거 같아서 지금은 검색할 컬럼을 하나하나 지정해주었는데 나중에 변경할것!)			
+			-->
+	
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and orderList_status = "payOK"
+			<if test="searchKey != null">
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and startDate != null 
+							and !endDate.equals('') and startDate != null">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+			</if>
+			
+			order by ${orderby}
+			LIMIT #{startPage}, #{pageSize}	
+	</select> 
 	
 		
 	
