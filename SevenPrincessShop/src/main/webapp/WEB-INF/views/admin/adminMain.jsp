@@ -9,6 +9,7 @@
 
 	<a href="memberList">회원목록 test<br/>
 	<a href="salesTable">판매기록 test<br/>
+	<a href="allBoard">게시판 관리 test<br/>
 
 
 

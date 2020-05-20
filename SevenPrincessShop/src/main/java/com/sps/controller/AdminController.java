@@ -1,13 +1,17 @@
 package com.sps.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +19,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import com.sps.dao.spsDAO;
+import com.sps.vo.AboardVO;
 import com.sps.vo.ClientListVO;
-import com.sps.vo.ClientVO;
 import com.sps.vo.JoinListVO;
 import com.sps.vo.JoinVO;
-import com.sps.vo.OrderListVO;
+import com.sps.vo.Qboard;
+import com.sps.vo.QboardList;
 
 
 // 관리자 기능을 담을 컨트롤러에요
@@ -342,5 +346,157 @@ public class AdminController {
 //		return result.toString();
 //		
 //	}
+	
+	
+	
+	
+	//=================================05/20 혜인===============================
 
+
+	
+	//관리자 모드 게시판 관리 목록 view(+리스트 받아와서 뿌리기)
+		@RequestMapping(value="/allBoard")
+		public String allBoard(HttpServletRequest request, Model model) {
+			
+			System.out.println("*************allBoard() 메서드 실행**************");
+			
+			// 매퍼생성
+			spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+			
+			int pageSize = 10;									// 보여줄 글의 개수
+			int totalCount = mapper.allCountQ(); 				// 글의 총 수량
+			int currentPage = 1;								// view 에서 넘어오는 현재페이지 정보
+			try {
+				currentPage = Integer.parseInt(request.getParameter("currentPage")); 
+			} 
+			catch (NumberFormatException e) { }
+			
+			// 1) 게시판에 뿌려줄 Q보드 리스트 뽑아오기
+			QboardList qboardList = new QboardList();					
+			qboardList.initQboardList(pageSize, totalCount, currentPage); //QboardList 초기화
+			
+			//현재 유저 idx 와 게시판에 뿌려줄 startNo와 개수 넘겨주기
+			qboardList.setQBoardList(mapper.allSelectQ(qboardList.getStartNo(),pageSize));
+			//qBoardVO들이 담겨질 arrayList
+			ArrayList<Qboard> lists = qboardList.getQBoardList();
+			
+			// 2) 답변 상태 뿌려주기 위한 qboard_idx 값 받아오기
+			//=>aboard 테이블에 있는 qboard_idx는 답변완료 / 없는 idx는 답변 대기
+			ArrayList<String> answer = new ArrayList<String>();
+			for(Qboard list : lists) {
+				
+				//db에서 가져온 질문번호가 Aboard(답변 테이블)에 있는지 체크(없으면 0, 있으면 1 반환)
+				int check = mapper.boardChk(list.getQboard_idx());
+				if(check==0) {
+					answer.add("답변대기");
+				}else {
+					answer.add("답변완료");
+				}
+			}
+			
+			// 3) 현재 접속 유저가 올린 질문글에 해당하는 답변들 추출
+			ArrayList<AboardVO> aboardList =  mapper.allSelectA();
+			
+			// 4) 오늘 등록된 질문글 개수 체크
+			
+			//오늘날짜 생성 
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+			
+			int count = mapper.dateCount(sdf.format(today)+"%");
+			
+			model.addAttribute("aboardList", aboardList); 
+			model.addAttribute("qboardList", lists); 
+			model.addAttribute("info", qboardList); 
+			model.addAttribute("answer", answer);
+			model.addAttribute("count",count);
+			model.addAttribute("totalCount",totalCount);
+
+			System.out.println("**************allBoard() 메서드 끝***************");
+			return "admin/admin_board";
+		}
+		
+		//관리자 모드 qna보드 답변 쓰기 화면
+		@RequestMapping(value="/insertBoardView")
+		public String insertBoardView(HttpServletRequest request, Model model) {
+			
+			System.out.println("**************insertBoardView() 메서드 실행***************");
+			
+			//질문글 번호 받아서 넘겨주기
+			String qboard_idx = request.getParameter("qboard_idx");
+			model.addAttribute("q_idx",qboard_idx);
+			
+			System.out.println("**************insertBoardView() 메서드 끝***************");
+			return "admin/admin_insertBoard";
+		}
+		
+		//관리자 모드 답변 aboard에 insert
+		@RequestMapping(value="/insertAnswer")
+		public String insertAnswer(HttpServletRequest request,Model model,HttpServletResponse response) throws IOException {
+			System.out.println("**************insertAnswer() 메서드 실행***************");
+
+			// 매퍼생성
+			spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+			
+			//질문글 idx
+			int q_idx = Integer.parseInt(request.getParameter("q_idx"));
+			//답변글 제목
+			String title = request.getParameter("title"); 
+			//답변글 내용
+			String content = request.getParameter("content");
+			//날짜 생성
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+			AboardVO vo = new AboardVO();
+			vo.setAboard_qboard_idx(q_idx);
+			vo.setAboard_title(title);
+			vo.setAboard_content(content);
+			vo.setAboard_date(sdf.format(date));
+			
+			//답변글 Aboard 테이블에 insert
+			mapper.insertAnswer(vo);
+			
+			//완료후 alert 띄어주기
+			model.addAttribute("insert_msg","답변 등록이 완료됐습니다.");
+			
+			System.out.println("***************insertAnswer() 메서드 끝****************");
+			
+			return "admin/admin_board";
+		}
+		
+		//관리자 모드 게시판 글 삭제
+		@RequestMapping(value="/deleteQ")
+		public String deleteQ(HttpServletRequest request,Model model,HttpServletResponse response) throws IOException {
+			System.out.println("**************deleteQ() 메서드 실행***************");
+
+			// 매퍼생성
+			spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+			
+			//삭제할 목록들의 qboard_idx 를 배열에 세팅 
+			String idxs = request.getParameter("idxs");
+			String[] indexs = idxs.split("_");
+			
+			System.out.println(indexs.length);
+			
+			for(int i=0;i<indexs.length;i++) {
+				if(indexs[i]!="" && indexs[i]!=null) {
+					//qboard idx를 인자로 넘겨 실행
+					mapper.deleteQ(Integer.parseInt(indexs[i]));  //q보드 레코드 삭제시, 참고 테이블인 a보드 레코드도 연쇄 삭제된다.
+				}
+			}
+			
+			//완료후 alert 띄어주기
+			model.addAttribute("delete_msg","질문글 삭제가 완료됐습니다.");
+			
+			System.out.println("***************deleteQ() 메서드 끝****************");
+			
+			return "admin/admin_board";
+		}
+		
+	
+		//=================================05/20 혜인 끝===============================
+	
+	
+	
 }

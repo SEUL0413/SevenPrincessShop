@@ -216,6 +216,47 @@
 			
 	</select>
 	
+	<!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
+	
+	<!--  관리자 모드 : 답변/미답변 체크-->
+	<select id="boardChk" parameterType="int" resultType="int">
+		SELECT count(*) FROM aboard where aboard_qboard_idx=#{param1};
+	</select>
+
+	<!-- 관리자 모드 : Q보드의 총 개수 출력 -->
+	<select id="allCountQ" resultType="int">
+		select count(*) from qboard;
+	</select>
+	
+	<!-- 관리자 모드 : Q(질문)의 한 페이지 분량 출력-->
+	<select id="allSelectQ" parameterType="int" resultType="com.sps.vo.Qboard">
+		SELECT * FROM (
+			SELECT * FROM qboard order by qboard_idx desc
+		) TT LIMIT #{param1},#{param2};
+	</select>
+	
+	<!-- 관리자 모드 : 답변테이블 추출 -->
+	<select id="allSelectA" resultType="com.sps.vo.AboardVO">
+		SELECT * FROM aboard WHERE aboard_qboard_idx = ANY (SELECT qboard_idx FROM qboard);
+	</select>
+	
+	<!-- 관리자 모드 : 오늘 날짜로 생성된 질문글 개수 체크 -->
+	<select id="dateCount" resultType="int">
+		SELECT COUNT(*) FROM qboard WHERE qboard_date LIKE #{param1};
+	</select>
+	
+	<!-- 관리자 모드 : 답변글 aboard에 insert -->
+	<insert id="insertAnswer" parameterType="com.sps.vo.AboardVO">
+		insert into aboard(aboard_qboard_idx,aboard_title,aboard_content,aboard_date)
+		values(#{aboard_qboard_idx},#{aboard_title},#{aboard_content},#{aboard_date});
+	</insert>
+	
+	<!-- 관리자 모드 : QnA 게시판 글 삭제 -->
+	<delete id="deleteQ" parameterType="int">
+		delete from qboard where qboard_idx = #{param1};
+	</delete>
+	
+	<!-- ///////////////////////////05/20 혜인 끝//////////////////////////////////////// -->
 	
 		
 	

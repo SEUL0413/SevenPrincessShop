@@ -6,9 +6,9 @@ public class OrderListVO {
 
 	private int orderList_idx;				// 주문 인덱스
 	private int orderList_client_idx;		// 주문 손님 인덱스
-	private int orderList_client_name;		// 주문 손님 이름
+	private String orderList_client_name;	// 주문 손님 이름
 	private int  orderList_product_idx;		// 주문 상품 인덱스
-	private int  orderList_product_name;	// 주문 상품 이름
+	private String  orderList_product_name;	// 주문 상품 이름
 	private String orderList_address;		// 주문 주소  
 	private String orderList_detailAddress;	// 주문 상세 주소 
 	private String orderList_status;		// 주문 상태 (장바구니, 주문완료, 배달 준비, 배달 중, 배달 완료)
@@ -45,11 +45,11 @@ public class OrderListVO {
 		this.orderList_client_idx = orderList_client_idx;
 	}
 
-	public int getOrderList_client_name() {
+	public String getOrderList_client_name() {
 		return orderList_client_name;
 	}
 
-	public void setOrderList_client_name(int orderList_client_name) {
+	public void setOrderList_client_name(String orderList_client_name) {
 		this.orderList_client_name = orderList_client_name;
 	}
 
@@ -61,11 +61,11 @@ public class OrderListVO {
 		this.orderList_product_idx = orderList_product_idx;
 	}
 
-	public int getOrderList_product_name() {
+	public String getOrderList_product_name() {
 		return orderList_product_name;
 	}
 
-	public void setOrderList_product_name(int orderList_product_name) {
+	public void setOrderList_product_name(String orderList_product_name) {
 		this.orderList_product_name = orderList_product_name;
 	}
 
