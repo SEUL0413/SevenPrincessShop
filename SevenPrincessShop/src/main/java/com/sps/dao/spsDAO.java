@@ -27,6 +27,13 @@ public interface spsDAO {
 
 
 	
+	
+	
+	
+	
+	
+	
+	
 	//판매 목록
 //	List<JoinVO> selectSales(Map<String, String> map);
 //	Integer countSales(Map<String, String> map);
