@@ -81,7 +81,7 @@ SqlSession memberSqlSession;
 		}
 	}
 	
-	//회원 수정 비밀번호 확인 화면
+		//회원 수정 비밀번호 확인 화면
 		@RequestMapping(value = "/pwCheck")
 		public String pwCheck(HttpServletRequest request, Model model) {
 			return "member/pwCheck";
@@ -488,15 +488,6 @@ SqlSession memberSqlSession;
 			System.out.println("******************insertQ 메서드 끝*****************");
 			return "redirect:qnaBoard";
 		}
-		
-		
-		//리뷰 관리 창
-		@RequestMapping(value = "/review")
-		public String review(HttpServletRequest request, Model model) {
-			
-			return "member/review";
-		}
-		
 		
 		//리뷰 관리 : 구매후기 쓰기 (현재 리뷰가 쓰이지 않은 상품 리스트 출력)
 		@RequestMapping(value = "/addReview")

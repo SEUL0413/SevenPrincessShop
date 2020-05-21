@@ -11,11 +11,7 @@
 <body>
 
 
-
-
-
-
-<!-- top bar -->
+	<!-- top bar -->
 
 	  <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
 		  <div class="container-fluid">
@@ -27,6 +23,9 @@
 		  	
 		  	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			    <ul class="nav navbar-nav ml-auto">
+				    <li class="nav-item">
+				    	<button type="button" id="sidebarCollapse" class="btn btn-primary" onclick="location.href='myPage'">마이페이지</button>
+				    </li>
 			    	<li class="nav-item">
 			    		<c:if test="${empty sessionScope.nowUser}">
 			        		<a class="nav-link" href="login">로그인</a>
@@ -35,14 +34,12 @@
 			        		<a class="nav-link" href="logout">로그아웃</a>
 			        	</c:if>
 				    </li>
+				   
 				    <li class="nav-item">
-				    	<a class="nav-link" href="myPage">마이페이지</a>
+				    	<a class="nav-link" href="cartView">장바구니</a>
 				    </li>
 				    <li class="nav-item">
-				    	<a class="nav-link" href="myBasket">장바구니</a>
-				    </li>
-				    <li class="nav-item">
-				    	<a class="nav-link" href="customerService">고객센터</a>
+				    	<a class="nav-link" href="qnaBoard">고객센터</a>
 				    </li>
 		   	 	</ul>
 		  	</div>
