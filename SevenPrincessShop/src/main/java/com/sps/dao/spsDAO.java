@@ -55,6 +55,25 @@ public interface spsDAO {
 	
 	//해당 회원의 주문 내역 
 	List<JoinVO> selectOrderList(int client_idx);
+	
+	
+	
+	
+	
+	int monthSalesCount(String date);
+	
+	int monthCancelCount(String date);
+
+	Integer monthSalesPrice(String date);
+
+	int selectGoodsIdx();
+
+	int countSalesPayOK(Map<String, Object> map);
+
+	List<JoinVO> payOKTable(Map<String, Object> map);
+	
+	ArrayList<ProductVO> monthBestItem();
+	
 
 	//=========================05/20 혜인==========================================
 	
@@ -176,6 +195,7 @@ public interface spsDAO {
 //  유정 글목록 가져오기
    ArrayList<ReviewVO> selectList(int product_idx, int startNo);
 	//====================유졍==========================
+
 
 
 

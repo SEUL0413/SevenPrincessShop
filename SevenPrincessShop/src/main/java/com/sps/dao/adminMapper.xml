@@ -216,6 +216,16 @@
 			
 	</select>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
 	
 	<!--  관리자 모드 : 답변/미답변 체크-->
@@ -284,7 +294,11 @@
 		 and O.orderlist_orderDate like CONCAT('%', #{param1}, '%')			
 	</select>
 	
-	
+	<!-- 베스트 아이템 그래프 -->
+   <!-- 조회수가 높은 순으로 6개를 가져온다 -->
+   <select id="monthBestItem" parameterType="map" resultType="com.sps.vo.ProductVO">
+      SELECT product_name, product_hit FROM product ORDER BY product_hit DESC LIMIT 6;
+   </select>
 	
 		<!-- 판매기록 개수 가져오기 -->
 	<!-- resultType이 int일 경우 null 에러가 나서 Integer로 설정  -->

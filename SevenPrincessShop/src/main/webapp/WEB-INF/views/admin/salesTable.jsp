@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -63,13 +62,13 @@
 			<div id="listNum">${count}ê°œ</div>
 			<table class="table table-hover">
 				<tr>
-					<th><a href="salesTable">orderList_idx</a></th>
-					<th><a href="salesTable">íŒë§¤ì œí’ˆ</a></th>
-					<th><a href="salesTable">ì œí’ˆëª…</a></th>
-					<th><a href="salesTable">íŒë§¤ìƒíƒœ</a></th>
-					<th><a href="salesTable">ê³ ê° ID></a></th>
-					<th><a href="salesTable">ê¸ˆì•¡</a></th>	
-					<th><a href="salesTable">íŒë§¤ì¼ì</a></th>	 
+					<th><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
+					<th>íŒë§¤ì œí’ˆ</th>
+					<th><a href="salesTable?orderby=product_name">ì œí’ˆëª…</a></th>
+					<th><a href="salesTable?orderby=orderList_status">íŒë§¤ìƒíƒœ</a></th>
+					<th><a href="salesTable?orderby=client_id">ê³ ê° ID</a></th>
+					<th><a href="salesTable?orderby=product_price">ê¸ˆì•¡</a></th>	
+					<th><a href="salesTable?orderby=orderList_orderDate">ì£¼ë¬¸ì¼ì</a></th>	 
 				</tr>
 				
 				<c:forEach var="test" items="${joinList.joinList}"> 
@@ -135,142 +134,5 @@
 	</div>
 	
 </body>
-=======
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<title>ÆÇ¸Å ¸ñ·Ï</title>
-	<script type="text/javascript">
-	   window.onload = function(){
-	      var k = "${key}";
-	      if(k=="orderList_idx"){
-	         document.getElementById("1").setAttribute("selected", "selected");
-	      }else if(k=="product_name"){
-	          document.getElementById("2").setAttribute("selected", "selected");
-	      }else if(k=="orderList_status"){
-	          document.getElementById("3").setAttribute("selected", "selected");
-	      }else if(k=="client_id"){
-	          document.getElementById("4").setAttribute("selected", "selected");
-	      }else if(k=="product_price"){
-	          document.getElementById("5").setAttribute("selected", "selected");
-	      }
-		};
- 	</script>
-</head>
-<body>
-	<%@ include file="/WEB-INF/views/include/css_js_link.html"%>
 
-	<!-- °Ë»öÃ¢ -->
-	<form action="salesTable" method="post" class="container gs">
-		<h2>ÆÇ¸Å¸ñ·Ï</h2>
-		<div class="row" >		
-			<div class="col-xs-2 fc">
-				<select id="searchKey" name="searchKey" class="form-control">
-			 			 <option id="1" value="orderList_idx">orderList_idx</option>
-			 			 <option id="2" value="product_name">Á¦Ç°¸í</option>
-			 			 <option id="3" value="orderList_status">ÆÇ¸Å »óÅÂ</option>
-			  			 <option id="4" value="client_id">°í°´ID</option>
-			  			 <option id="5" value="product_price">±İ¾×</option>
-				</select> 
-			</div>			
-			<div class="col-xs-2">
-				<input type="text" name="searchValue" class="form-control" value="${value}">
-			</div>
-		</div>
-		<div class="row col-xs-2 sf">		
-			
-			<input type="date" name="startDate" class="form-control" value="${sDate}"> 
-				&nbsp;&nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="date" name="endDate" class="form-control" value="${eDate}">
-				&nbsp;&nbsp;&nbsp;&nbsp;
-			<input class="btn btn-default"  type="submit" value="Àü¼Û"> 
-		</div>	
-	</form>
-	
-			
-			
-	<!-- Å×ÀÌºí -->			
-	<div class="ta">
-		<div class="container">
-			<div id="listNum">${count}°³</div>
-			<table class="table table-hover">
-				<tr>
-					<th><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
-					<th>ÆÇ¸ÅÁ¦Ç°</th>
-					<th><a href="salesTable?orderby=product_name">Á¦Ç°¸í</a></th>
-					<th><a href="salesTable?orderby=orderList_status">ÆÇ¸Å»óÅÂ</a></th>
-					<th><a href="salesTable?orderby=client_id">°í°´ ID</a></th>
-					<th><a href="salesTable?orderby=product_price">±İ¾×</a></th>	
-					<th><a href="salesTable?orderby=orderList_orderDate">ÁÖ¹®ÀÏÀÚ</a></th>	 
-				</tr>
-				
-				<c:forEach var="test" items="${joinList.joinList}"> 
-				<tr id="rec">
-					<td style="vertical-align: middle;">${test.orderListVO.orderList_idx}</td>
-					<td style="vertical-align: middle;"><img src="${test.productVO.product_imgPath}/01_01.jpg" width="60px" height="60px"/></td>
-					<td style="vertical-align: middle;">${test.productVO.product_name}</td>
-					<td style="vertical-align: middle;">${test.orderListVO.orderList_status}</td>
-					<td style="vertical-align: middle;">${test.clientVO.client_id }</td>
-					<td style="vertical-align: middle;">${test.productVO.product_price}</td>
-					<td style="vertical-align: middle;">${test.orderListVO.orderList_orderDate}</td>
-
-				</tr>
-				</c:forEach> 
-				
-					
-				<!-- ÆäÀÌÁö ÀÌµ¿ ¹öÆ° -->
-				<tr>
-					<td align="center" colspan="7">
-						<!-- Ã³À½À¸·Î, 10ÆäÀÌÁö ¾ÕÀ¸·Î --> 
-						<c:if test="${joinList.startPage > 1}">
-							<input type="button" value="start page" onclick="location.href='?currentPage=1'" title="Ã¹ ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù." />
-							<input type="button" value="-10 page" onclick="location.href='?currentPage=${joinList.startPage - 1}'" title="ÀÌÀü 10 ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù." />
-						</c:if> 
-						<c:if test="${joinList.startPage <= 1}">
-							<input type="button" value="start page" disabled="disabled" title="ÀÌ¹Ì Ã¹ ÆäÀÌÁö ÀÔ´Ï´Ù." />
-							<input type="button" value="-10 page" disabled="disabled" title="ÀÌÀü 10 ÆäÀÌÁö°¡ ¾ø½À´Ï´Ù." />
-						</c:if> 
-						
-						
-						<!-- ÆäÀÌÁö ÀÌµ¿ --> 
-						<c:forEach var="i" begin="${joinList.startPage}" end="${joinList.endPage}" step="1">
-							<c:if test="${i == joinList.currentPage}">
-								<input class="button button2" type="button" value="${i}" disabled="disabled" />
-							</c:if>
-
-							<c:if test="${i != joinList.currentPage}">
-								<input class="button button1" type="button" value="${i}" 
-									onclick="location.href='?currentPage=${i}&searchKey=${joinList.searchKey}&searchValue=${joinList.searchValue}	&startDate=${joinList.startDate}&endDate=${joinList.endDate}'"	
-									title="${i}ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù." />
-							</c:if>
-						</c:forEach> 
-						
-						<!-- ¸¶Áö¸·À¸·Î, 10ÆäÀÌÁö µÚ·Î --> 
-						<c:if test="${joinList.endPage < joinList.totalPage}">
-							<input type="button" value="+10 page"
-								onclick="location.href='?currentPage=${joinList.endPage + 1}'"
-								title="´ÙÀ½ 10 ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù." />
-							<input type="button" value="end page"
-								onclick="location.href='?currentPage=${joinList.totalPage}'"
-								title="¸¶Áö¸· ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù." />
-						</c:if> 
-						<c:if test="${joinList.endPage >= joinList.totalPage}">
-							<input type="button" value="+10 page" disabled="disabled"
-								title="´ÙÀ½ 10 ÆäÀÌÁö°¡ ¾ø½À´Ï´Ù." />
-							<input type="button" value="end page" disabled="disabled"
-								title="ÀÌ¹Ì ¸¶Áö¸· ÆäÀÌÁö ÀÔ´Ï´Ù." />
-						</c:if>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	
-</body>
->>>>>>> origin/Graph_Finish
 </html>
