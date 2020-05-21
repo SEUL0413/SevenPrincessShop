@@ -22,6 +22,8 @@ public class ProductInfoList {
 		this.stock_stock = stock_stock;
 	}
 
+	
+	
 	public int getStock_idx() {
 		return stock_idx;
 	}

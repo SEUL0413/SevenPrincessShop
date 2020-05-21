@@ -614,7 +614,7 @@ SqlSession memberSqlSession;
 	        
 			System.out.println("******************insertR 메서드 끝*****************");
 			
-			return "redirect:review";
+			return "redirect:allReview";
 		}
 		
 		//리뷰 관리 : 이미 작성한 리뷰 창

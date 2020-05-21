@@ -67,7 +67,7 @@
 								</c:when>
 							</c:choose>
 							<br/>
-							${r.review_content}><br/>
+							${r.review_content}<br/>
 							
 							<!-- 이미지 등록을 한 경우에만 이미지 출력 -->
 							<c:if test="${!empty r.review_imgPath}"> 

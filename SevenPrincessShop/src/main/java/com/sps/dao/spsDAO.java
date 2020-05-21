@@ -136,6 +136,39 @@ public interface spsDAO {
 	
 	//=================05/20 혜인 끝======================================
 	
+	
+	//====================유졍==========================
+//  유정 상품 사이즈 가져오기
+   ArrayList<String> getSize(String product_idx);
+
+//  유정 상품 색상 가져오기
+   ArrayList<String> getColor(String product_idx);
+
+//  유정 상품 재고 가져오기
+   ArrayList<String> getStock(String product_idx);
+   
+//  유정 상품정보가져오기
+   ProductVO getProductInfo(String product_idx);
+
+//  유정 카트에 정보 담기
+   void insertCart(String orderList_client_idx, String orderList_product_idx, String orderList_size,
+         String orderList_color, String orderList_stock, String orderList_orderDate);
+//  유정 바로결제에 정보 담기
+   void insertdPay(String orderList_client_idx, String orderList_product_idx, String orderList_size,
+         String orderList_color, String orderList_stock, String orderList_orderDate);
+
+//   찬호 옵션 찾기
+   ArrayList<String> findOption(String product_idx, String size);
+   
+//	찬호 옵션 재고 찾기
+   String findOptionStock(String product_idx, String size, String stock_stock);
+
+// 	유정 리뷰 개수 가져오기
+   int selectCount(String product_idx);
+
+//  유정 글목록 가져오기
+   ArrayList<ReviewVO> selectList(int product_idx, int startNo);
+	//====================유졍==========================
 
 
 

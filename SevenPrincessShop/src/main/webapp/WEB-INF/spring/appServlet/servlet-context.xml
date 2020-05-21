@@ -33,7 +33,7 @@
 	
 	<!-- 파일 업로드 폴더 경로 : 추후 master 경로로 수정하기! -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="C:\Users\혜니\git\SPS_new\SevenPrincessShop\src\main\webapp\resources\images\reviewImages\"/>
+		<beans:constructor-arg value="C:\Users\Administrator\git\SPS-MASTER\SevenPrincessShop\src\main\webapp\resources\images\reviewImages\"/>
 	</beans:bean>
 	
 	<!-- 드라이버 정보 빈 -->
