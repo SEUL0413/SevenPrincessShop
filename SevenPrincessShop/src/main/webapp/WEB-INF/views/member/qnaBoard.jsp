@@ -22,12 +22,6 @@
 <!-- 부트스트랩 사용하기 위한 코드 -->
 <%@ include file="/WEB-INF/views/include/css_js_link.html"%>
 
-<style type="text/css">
-
-	
-	
-</style>
-
 <!-- jquery 추가 -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <!-- 외부 스크립트 파일 지정 태그입니다. -->
