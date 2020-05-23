@@ -24,6 +24,7 @@ import com.sps.vo.AboardVO;
 import com.sps.vo.ClientListVO;
 import com.sps.vo.JoinListVO;
 import com.sps.vo.JoinVO;
+import com.sps.vo.ProductVO;
 import com.sps.vo.Qboard;
 import com.sps.vo.QboardList;
 
@@ -192,9 +193,152 @@ public class AdminController {
 	
 	
 	
-	//판매목록 => 검색기능 구현
-	@RequestMapping(value ="/salesTable")
-	public String salesTable(HttpServletRequest request, Model model, JoinListVO joinList) {
+//////////////////////////////판매목록///////////////////////////////////////
+@RequestMapping(value ="/salesTable")
+public String salesTable(HttpServletRequest request, Model model, JoinListVO joinList) {
+spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);	
+
+//브라우저 화면에 출력할 글의 개수를 정한다.
+int pageSize = 10;
+//컨트롤러에서 HttpServletRequest 인터페이스 객체에 저장되서 넘어온 화면에 표시할 페이지 번호를 받는다.
+int currentPage = 1;
+try {
+currentPage = Integer.parseInt(request.getParameter("currentPage"));
+} catch (NumberFormatException e) { }
+
+
+//검색값 받아오기
+String searchKey = request.getParameter("searchKey");
+String searchValue = request.getParameter("searchValue");
+//검색한 값을 화면에 유지하기위해 값을 보내놓는다.
+model.addAttribute("key", searchKey);
+model.addAttribute("value",searchValue);
+
+//기간 검색 값 받아오기
+String startDate = request.getParameter("startDate");
+model.addAttribute("sDate",startDate);
+String endDate = request.getParameter("endDate");
+model.addAttribute("eDate",endDate);
+
+//기간 설정을 안했을 경우
+if(startDate == null) joinList.setStartDate("");
+else joinList.setStartDate(startDate);
+if(endDate == null) joinList.setEndDate("");
+else joinList.setEndDate(endDate);
+
+System.out.println("startDate : " + joinList.getStartDate() + " endDate : " + joinList.getEndDate());
+System.out.println("searchKey : " +   searchKey);
+System.out.println("searchValue : " + searchValue);
+
+//맵에 검색값과 기간설정값을 저장한다
+Map<String, Object> map = new HashMap<String, Object>();
+map.put("searchKey", searchKey);
+map.put("searchValue", searchValue);
+map.put("startDate", joinList.getStartDate());
+map.put("endDate", joinList.getEndDate());
+
+//검색한 전체 개수를 가져온다
+int count = mapper.countSales(map);
+//System.out.println(count);
+
+//페이징을 위한 메소드 초기화
+//clientList 클래스의 1페이지 분량의 글을 기억하는 ArrayList에 1페이지 분량의 글을 테이블에서 얻어와서 넣어준다.
+joinList.initJoinList(pageSize, count, currentPage);
+
+//선언했던 map에 페이징을 위한 변수 startPage, pageSize를 더 넣어준다.
+map.put("startPage", joinList.getStartNo());
+map.put("pageSize", joinList.getPageSize());
+System.out.println("컨트롤러의 joinList메소드의 map값 : " + map);
+
+
+String orderby = request.getParameter("orderby"); 
+if(orderby == null) {
+orderby = "orderList_idx";
+}
+System.out.println(orderby);
+
+map.put("orderby", orderby);
+
+
+//전체 판매기록을 가져온다
+joinList.setJoinList(mapper.selectSales(map));
+System.out.println(joinList);
+
+//salesTable에 판매건수와 가져온 판매기록을 넘겨준다.
+model.addAttribute("count",count);
+model.addAttribute("joinList",joinList);
+
+return "admin/salesTable";
+}
+	
+
+///////////////////////////////판매차트//////////////////////////////////////////
+	@RequestMapping(value = "/salesGraph")
+	public String zing4(Locale locale, Model model) {	
+		spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+		
+		//월별 판매 완료 건수를 담을 ArrayList
+		ArrayList<Integer> monthSalesCount = new ArrayList<Integer>();
+		//월별 판매 취소 건수를 담을 ArrayList
+		ArrayList<Integer> monthCancelCount = new ArrayList<Integer>();
+		//월별 판매 금액을 담을 ArrayList
+		ArrayList<Integer> monthSalesPrice = new ArrayList<Integer>();
+		//베스트 아이템을 담을 ArrayList
+		ArrayList<ProductVO> monthBestItem = mapper.monthBestItem();
+		
+		
+		
+		String date = "";
+		Integer salesPrice;  
+		for(int i = 1; i <13; i++) {
+			if(i < 10) {	//날짜 월의 1-9까지 앞에 0을 붙여주기 위한 조건문
+				date = "2020-0"+i;
+				int salesCount = mapper.monthSalesCount(date);
+				int cancelCount = mapper.monthCancelCount(date);
+					if(mapper.monthSalesPrice(date) == null) {
+						salesPrice = 0;
+					}else {
+						salesPrice = mapper.monthSalesPrice(date);
+					}
+				monthSalesCount.add(salesCount);
+				monthCancelCount.add(cancelCount);
+				monthSalesPrice.add(salesPrice);
+			}else {
+				date = "2020-"+i;
+				int salesCount = mapper.monthSalesCount(date);
+				int cancelCount = mapper.monthCancelCount(date);
+					if(mapper.monthSalesPrice(date) == null) {
+						salesPrice = 0;
+					}else {
+						salesPrice = mapper.monthSalesPrice(date);
+					}
+				monthSalesCount.add(salesCount);
+				monthCancelCount.add(cancelCount);
+				monthSalesPrice.add(salesPrice);
+			}
+		}
+		
+		
+		System.out.println(monthSalesCount);
+		System.out.println(monthCancelCount);
+		System.out.println(monthSalesPrice);
+	
+		model.addAttribute("monthSalesCount", monthSalesCount);
+		model.addAttribute("monthCancelCount", monthCancelCount);
+		model.addAttribute("monthSalesPrice", monthSalesPrice);
+		model.addAttribute("monthBestItem",monthBestItem);
+		
+		
+		return "admin/salesGraph";
+	}
+	
+	
+
+	
+	
+	///////////////////////////////////////////////////////작업중..
+	@RequestMapping(value ="/payOKTable")
+	public String payOK(HttpServletRequest request, Model model, JoinListVO joinList) {
 		spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);	
 		
 		//브라우저 화면에 출력할 글의 개수를 정한다.
@@ -209,15 +353,9 @@ public class AdminController {
 		//검색값 받아오기
 		String searchKey = request.getParameter("searchKey");
 		String searchValue = request.getParameter("searchValue");
-		
-		
-		
 		//검색한 값을 화면에 유지하기위해 값을 보내놓는다.
 		model.addAttribute("key", searchKey);
 		model.addAttribute("value",searchValue);
-		
-		
-		
 		
 		//기간 검색 값 받아오기
 		String startDate = request.getParameter("startDate");
@@ -231,8 +369,6 @@ public class AdminController {
 		if(endDate == null) joinList.setEndDate("");
 		else joinList.setEndDate(endDate);
 		
-		
-		
 		System.out.println("startDate : " + joinList.getStartDate() + " endDate : " + joinList.getEndDate());
 		System.out.println("searchKey : " +   searchKey);
 		System.out.println("searchValue : " + searchValue);
@@ -245,7 +381,7 @@ public class AdminController {
 		map.put("endDate", joinList.getEndDate());
 		
 		//검색한 전체 개수를 가져온다
-		int count = mapper.countSales(map);
+		int count = mapper.countSalesPayOK(map);
 		//System.out.println(count);
 		
 		//페이징을 위한 메소드 초기화
@@ -257,17 +393,35 @@ public class AdminController {
 		map.put("pageSize", joinList.getPageSize());
 		System.out.println("컨트롤러의 joinList메소드의 map값 : " + map);
 		
+		
+		String orderby = request.getParameter("orderby"); 
+		if(orderby == null) {
+			orderby = "orderList_idx";
+		}
+		System.out.println(orderby);
+		
+		map.put("orderby", orderby);
+		
+		
 		//전체 판매기록을 가져온다
-		joinList.setJoinList(mapper.selectSales(map));
+		joinList.setJoinList(mapper.payOKTable(map));
 		System.out.println(joinList);
 		
 		//salesTable에 판매건수와 가져온 판매기록을 넘겨준다.
 		model.addAttribute("count",count);
 		model.addAttribute("joinList",joinList);
 		
-		return "admin/salesTable";
+		
+		return "admin/payOKTable";
 	}
-	
+
+
+
+
+
+
+
+
 	
 	
 //	CHECK! 05-18

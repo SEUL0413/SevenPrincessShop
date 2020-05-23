@@ -1,7 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="com.sps.dao.spsDAO">
+
+
+<!-- 유정 특정 상품 컬러 종류 -->
+<select id="getColor" parameterType="String" resultType="String">
+   SELECT stock_color 
+   FROM STOCK
+   WHERE stock_product_idx = #{param1}
+   GROUP BY stock_color
+   ORDER BY stock_idx DESC;
+</select>
+
+
+
+<!-- 유정 특정 상품 사이즈 종류 -->
+<select id="getSize" parameterType="String" resultType="String">
+   SELECT stock_size 
+   FROM STOCK
+   WHERE stock_product_idx = #{param1}
+   GROUP BY stock_size
+   ORDER BY stock_idx DESC
+</select>
+
+
+<!-- 유정 특정 상품 정보 가지고 오기 -->
+<select id="getProductInfo" parameterType="String" resultType="com.sps.vo.ProductVO">
+	SELECT * 
+	FROM PRODUCT
+	WHERE product_idx = #{param1}
+</select>
+
+<!-- 찬호 옵션 찾기 -->
+<select id="findOption" parameterType="String" resultType="String">
+	SELECT stock_color FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2}
+</select>
+
+<!-- 찬호 옵션별 재고 찾기 -->
+<select id="findOptionStock" parameterType="String" resultType="String">
+	SELECT stock_stock FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2} AND stock_color = #{param3};
+</select>
+
+<!-- 유정 장바구니에 담기 -->
+<insert id="insertCart" parameterType="String">
+   INSERT INTO ORDERLIST
+   (orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock, orderList_orderDate)
+   VALUES
+   (#{param1}, #{param2}, 'cart', #{param3}, #{param4}, #{param5}, #{param6});
+</insert>
+
+<!-- 유정 바로결제 담기 -->
+<insert id="insertdPay" parameterType="String">
+   INSERT INTO ORDERLIST
+   (orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock, orderList_orderDate)
+   VALUES
+   (#{param1}, #{param2}, 'dPay', #{param3}, #{param4}, #{param5}, #{param6});
+</insert>
+
+<!-- 유정 테이블에 저장된 전체 글의 개수를 얻어온다. -->
+<select id="selectCount" resultType="int">
+	SELECT count(*) FROM review WHERE review_product_idx = #{param1};
+</select>
+
+<!-- 유정 한 페이지 분량의 글  -->
+<select id="selectList" parameterType="int" resultType="com.sps.vo.ReviewVO">
+	<![CDATA[
+     SELECT * FROM (
+        SELECT c.client_name AS review_client_name,  r.review_content, r.review_productGrade, r.review_writeDate, r.review_imgPath 
+        FROM review r  JOIN CLIENT c
+        ON r.review_client_idx = c.client_idx 
+        WHERE r.review_product_idx = #{param1}
+        ORDER BY r.review_idx DESC
+        ) TT LIMIT #{param2},5;
+	]]>
+</select>
+
+
 
 </mapper>

@@ -15,7 +15,6 @@ public class ProductVO {
 	private int product_imgPathStock;		// 상세 이미지 개수(반복문에 필요)
 
 	public ProductVO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public ProductVO(int product_idx, String product_name, int product_price, int product_category,
