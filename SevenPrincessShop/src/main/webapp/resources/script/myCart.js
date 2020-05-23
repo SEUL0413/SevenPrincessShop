@@ -2,6 +2,9 @@
 	//체크박스 전체 클릭시 모든 박스 check하기 
 	function allChk(bool){
 		$(".chk").prop("checked",bool);
+		
+		//품절인 상품은 주문할수 없도록 체크박스 해제
+		$("input[name=chk]:disabled").prop("checked",false);
 	}
 	
 	//박스 전체에 클릭이 되면 all 버튼 check! 하나라도 클릭 해제되면 all버튼 check 해제하기 
@@ -89,6 +92,14 @@
 			}
 		}
 	}
+	
+	//장바구니 내역 상품 모두 품절일 경우 all 체크 박스 disabled 설정
+	$(function(){
+		let count = $("input[name=chk]").length;
+		if($("input[name=chk]:disabled").length==count){
+			$("input[name=all]").prop("disabled",true);
+		}
+	});
 
 	
 	

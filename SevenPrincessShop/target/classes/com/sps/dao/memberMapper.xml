@@ -19,9 +19,17 @@
 	
  	<!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
 	
-	<!-- 마이페이지 회원 정보 업데이트-->
+	<!-- 마이페이지 회원 정보 수정-->
 	<update id="updateMember" parameterType="com.sps.vo.ClientVO">
-		update client set client_password= #{client_password},client_name= #{client_name},client_email = #{client_email}, client_phoneNumber = #{client_phoneNumber}, client_address = #{client_address} WHERE client_id = #{client_id};
+		update client set 
+			client_password= #{client_password},
+			client_name= #{client_name},
+			client_email = #{client_email}, 
+			client_phoneNumber = #{client_phoneNumber}, 
+			client_address = #{client_address}, 
+			client_detailAddress = #{client_detailAddress},
+			client_addressNumber = #{client_addressNumber}
+		WHERE client_id = #{client_id};
 	</update>
 	
 	<!-- 마이페이지 회원 정보 삭제-->
@@ -52,7 +60,7 @@
 	
 	<!-- 장바구니 전체 주문 status 변경  -->
 	<update id="allStatus" parameterType="int">
-		update orderList set orderList_status='ready' WHERE orderList_client_idx = #{param1};
+		update orderList set orderList_status='ready' WHERE orderList_client_idx = #{param1} and orderList_status='cart';
 	</update>
 	
 	<!-- 장바구니 선택 주문 status 변경  -->
@@ -116,7 +124,7 @@
 	<select id="reviewOrder" parameterType="int" resultType="com.sps.vo.OrderListVO">
 		SELECT * FROM orderlist 
 		WHERE orderlist_idx != ALL(SELECT review_orderlist_idx FROM review) 
-		AND orderlist_client_idx = #{param1} AND orderList_status != 'cart';
+		AND orderlist_client_idx = #{param1} AND orderList_status ="send";
 	</select>
 	
 	<!-- 리뷰관리 : 작성된 리뷰 출력 -->

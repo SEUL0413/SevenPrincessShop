@@ -11,6 +11,7 @@ public class ClientVO {
 	private String client_birthday;			// 고객 생일
 	private String client_phoneNumber;		// 고객 핸드폰번호
 	private String client_address;			// 고객 주소
+	private String client_addressNumber;    // 고객 우편번호
 	private String client_detailAddress;	// 고객 상세 주소
 	private String client_registerDate;		// 고객 가입 날짜
 	
@@ -83,6 +84,18 @@ public class ClientVO {
 	public void setClient_address(String client_address) {
 		this.client_address = client_address;
 	}
+	
+	
+
+
+	public String getClient_addressNumber() {
+		return client_addressNumber;
+	}
+
+
+	public void setClient_addressNumber(String client_addressNumber) {
+		this.client_addressNumber = client_addressNumber;
+	}
 
 
 	public String getClient_registerDate() {
@@ -117,11 +130,11 @@ public class ClientVO {
 	@Override
 	public String toString() {
 		return "ClientVO [client_idx=" + client_idx + ", client_name=" + client_name + ", client_id=" + client_id
-				+ ", client_password=" + client_password + ", client_birthday=" + client_birthday
-				+ ", client_phoneNumber=" + client_phoneNumber + ", client_address=" + client_address
+				+ ", client_email=" + client_email + ", client_password=" + client_password + ", client_birthday="
+				+ client_birthday + ", client_phoneNumber=" + client_phoneNumber + ", client_address=" + client_address
+				+ ", client_addressNumber=" + client_addressNumber + ", client_detailAddress=" + client_detailAddress
 				+ ", client_registerDate=" + client_registerDate + "]";
 	}
-	
 	
 	
 }

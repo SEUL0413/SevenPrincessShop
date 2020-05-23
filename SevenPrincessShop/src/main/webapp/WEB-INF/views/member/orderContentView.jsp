@@ -23,6 +23,8 @@
 
 <!-- jquery 추가 -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- 외부 스크립트 파일 지정 태그입니다. -->
+<script src="${pageContext.request.contextPath}/resources/script/myOrder.js"></script>
 
 </head>
 <body>
@@ -36,17 +38,18 @@
 		<%@ include file="/WEB-INF/views/include/myCategory.jsp"%>
 		
 		<div id="content" class="p-4 p-md-5">
-	
+			<!-- myPage top bar 설정 -->
+			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
 			<c:set var="o" value="${orderVO}"/>
 			<c:set var="p" value="${productVO}"/>
 			
 			<h1>주문 상세</h1>
-		 	주문일 : ${o.orderList_orderDate} /  주문번호 : ${o.orderList_idx+ 1000000}
+		 	<b>주문일 : ${o.orderList_orderDate} /  주문번호 : ${o.orderList_idx+ 1000000}</b>
 		 	<hr/>
-		 	<table width="800px" style="border:1px solid black">
-		 		<tr>
+		 	<table  border="2" bordercolor="#D8D8D8" style="text-align: center" width="800px" style="border:1px solid black">
+		 		<tr style="height:250px">
 		 			<td>
-		 				<img src="${p.product_imgPath}.jpg"/>
+		 				<img width="200" height="200" src="${p.product_imgPath}_1.jpg"/>
 		 		 	</td>
 		 		 	<td align="center">
 		 		 		<h3>${p.product_name}</h3>
@@ -61,15 +64,16 @@
 								
 								<!-- 리뷰 작성 여부 체크  -->
 								<c:if test="${count == 0}">
-									<br/><button type="button" onclick="location.href='reviewInsert?idx=${list1.orderList_idx}'">구매후기 쓰기</button>
+									<br/><button type="button" onclick="location.href='reviewInsert?idx=${o.orderList_idx}'" class="btn btn-secondary">리뷰 쓰기</button>
 								</c:if>
 								<c:if test="${count == 1}">
-									<br/><button type="button" onclick="location.href='allReview'">내 리뷰보기</button>
+									<br/><button type="button" onclick="location.href='allReview'" class="btn btn-secondary">내 리뷰보기</button>
 								</c:if>
 							
 							</c:if>
 							<c:if test="${o.orderList_status eq 'payOK'}">
-								<c:out value="결제완료"/>
+								<c:out value="결제완료"/><br/>
+								<button type="button"  onclick="orderCheck(this.value)" value="${o.orderList_idx}" class="btn btn-secondary">주문 취소</button>
 							</c:if>
 							<c:if test="${o.orderList_status eq 'cxl'}">
 								<c:out value="주문취소"/>

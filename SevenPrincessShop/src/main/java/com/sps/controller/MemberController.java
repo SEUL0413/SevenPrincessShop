@@ -77,7 +77,7 @@ SqlSession memberSqlSession;
 			return "shop/index";
 		}
 		else {
-			return "member/myPage";
+			return "redirect:myOrderView";
 		}
 	}
 	
@@ -148,18 +148,21 @@ SqlSession memberSqlSession;
 			
 			//4-5.나머지 정보(이름+주소) 세팅
 			vo.setClient_name(request.getParameter("client_name"));
+			//기본주소
 			vo.setClient_address(request.getParameter("client_address"));
-		
+			//상세주소
+			vo.setClient_detailAddress(request.getParameter("client_detailAddress"));
+			//우편번호
+			vo.setClient_addressNumber(request.getParameter("client_addressNumber"));
+			
 			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
 			mapper.updateMember(vo);
-			
-			System.out.println(vo);
 			
 			//업데이트 되는 vo의 정보를 session에 재저장
 			session.setAttribute("nowUser", vo);
 			
 			System.out.println("******************updateMember 메서드 끝!!*****************");
-			return "member/myPage";
+			return "redirect:myPage";
 		}
 		
 		//회원 삭제 화면 
@@ -207,9 +210,13 @@ SqlSession memberSqlSession;
 			
 			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
 			mapper.deleteMember(client_id);
+			
+			//세션에 저장된 nowUser 삭제!
+			session.removeAttribute("nowUser");
+		
 			System.out.println("******************deleteMember 메서드 끝!!*****************");
 			
-			return "member/myPage"; //로그아웃 상태로 전환하기!!!
+			return "shop/index"; 
 		}
 		
 	
@@ -346,7 +353,11 @@ SqlSession memberSqlSession;
 				//리뷰 체크 : 리턴값이 0이면 미작성 / 리턴값이 1이면 작성완료
 				counts.add(mapper.reviewCheck(listO.get(i).getOrderList_idx()));
 				System.out.println(listO.get(i).getOrderList_idx() + " , "+mapper.reviewCheck(listO.get(i).getOrderList_idx()));
+				//System.out.println(listO.get(i).getOrderList_orderDate().split(" ")[0]);
+				
+				listO.get(i).setOrderList_orderDate(listO.get(i).getOrderList_orderDate().split(" ")[0]);
 			}
+			
 			
 			model.addAttribute("listO",listO);
 			model.addAttribute("listP",listP);
@@ -362,8 +373,10 @@ SqlSession memberSqlSession;
 			
 			System.out.println("******************orderContentView 메서드 실행*****************");
 			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+			 
+			//상세 view 출력할 orderList_idx
+			int idx = Integer.parseInt(request.getParameter("idx"));
 			
-			int idx = Integer.parseInt(request.getParameter("idx")); //상세 view 출력할 orderList_idx
 			//상세 출력할 정보를 담은 OrderListVO 받아오기
 			OrderListVO orderVO = mapper.selectOrderVO(idx); 
 			ProductVO productVO = mapper.cartListP(orderVO.getOrderList_product_idx());
@@ -406,12 +419,14 @@ SqlSession memberSqlSession;
 			ClientVO vo = (ClientVO) session.getAttribute("nowUser");
 			//현재 유저 idx
 			int client_idx = vo.getClient_idx();
-			
+			System.out.println("client_idx : "+ client_idx);
 			int pageSize = 10;									// 보여줄 글의 개수
 			int totalCount = mapper.countQboard(client_idx); 	// totalCount는 보여줄 글의 총 수량을 알려주자!!
+			
 			int currentPage = 1;								// 얘는 view 에서 넘어오는 현재페이지 정보를 주지스님!!!
 			try {
 				currentPage = Integer.parseInt(request.getParameter("currentPage")); //그게 이거야!!!
+				System.out.println("qnaBoard method currentPage : " + currentPage);
 			} 
 			catch (NumberFormatException e) { }
 			
@@ -582,6 +597,7 @@ SqlSession memberSqlSession;
 			 */
 			
 			String extension = FilenameUtils.getExtension(mf.getOriginalFilename());
+			
 			String fileName = "review_"+orderIdx+"."+extension; //저장 이름 지정
 			
 			System.out.println(fileName);
@@ -614,7 +630,7 @@ SqlSession memberSqlSession;
 	        
 			System.out.println("******************insertR 메서드 끝*****************");
 			
-			return "redirect:review";
+			return "redirect:allReview";
 		}
 		
 		//리뷰 관리 : 이미 작성한 리뷰 창

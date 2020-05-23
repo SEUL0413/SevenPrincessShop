@@ -24,7 +24,9 @@
 		  	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			    <ul class="nav navbar-nav ml-auto">
 				    <li class="nav-item">
-				    	<button type="button" id="sidebarCollapse" class="btn btn-primary" onclick="location.href='myPage'">마이페이지</button>
+				    	<div style="margin-right: 10px">
+				    		<button type="button" id="sidebarCollapse" class="btn btn-myPage" onclick="location.href='myPage'">MY</button>
+				    	</div>
 				    </li>
 			    	<li class="nav-item">
 			    		<c:if test="${empty sessionScope.nowUser}">

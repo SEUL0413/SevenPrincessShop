@@ -44,7 +44,7 @@
 
 <style type="text/css">
 	th{
-		background-color: #F8ECE0;
+		background-color: #F3E8E8;
 	}
 </style>
 </head>
@@ -66,8 +66,8 @@
 		 <tr>
 		 	<!-- 게시글 개수 -->
 		 	<td colspan="6" style="text-align:left">
-		 		<strong style="font-size: 19px">오늘 등록된 새글 <b style="color:orange">${count}</b> 건 
-		 		(총 <b style="color:orange">${totalCount}</b> 건)</strong>
+		 		<strong style="font-size: 19px">오늘 등록된 새글 <b style="color:#c095a4">${count}</b> 건 
+		 		(총 <b style="color:#c095a4">${totalCount}</b> 건)</strong>
 		 	</td>
 		 	<td>
 		 		<button type="button" class="btn btn-default" onclick="selectOrder(this.value)" value="2">삭제</button>
@@ -127,20 +127,26 @@
                <tr id="show${vo.qboard_idx}" style="display: none;">
                   <td colspan="7">
                      <!-- 상세 내용 부분 -->
-                     <div>
-                        <p>${vo.qboard_content}</p>
-                     </div> 
-                     <div> <!-- 답변 부분 시작-->
-                     
+                    <div style="height:100px">
+		                 <b>${vo.qboard_content}</b>
+		             </div> 
+		              
+		              <!-- 답변 부분 시작-->
+                     <div> 
                         <!-- 가져온 답변 리스트-->
                         <c:forEach var="vo2" items="${list2}" varStatus="status">
                            <c:if test="${vo.qboard_idx == vo2.aboard_qboard_idx}">
-                              <h4>${vo2.aboard_title}</h4>
-                              <span>${vo2.aboard_date}</span>
-                              <P>${vo2.aboard_content}</P>
+                               <div style="background-color:#F2F2F2;margin-top: 60px;height:200px;text-align: center">
+		                     		<div style="margin-bottom: 40px">
+			                     		<span class="bg">답변</span>
+			                     		<b style="font-size: 18px">▶ 관리자</b><span>(${vo2.aboard_date})</span>
+                  					 </div>
+		                         	<div><b>${vo2.aboard_content}</b></div>
+		                        </div>
                            </c:if>
                         </c:forEach>
                      </div>
+                     
                   </td>
                </tr>
             </c:forEach>
@@ -150,19 +156,45 @@
   
 
    <!-- 페이지 이동 버튼 -->
-   <div align="center">
-      <c:forEach var="i" begin="${info.startPage}" end="${info.endPage}" step="1">
+  <div align="center">
+		<c:if test="${info.startPage > 1}">
+			<input type="button" class="btn btn-secondary" value="&lt;&lt;" onclick="location.href='?currentPage=1'" title="첫 페이지로 이동합니다."/>
+			<input type="button" class="btn btn-secondary" value="&lt;" 
+					onclick="location.href='qnaBoard?currentPage=${info.startPage - 1}'" 
+					title="이전 10 페이지로 이동합니다."/>
+		</c:if>
+		
+		<c:if test="${info.startPage == 1}">
+			<input type="button" class="btn btn-secondary" value="&lt;&lt;" disabled="disabled" title="이미 첫 페이지 입니다."/>
+			<input type="button" class="btn btn-secondary" value="&lt;" disabled="disabled" title="이전 10 페이지가 없습니다."/>
+		</c:if>
+		
+		<!-- 페이지 이동 -->
+		<c:forEach var="i" begin="${info.startPage}" end="${info.endPage}" step="1">
+		
+			<c:if test="${i == info.currentPage}">
+				<input class="btn btn-secondary" type="button" value="${i}" disabled="disabled"/>
+			</c:if>
+			
+			<c:if test="${i != info.currentPage}">
+				<input class="btn btn-secondary" type="button" value="${i}" onclick="location.href='?currentPage=${i}'" 
+					title="${i}페이지로 이동합니다."/>
+			</c:if>
+		
+		</c:forEach>
+		
+		<!-- 마지막으로, 10페이지 뒤로 -->
+		<c:if test="${info.endPage < info.totalPage}">
+			<input type="button" value="&gt;"  class="btn btn-secondary"
+					onclick="location.href='?currentPage=${info.endPage + 1}'" title="다음 10 페이지로 이동합니다."/>
+			<input type="button" value="&gt;&gt;" class="btn btn-secondary"
+					onclick="location.href='?currentPage=${info.totalPage}'" title="마지막 페이지로 이동합니다."/>
+		</c:if>
 
-         <c:if test="${i == info.currentPage}">
-            <input class="button button2" type="button" value="${i}" disabled="disabled" />
-         </c:if>
-
-         <c:if test="${i != info.currentPage}">
-            <input class="button button1" type="button" value="${i}"
-               onclick="location.href='?currentPage=${i}'" title="${i}페이지로 이동합니다." />
-         </c:if>
-
-      </c:forEach>
-   </div>
+		<c:if test="${info.endPage >= info.totalPage}">
+				<input type="button" value="&gt;" disabled="disabled" class="btn btn-secondary" title="다음 10 페이지가 없습니다."/>
+			<input type="button" value="&gt;&gt;" class="btn btn-secondary444" disabled="disabled" title="이미 마지막 페이지 입니다."/>
+		</c:if>
+	</div><br/><br/>
 </body>
 </html>

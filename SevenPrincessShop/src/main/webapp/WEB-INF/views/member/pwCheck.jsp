@@ -43,20 +43,37 @@
 	<%@ include file="/WEB-INF/views/include/myCategory.jsp"%>
 		
 		<div id="content" class="p-4 p-md-5">
+			<!-- myPage top bar 설정 -->
+			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
 
 			<h2>회원정보 수정</h2><hr/>
 			
 			<form name="infoEdit" action="editChk">
-				
 				<input type="hidden" id="count" name="count" value="${count}"/><br/>
-				<div>
-					<b>보안을 위해 비밀번호를 확인합니다.</b><br/>
-					<b>현재 로그인 비밀번호를 입력해주세요.</b><br/>
-					<input type="password" name="editPW" required/>
-					<button type="submit"  class="btn btn-secondary">확인</button>
-					<button class="btn btn-secondary" onclick="history.back()">취소</button>
-					
-				</div>
+			
+				<table style="text-align: center;margin-left:150px;margin-top:30px; background-color:#F2F2F2;width:450px;height:250px;border-radius: 10px">
+				
+					<tr style="background-color: #676767" height="40px"><td></td></tr>
+					<tr height="120px">
+						<td>
+							<h5>보안을 위해 비밀번호를 확인합니다.</h5>
+							<h5>현재 로그인 비밀번호를 입력해주세요.</h5>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 <div class="col-sm-10" style="margin-left:100px">
+				     			 <input type="password" class="form-control" name="editPW" style="width:200px" placeholder="비밀번호" required>
+				   			 </div>
+						</td>
+					</tr>
+					<tr height="100px">
+						<td>
+							 <button type="submit"  class="btn btn-secondary">확인</button>
+							<button class="btn btn-secondary" onclick="history.back()">취소</button>
+						</td>
+					</tr>
+				</table>
 			</form>
 		</div>
 	</div>

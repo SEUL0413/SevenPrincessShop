@@ -22,6 +22,12 @@
 <!-- 부트스트랩 사용하기 위한 코드 -->
 <%@ include file="/WEB-INF/views/include/css_js_link.html"%>
 
+<style type="text/css">
+
+	
+	
+</style>
+
 <!-- jquery 추가 -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <!-- 외부 스크립트 파일 지정 태그입니다. -->
@@ -40,6 +46,8 @@
 	<%@ include file="/WEB-INF/views/include/myCategory.jsp"%>
 		
 		<div id="content" class="p-4 p-md-5">
+			<!-- myPage top bar 설정 -->
+			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
 		   <h2>1:1 문의</h2><br/>
 		   
 		    <!-- 페이지 번호 사용하기 위해 qboardList 세팅 --> 
@@ -52,9 +60,9 @@
 		   	<c:set var="answer" value="${answer}" />
 		
 		   <div class="container hiDiv">
-		      <table class="table table-hover" style="text-align: center" width="1000" align="center" cellpadding="5" cellspacing="0">
+		      <table class="table table-hover" style="text-align: center">
 		         
-		         <tr>
+		         <tr style="background-color: #FBF2EF">
 		            <th width="80" align="center">번호</th>
 		            <th width="80" align="center">분류</th>
 		            <th width="600" align="center">제목</th>
@@ -72,12 +80,17 @@
 		
 		         <!-- 테이블에 글이 있으면 화면에 출력할 글의 개수 만큼 반복하며 글을 출력한다. -->
 		         <c:if test="${list.size() != 0}">
-		
+		         
+					<!-- 번호 매길 변수 선언  -->
+					<c:set var="boardIdx" value="${(info.currentPage-1)*10-1}"/>
+					
 		            <!-- 컴퓨터 시스템의 현재 날짜와 시간을 기억하는 Date 클래스 객체를 만든다. -->
 		            <jsp:useBean id="date" class="java.util.Date" />
 		            <c:forEach var="vo" items="${list}" varStatus="status">
+						<c:set var="boardIdx" value="${boardIdx+1}"/>
+		            	
 		               <tr onclick="selectQ(this)" id="${vo.qboard_idx}">
-		                  <td>${vo.qboard_idx}</td>
+		                  <td>${info.totalCount-boardIdx}</td>
 		                  <td>${vo.qboard_type}</td>
 		                  <td>${vo.qboard_title}</td>
 		                  <td>${vo.qboard_date}</td>
@@ -88,19 +101,23 @@
 		               <tr id="show${vo.qboard_idx}" style="display: none;">
 		                  <td colspan="5">
 		                     <!-- 상세 내용 부분 -->
-		                     <div>
-		                        <p>${vo.qboard_content}</p>
-		                     </div> <!-- 답변 부분 -->
-		                     <div>
-		                        <!-- 가져온 답변 리스트-->
-		                        <c:forEach var="vo2" items="${list2}" varStatus="status">
-		                           <c:if test="${vo.qboard_idx == vo2.aboard_qboard_idx}">
-		                              <h4>${vo2.aboard_title}</h4>
-		                              <span>${vo2.aboard_date}</span>
-		                              <P>${vo2.aboard_content}</P>
-		                           </c:if>
-		                        </c:forEach>
-		                     </div>
+		                     <div style="height:100px">
+		                        <b>${vo.qboard_content}</b>
+		                     </div> 
+		                     
+		                     <!-- 답변 부분 -->
+			                        <!-- 가져온 답변 리스트-->
+			                        <c:forEach var="vo2" items="${list2}" varStatus="status">
+			                           <c:if test="${vo.qboard_idx == vo2.aboard_qboard_idx}">
+		                    			 <div style="background-color:#F2F2F2;margin-top: 60px;height:200px;text-align: center">
+					                     	<div style="margin-bottom: 40px">
+						                     	<span class="bg">답변</span>
+						                     	<b style="font-size: 18px">▶ 관리자</b><span>(${vo2.aboard_date})</span>
+		                   					 </div>
+					                             <div><b>${vo2.aboard_content}</b></div>
+					                        </div>
+			                           </c:if>
+			                        </c:forEach>
 		                  </td>
 		               </tr>
 		            </c:forEach>
@@ -109,31 +126,57 @@
 		         <!-- 글쓰기 페이지로 이동하는 버튼 -->
 		         <tr>
 		         	<td colspan="5" align="right">
-					   	<button id="hiBtn" class="btn btn-success" type="button" onclick="location.href='qnaInsert'">글쓰기</button>
+					   	<button id="hiBtn" class="btn btn-secondary" type="button" onclick="location.href='qnaInsert'">글쓰기</button>
 		         	</td>
 		         </tr>
 		         
 		      </table>
 		   </div>
 		   
-		
-		
 		   <!-- 페이지 이동 버튼 -->
+		   
+		   <!-- 처음으로, 10페이지 앞으로 -->
 		   <div align="center">
-		      <c:forEach var="i" begin="${info.startPage}" end="${info.endPage}" step="1">
-		
-		         <c:if test="${i == info.currentPage}">
-		            <input class="button button2" type="button" value="${i}" disabled="disabled" />
-		         </c:if>
-		
-		         <c:if test="${i != info.currentPage}">
-		            <input class="button button1" type="button" value="${i}"
-		               onclick="location.href='?currentPage=${i}'" title="${i}페이지로 이동합니다." />
-		         </c:if>
-		
-		      </c:forEach>
-		   </div>
-		  </div>
+					<c:if test="${info.startPage > 1}">
+						<input type="button" class="btn btn-secondary" value="&lt;&lt;" onclick="location.href='?currentPage=1'" title="첫 페이지로 이동합니다."/>
+						<input type="button" class="btn btn-secondary" value="&lt;" 
+								onclick="location.href='qnaBoard?currentPage=${info.startPage - 1}'" 
+								title="이전 10 페이지로 이동합니다."/>
+					</c:if>
+					
+					<c:if test="${info.startPage == 1}">
+						<input type="button" class="btn btn-secondary" value="&lt;&lt;" disabled="disabled" title="이미 첫 페이지 입니다."/>
+						<input type="button" class="btn btn-secondary" value="&lt;" disabled="disabled" title="이전 10 페이지가 없습니다."/>
+					</c:if>
+					
+					<!-- 페이지 이동 -->
+					<c:forEach var="i" begin="${info.startPage}" end="${info.endPage}" step="1">
+					
+						<c:if test="${i == info.currentPage}">
+							<input class="btn btn-secondary" type="button" value="${i}" disabled="disabled"/>
+						</c:if>
+						
+						<c:if test="${i != info.currentPage}">
+							<input class="btn btn-secondary" type="button" value="${i}" onclick="location.href='?currentPage=${i}'" 
+								title="${i}페이지로 이동합니다."/>
+						</c:if>
+					
+					</c:forEach>
+					
+					<!-- 마지막으로, 10페이지 뒤로 -->
+					<c:if test="${info.endPage < info.totalPage}">
+						<input type="button" value="&gt;"  class="btn btn-secondary"
+								onclick="location.href='?currentPage=${info.endPage + 1}'" title="다음 10 페이지로 이동합니다."/>
+						<input type="button" value="&gt;&gt;" class="btn btn-secondary"
+								onclick="location.href='?currentPage=${info.totalPage}'" title="마지막 페이지로 이동합니다."/>
+					</c:if>
+			
+					<c:if test="${info.endPage >= info.totalPage}">
+							<input type="button" value="&gt;" disabled="disabled" class="btn btn-secondary" title="다음 10 페이지가 없습니다."/>
+						<input type="button" value="&gt;&gt;" class="btn btn-secondary444" disabled="disabled" title="이미 마지막 페이지 입니다."/>
+					</c:if>
+				</div>
+		 	</div>
 		 </div>
 		 
 		 <!-- footer 설정 -->

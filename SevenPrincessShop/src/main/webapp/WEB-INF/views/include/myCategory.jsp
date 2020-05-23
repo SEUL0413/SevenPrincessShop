@@ -12,13 +12,16 @@
 			<nav id="sidebar">
 				<div class="p-4 pt-5">
 		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(${pageContext.request.contextPath}/resources/myPage/images/sample.png);"></a>
-	            <div align="center"><b style="color:white;font-size:1.5em">${nowUser.client_name} 님</b></div><br/><br/>
+	            <div align="center">
+	            	<b style="color:white;font-size:1.5em">${nowUser.client_name} 님</b>&nbsp;&nbsp;
+	            	<input type="button" class="btn btn-edit" value="수정" onclick="location.href='pwCheck'">
+	            </div><br/><br/>
 	        
 	         <ul class="list-unstyled components mb-5">
 	          
 	          
 	          <li>
-	              <a href="myOrderView">주문목록/배송조회</a>
+	              <a href="myOrderView">주문목록 조회</a>
 	          </li>
 	          
 	          <li class="active">

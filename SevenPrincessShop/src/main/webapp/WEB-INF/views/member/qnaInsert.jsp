@@ -52,6 +52,8 @@
 	<%@ include file="/WEB-INF/views/include/myCategory.jsp"%>
 		
 		<div id="content" class="p-4 p-md-5">
+			<!-- myPage top bar 설정 -->
+			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
 			<h2 style="margin-bottom: 30px;">1:1 문의</h2><hr/>
 			
 			<div style="width:60%">
@@ -73,9 +75,9 @@
 			          </div>
 			          <div class="form-group">
 			            <label for="exampleFormControlTextarea1">내용</label>
-			            <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="10" required></textarea>
+			            <textarea class="form-control"  maxlength="300" id="exampleFormControlTextarea1" name="content" rows="10" required></textarea>
 			          </div>
-			        <input type="submit" class="btn btn-info" value="등록하기">
+			        <input type="submit" class="btn btn-secondary" value="등록하기">
 			        <button type="button" class="btn btn-secondary" onclick="history.back()">목록으로</button>
 			    </form>
 		    </div>
