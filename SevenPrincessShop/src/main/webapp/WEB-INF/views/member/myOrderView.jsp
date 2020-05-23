@@ -47,8 +47,8 @@
 			<c:set var="counts" value="${counts}"/>  <!-- 리뷰가 작성된 글인지 판단할 데이터(count) 리스트 -->
 			
 			<form>
-				<c:forEach var = "list1" items="${list1}" varStatus="status">
-					<table width="1000" border="2" bordercolor="#D8D8D8" style="text-align: center">
+				<c:forEach var = "list1" items="${list1}" varStatus="status"> 
+					<table align="center" style="width:80%;border:2; bordercolor:#D8D8D8;text-align: center">
 							<tr style="background-color: #F2F2F2;height:50px">
 								<!-- 1.주문일 -->
 								<th colspan="2" style="text-align: left">

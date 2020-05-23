@@ -66,6 +66,8 @@ public class ShopController {
       			System.out.println("Running For roof ("+i+") : " + optionList.get(i));
       			if(getStock.equals("0")) {
       				jsonArray.add(optionList.get(i) + "[품절]");
+      			}else if(Integer.parseInt(getStock) < 5) {
+      				jsonArray.add(optionList.get(i) + " (재고 : " + getStock + ")");
       			}
       			else {
       				jsonArray.add(optionList.get(i));
@@ -120,7 +122,7 @@ public String productInfo(HttpSession session,HttpServletRequest request, Model 
 	reviewList.initReviewList2(pageSize, totalCount, currentPage);
 	System.out.println(reviewList.getStartNo());
 	reviewList.setReviewList(mapper.selectList(Integer.parseInt(product_idx), reviewList.getStartNo()));
-	
+	System.out.println(reviewList.getReviewList().get(0).getReview_imgPath());
 
 	model.addAttribute("reviewList", reviewList);
 	model.addAttribute("currentPage", currentPage);
@@ -167,40 +169,10 @@ public String insertCart(HttpServletRequest request, Model model) {
    
    if (confirmFlag) {
    
-      return "member/cartView";
+      return "redirect:cartView";
    }
    
-   return "shop/productInfo?product_idx="+orderList_product_idx;
-}
-
-// 유정 바로 결제 
-@RequestMapping(value = "/dPayInsert", method = RequestMethod.GET)
-public String dPayInsert(HttpServletRequest request, Model model) {
-   System.out.println("컨트롤러의 insertCart() 메소드 실행");
-   
-   spsDAO mapper = shopSqlSession.getMapper(spsDAO.class);
-   String orderList_client_idx = request.getParameter("orderList_client_idx");
-   String orderList_product_idx = request.getParameter("orderList_product_idx");
-   String selectCode = request.getParameter("selectCode");
-   System.out.println(selectCode);
-   Date date = new Date();
-   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-   String orderList_orderDate = sdf.format(date);
-   
-   String[] options = selectCode.split("/");
-   String[] option = null;
-   
-   for (int i = 0; i < options.length; i++) {
-      option = options[i].split("_");
-      String orderList_size = option[0];
-      String orderList_color = option[1];
-      String orderList_stock = option[2];
-      
-      
-      System.out.println(orderList_client_idx + orderList_product_idx + orderList_size + orderList_color + orderList_stock + orderList_orderDate);
-      mapper.insertdPay(orderList_client_idx, orderList_product_idx, orderList_size, orderList_color, orderList_stock, orderList_orderDate);
-   }
-   return "redirect: dPay";
+   return "redirect:productInfo?product_idx="+orderList_product_idx;
 }
 
 

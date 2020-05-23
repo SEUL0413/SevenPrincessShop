@@ -32,7 +32,7 @@
 	                    		<h6>Shin Dong Ho</h6>
 	                    		<h6>Choi Ga Seul</h6>
 	                    		<h6>Jeon Ye Som</h6>
-	                    		<h6>Choi Yoo Jung</h6>
+	                    		<h6>Choi You Jung</h6>
 	                    	</p>
 	                    </div>
 		        		<div class="col-md-4 col-lg-4 offset-lg-1 footer-contact wow fadeInDown">

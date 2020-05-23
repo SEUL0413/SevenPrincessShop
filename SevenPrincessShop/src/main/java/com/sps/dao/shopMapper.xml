@@ -50,13 +50,7 @@
    (#{param1}, #{param2}, 'cart', #{param3}, #{param4}, #{param5}, #{param6});
 </insert>
 
-<!-- 유정 바로결제 담기 -->
-<insert id="insertdPay" parameterType="String">
-   INSERT INTO ORDERLIST
-   (orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock, orderList_orderDate)
-   VALUES
-   (#{param1}, #{param2}, 'dPay', #{param3}, #{param4}, #{param5}, #{param6});
-</insert>
+
 
 <!-- 유정 테이블에 저장된 전체 글의 개수를 얻어온다. -->
 <select id="selectCount" resultType="int">

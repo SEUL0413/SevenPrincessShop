@@ -40,7 +40,7 @@
 	<!-- 장바구니 출력 : OrderListVO  -->
 	<select id="cartListO" parameterType="int" resultType="com.sps.vo.OrderListVO">
 		<!-- SELECT orderList_product_idx,orderList_size,orderList_color,orderList_stock FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1}; -->
-		SELECT * FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1};
+		SELECT * FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1} order by orderlist_idx desc;
 	</select>
 	
 	<!-- 장바구니 출력 : ProductVO -->

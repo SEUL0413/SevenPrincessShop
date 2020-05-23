@@ -38,7 +38,7 @@
 			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
 			<h2>장바구니</h2><hr/><br/>
 			<form>
-				<table width="900" cellpadding="5" cellspacing="0" align="center">
+				<table style="width:80%; cellpadding:5; cellspacing:0;" align="center">
 					<tr height="50px" style="background-color: #F2F2F2">
 						<th width="80" align="center"><input type="checkbox" name="all" id="all" onclick="allChk(this.checked)"></th> <!-- 클릭시 전체 선택 -->
 						<th width="300" align="center"></th> <!-- 상품 이미지 --> 

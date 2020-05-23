@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/myPage/css/style.css">
 <%@ include file="/WEB-INF/views/include/css_js_link.html"%>
 
+
+
+
 <!-- jstl 태그 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>

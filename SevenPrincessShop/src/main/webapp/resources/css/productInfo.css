@@ -1,0 +1,210 @@
+@charset "UTF-8";
+
+/* 콘텐츠 */
+#contents{
+   margin: 50px auto;
+   text-align: center;
+   max-width: 80%;
+   
+}
+
+/* 옵션 선택하는 메인 콘텐츠 */
+#mainContents{
+   overflow:hidden;
+      padding: 15px; 
+      max-width: 100%;
+      margin: 30px auto;
+      height:auto;
+}
+
+/* 모든 div */
+#contents div{
+     display: block;
+}
+
+/* 메인컨텐츠 이미지 태그를 감싸는 div와, 옵션 선택하는 div */
+.imgDiv, .explainDiv{
+   float: left;
+}
+
+/* 옵션 선택하는 div */
+.explainDiv{
+   text-align: left ;
+   width: 45%;
+   height: auto; 
+   margin-left: 5%;
+}
+
+#optionTable{
+   width: 100%;
+   margin-bottom: 20px
+}
+
+.nameDiv{
+   font-size: 1.3em;
+   font-weight: bolder;
+}
+
+#contents th{
+   text-align: left;
+   width: 30%;
+   height: 35px;
+}
+
+.selOption{
+   border:1px solid #d4c8cc; 
+   padding: 15px;
+   height: 40px;
+
+}
+
+#orderOption{
+   width: 70%;
+}
+
+.optionTabletd1{
+    padding-left: 10px;
+    width: 50%
+   
+}
+
+.optionTabletd2{
+   text-align: right;
+}
+
+.optionTabletd3{
+   width: 10%;
+}
+.optionTabletd3 a{
+   font-size:1.2em !important;
+   padding:6px;
+}
+
+#totalPrice{
+   padding: 10px;
+   width :70%;
+   border:1px solid #d4c8cc;
+   border-radius: 10px; 
+   margin: 7px 0px;
+}
+
+#total{
+   padding-right: 5px;
+   float: right !important;
+   font-weight: bold;
+}
+
+#contents img{
+   max-width: 100%; 
+   height: auto;
+   border-radius: 10px;
+}
+
+/* 메인이미지 */
+#mainContents .imgDiv{
+   max-width: 45%; 
+   float: left;
+   height:auto;
+   
+}
+
+/* 모든 버튼을 감싼 div */
+.btnDiv{
+   width: 70%;
+   margin: 0px;
+}
+
+.btnDiv button{
+   margin: 10px;
+   text-align: center;
+}
+
+#payBtn{
+   float: right;
+   margin-right: 50px;
+}
+
+#cartBtn{
+   margin-left: 50px;
+}
+
+.SHOPPINGGUIDE{
+   text-align: left;
+}
+
+
+/* 네비 바 */
+
+#contents>ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+#contents li {
+   display: inline-block;
+   margin: 0px 10px;
+   padding: 10px 50px 7px;
+   border-top: 2px solid rgb(255, 255, 255);
+   float: unset;
+   width: unset;
+   box-sizing: unset;
+   background: unset;
+   border-right: unset;}
+   
+   
+#contents a{
+   font-size: 11px;
+    line-height: 11px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+
+.infoTitle{
+   font-weight: 900;
+}
+
+/* 리뷰 */
+#reviewTable{
+   width: 80%;
+   margin: 0 auto;
+   
+}
+.firstTable{
+   color: fff;
+   background-color: #f3e8e8;
+   border-radius: 10px;
+}
+#reviewTable tr{
+   margin: 5px;
+   border-bottom: 1px solid #d4c8cc;
+} 
+
+
+
+#pagingBtn{
+   margin: 10px
+}
+
+.imgTag{
+   height: 250px!important;
+   width: auto!important;
+   margin: 4px;
+}
+
+
+
+
+
+
+
+
+
+

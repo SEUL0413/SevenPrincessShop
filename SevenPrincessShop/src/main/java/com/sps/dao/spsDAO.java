@@ -179,9 +179,6 @@ public interface spsDAO {
 //  유정 카트에 정보 담기
    void insertCart(String orderList_client_idx, String orderList_product_idx, String orderList_size,
          String orderList_color, String orderList_stock, String orderList_orderDate);
-//  유정 바로결제에 정보 담기
-   void insertdPay(String orderList_client_idx, String orderList_product_idx, String orderList_size,
-         String orderList_color, String orderList_stock, String orderList_orderDate);
 
 //   찬호 옵션 찾기
    ArrayList<String> findOption(String product_idx, String size);
