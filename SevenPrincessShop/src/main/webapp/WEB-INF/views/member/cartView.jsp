@@ -66,7 +66,12 @@
 					<c:if test="${list1.size() !=0}">
 						<c:forEach var = "o" items="${list1}" varStatus="status">
 							<!-- 건별 결제금액 세팅 -->
-							<c:set var="amount" value="${o.orderList_stock*p.get(status.index).product_price}"/>
+							<c:if test ="${p.get(status.index).product_stock eq 0}">
+									<c:set var="amount" value="0"/>	
+							</c:if>
+							<c:if test ="${p.get(status.index).product_stock!=0}">
+								<c:set var="amount" value="${o.orderList_stock*p.get(status.index).product_price}"/>
+							</c:if>
 							
 							<tr height="220px">
 								<!-- 1.항목 체크박스 -->
@@ -112,8 +117,17 @@
 											</select>
 										</div>
 										<div class="form-group col-xs-3">
-											<!-- c:forEach의 varStatus 속성 이용 => 버튼의 value 값을 해당 턴의 idx로 세팅  -->
-											<button type="button" class="btn btn-secondary" onclick="stockChange(this.value)" value="${status.current.orderList_idx}">적용</button>
+											<!-- 품절인 상품은 수량 변경 버튼 disabled 설정  -->
+											<c:if test ="${p.get(status.index).product_stock eq 0}">
+												<button type="button" class="btn btn-secondary" onclick="stockChange(this.value)" value="${status.current.orderList_idx}" disabled>적용</button>
+											</c:if>
+											
+											<c:if test ="${p.get(status.index).product_stock!=0}">
+												<!-- c:forEach의 varStatus 속성 이용 => 버튼의 value 값을 해당 턴의 idx로 세팅  -->
+												<button type="button" class="btn btn-secondary" onclick="stockChange(this.value)" value="${status.current.orderList_idx}">적용</button>
+											</c:if>
+											
+											
 										</div>
 									</div>
 								</td>
@@ -127,6 +141,7 @@
 								</td>
 							</tr>
 							<!-- 총 결제 금액 계산 : sum 변수에 상품 가격을 반복해서 합산한다. -->
+							
 							<c:set var = "sum" value="${sum+amount}"/>
 						</c:forEach>
 					</c:if>

@@ -31,14 +31,11 @@ import com.sps.vo.ReviewVO;
 @Controller
 public class MemberController {
 	
-@Autowired
-SqlSession memberSqlSession;
+	@Autowired
+	SqlSession memberSqlSession;
 	
-
-  	//파입 업로드 경로 지정
-	@Resource(name="uploadPath")
-	private String uploadPath;
-
+	//리쀼 이미지 파일 업로드용 count : 전역 변수 선언
+	int imgCount =0;
 	
 	@RequestMapping(value="/login")
 	public String login(HttpServletRequest request, Model model) {
@@ -590,20 +587,16 @@ SqlSession memberSqlSession;
 			
 			
 			//7. 저장 파일 이름 
-			/*
-			 * 찬호오빠는
-			 * servlet-context.xml 에서 <!--파입 업로드 폴더 경로--> 중 value 값을 오빠 경로로 바꿔주기 !
-			 => 폴더명 바로 앞 경로까지 넣어주면 되어용~
-			 */
+			String root_path = request.getSession().getServletContext().getRealPath("/");
+			String attach_path = "resources/images/reviewImages/";
+			System.out.println(root_path);
 			
+			//저장 이름 지정
 			String extension = FilenameUtils.getExtension(mf.getOriginalFilename());
-			
-			String fileName = "review_"+orderIdx+"."+extension; //저장 이름 지정
-			
-			System.out.println(fileName);
-			//uploadPath : 파일 이름 앞 경로(controller 맨 상단에 선언되어있음)
-	        String safeFile = uploadPath + fileName; 
-	        System.out.println(safeFile);
+			String fileName = "review_"+orderIdx+"."+extension; 
+	        
+			//파일 이미지 경로
+			String safeFile = root_path+attach_path+fileName; 
 	        
 	        try {
 	        	//transferTO() : 업로드 한 파일 데이터를 지정한 파일에 저장한다
@@ -628,7 +621,8 @@ SqlSession memberSqlSession;
 	        //리뷰글 insert 
 	        mapper.insertReview(reviewVO);
 	        
-			System.out.println("******************insertR 메서드 끝*****************");
+
+	        System.out.println("******************insertR 메서드 끝*****************");
 			
 			return "redirect:allReview";
 		}
@@ -653,7 +647,6 @@ SqlSession memberSqlSession;
 			
 			model.addAttribute("reviews",reviews);
 			model.addAttribute("products",products);
-			
 			System.out.println("******************allReview 메서드 끝*****************");
 			
 			return "member/allReview";

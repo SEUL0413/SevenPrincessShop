@@ -3,8 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+
 
 <!-- css 위한 추가 코드 -->
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +22,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!-- jquery 추가 -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js">
+</script>
+
 
 <style type="text/css">
 
@@ -32,7 +37,7 @@
 
 </head>
 <body>
-
+	<input id="re" name="re" type="hidden" value="0"/>
 	<!-- header / nav 설정 -->
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/nav.jsp"%>
