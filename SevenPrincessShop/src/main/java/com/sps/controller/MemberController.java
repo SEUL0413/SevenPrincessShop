@@ -2,24 +2,32 @@ package com.sps.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.sps.dao.spsDAO;
+import com.sps.mail.FindUtil;
+import com.sps.mail.MailUtil;
 import com.sps.vo.AboardVO;
 import com.sps.vo.ClientVO;
 import com.sps.vo.OrderListVO;
@@ -28,9 +36,13 @@ import com.sps.vo.Qboard;
 import com.sps.vo.QboardList;
 import com.sps.vo.ReviewVO;
 
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+
 @Controller
 public class MemberController {
-	
+	int a = 1;		// 문자 1회발송용 변수 a
+	int code = 0;	// 인증번호 코드 추후 랜덤값 생성
 	@Autowired
 	SqlSession memberSqlSession;
 	
@@ -44,25 +56,291 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value="/loginCheck")
-	public String loginCheck(HttpSession session,HttpServletRequest request, Model model) {
+	@RequestMapping(value="/searchId")
+	@ResponseBody
+public String searchId(HttpServletRequest request, Model model, String target) {
 		
-		System.out.println(request.getParameter("client_id"));
-		
-		String client_id = request.getParameter("client_id");
-		String client_pw = request.getParameter("client_pw");
-		
-		System.out.println(client_id+client_pw);
-		System.out.println(memberSqlSession);
 		spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
 		
-		ClientVO user = mapper.selectById(client_id);
+		String result = "";
 		
-		session.setAttribute("nowUser", user);
+		int isMember = mapper.isMember(target);
 		
+		if(isMember==0) {
+			result = "pass";
+		}
+		else {
+			result = "overlap";
+		}
 		
-	return "shop/index";
+		return result;
 	}
+	
+	
+	
+//	로그인 시작
+	@RequestMapping(value="/goLogin")
+	@ResponseBody
+	public Object loginCheck(HttpSession session,HttpServletRequest request,HttpServletResponse res ,Model model,String id,String password) {
+
+		try {
+			res.setCharacterEncoding("UTF-8");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+		System.out.println("loginCheck Method SqlSession open");
+		
+		int isMember = mapper.isMember(id);
+		System.out.println("isMember? : " + isMember);
+		
+		
+		
+		String result="";
+		ClientVO member;
+		if(isMember == 0) {
+			 result = "notMember";
+			 System.out.println("server - not found Member");
+		}
+		
+		
+		else if(isMember!=0) {
+			member = mapper.selectById(id);
+			System.out.println("server - create member");
+			
+			if(!password.equals(member.getClient_password())) {
+				result = "discord";
+				System.out.println("server - not Inconsistency password");
+			}
+			else {
+				member = mapper.selectById(id);
+				result = "success/"+member.getClient_name();
+				System.out.println("success Login User name : "+member.getClient_name());
+				session.setAttribute("nowUser", member);
+				System.out.println("setSession : " + member);
+			}
+		}
+		
+		
+		  System.out.println("loginCheck Method Finish");
+	      return result;
+	      
+	}// 로그인 끝
+	
+	@RequestMapping(value="/goJoinMember")
+	public String joinMember(HttpSession session, HttpServletRequest request, Model model) {
+//		오늘 날자 구하기
+		Date dt = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+//		오늘의 날자정보 입력 - Attribute
+		model.addAttribute("today", sdf.format(dt));
+		
+			return "member/register";
+		
+	}
+	
+	//joinSendCode
+	@RequestMapping(value="/joinSendCode")
+	@ResponseBody
+	public String joinSendCode(HttpSession session, HttpServletRequest request,HttpServletResponse res, Model model, String phoneNumber) {
+		
+		if(a==1) {
+			
+			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+			
+			int count = mapper.isMemberByPhoneNumber(phoneNumber);
+			
+			if(count!=0){
+				System.out.println("이미 가입된 번호");
+				return "overlap";
+			}
+			
+			System.out.println("sendMessage");
+			code = (int)Math.floor(Math.random()*1000000+1);
+			
+			model.addAttribute("code",code);
+			
+			a=2;
+			
+		
+	  	String api_key = "NCSPDUHGAWCUUPXC";
+	    String api_secret = "KLXUWMMFVE0Y1OYGXVFLAPK4BY0KDH75";
+	    
+	    Message coolsms = new Message(api_key, api_secret);
+
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    
+	    params.put("to", phoneNumber);
+	    params.put("from", "01047598517");
+	    params.put("type", "SMS");
+	    params.put("text", "SevenPrincessShop 본인인증번호는 ["+code+"] 입니다.");
+	    params.put("app_version", "test app 1.2"); 
+
+	    try {
+	      JSONObject obj = (JSONObject) coolsms.send(params);
+	      System.out.println(obj.toString());
+	    } catch (CoolsmsException e) {
+	      System.out.println(e.getMessage());	//실패하면 콘솔 알려주삼
+	      System.out.println(e.getCode());
+	    }
+	    
+		return code+"";
+		}
+		
+//		여기는 a!=1 일때 들어오는 공간임
+		else {
+			System.out.println("noSend");	// 응 안보내
+	         return "noSend/"+code;
+		}
+//	문자 보냈으면 이쪽으로가시오 여기서 ajex 사용하면 이렇게 vo불러들여서 저장해서 다시 jsp에 vo 뿌려주는 작업없이
+//	입력폼 유지할 수 있는데 아직 ajex 미숙함 그래서 사용자가 입력하던 정보 vo로 받아와서 문자전송(서버단) 작업 끝나고
+//	다시 vo 돌려주어서 입력하던거 유지하게끔 하고있음 (서버단 작동하면 입력하던거 날아감) > 추후 ajex로 하자
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(value="/insertMember")
+	public String insertMember(HttpSession session, HttpServletRequest request, Model model, ClientVO memberInfo) {
+//		오늘 날자 구하기
+		Date dt = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		ClientVO member = memberInfo;
+		
+		member.setClient_phoneNumber(member.getClient_phoneNumber()+request.getParameter("phone2")+request.getParameter("phone3"));
+		
+		member.setClient_email(member.getClient_email()+"@"+request.getParameter("email2"));
+		
+		member.setClient_registerDate(sdf.format(dt));
+		System.out.println(member);
+		
+		
+		
+		spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+		
+		mapper.insertMember(member);
+			
+		return "shop/index";
+		
+	}
+	
+	
+	
+	
+	
+
+
+		
+//		findId폼으로 보내주는 맵핑 => 아이디 찾기 폼
+		@RequestMapping(value = "/findIdPw")
+		public String findId(HttpServletRequest request, Model model) throws Exception {
+			return "member/findIdPw";
+		}
+		
+//		findIdResult폼으로 보내주는 맵핑 => 찾은 아이디 확인 폼
+		@RequestMapping(value = "/findIdResult")
+		public String findIdResult(HttpServletRequest request, HttpServletResponse response, Model model, ClientVO vo) throws Exception {
+			response.setContentType("text/html; charset=UTF-8");
+			//응답으로 내보낼 출력 스트림 얻어오기
+			PrintWriter out = response.getWriter();
+			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+			String name = vo.getClient_name();
+			System.out.println(vo.getClient_name());
+			String phoneNumber = vo.getClient_phoneNumber();
+			System.out.println(vo.getClient_email());
+			
+			String id = mapper.findId(name, phoneNumber);
+			System.out.println(id);
+			
+			//아이디 검색 sql 실행 후 검색된 아이디가 없다면 alert창으로 문구 띄워주기
+			if(id == null) {
+				out.println("<script>");
+				out.println("alert('가입된 아이디가 없습니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+			}else {
+				model.addAttribute("id",id);
+			}
+			
+			return "member/findIdResult";
+		}
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 아이디찾기 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+		
+		
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 비밀번호 찾기  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		
+//		이메일 보내기 메소드	
+//		findPw 폼에서 입력한 아이디와 이메일을 가지고 와서 비밀번호가 맞다면 임시비밀번호를 생성해서 가져온 이메일 주소로 임시비밀번호를 보내주고
+//		아이디와 이메일이 하나라도 일치하는게 없다면 alert창을 띄우는 메소드
+		@RequestMapping(value = "/findPwResult")
+		public String findPwResult(HttpServletRequest request, HttpServletResponse response, Model model, ClientVO vo) throws Exception {
+			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			  String id = vo.getClient_id();
+			  String email = vo.getClient_email();
+			  int count = mapper.findPwCount(id,email);
+			  
+			  if(count != 1) {
+				out.println("<script>");
+				out.println("alert('가입된 정보가 없습니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+				
+				return "member/findIdPw";
+				
+			  }else {
+		
+				//FindUtil클래스의 createKey() 메소드를 실행하여 임시비밀번호로 쓸 난수를 만들어 newPw 변수에 저장한다.
+				String newPw = FindUtil.createKey();
+				System.out.println("임시 비밀번호 : " + newPw);
+				
+				//기존 비밀번호에서 위에서 만든 임시 비밀번호로 바꾸어 DB에 저장하는 메소드를 실행한다. 
+				mapper.changePwd(newPw, id);
+				System.out.println("찾는 아이디" + id);
+				System.out.println("찾는 이메일" + email);
+				
+				
+				//이메일에 쓸 내용
+				String subject = "[SevenPrincessShop] 임시 비밀번호 발급 안내"; //이메일 제목
+				String msg = ""; //본문내용
+				msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
+				msg += "<h3 style='color: blue;'><strong>" + vo.getClient_id();
+				msg += "님</strong>의 임시 비밀번호 입니다. 로그인 후 비밀번호를 변경하세요.</h3>";
+				msg += "<p>임시 비밀번호 : <strong>" + newPw + "</strong></p></div>";
+		
+				//MailUtil클래스의 sendMail(보낼 이메일, 제목, 본문) 메소드를 실행한다.
+				MailUtil.sendMail(email, subject, msg);
+				
+			
+				model.addAttribute("email",email);
+			
+				return "member/login"; //로그인 화면 구현되면 로그인창으로 포워드 하기!!
+			  }
+		}	
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 비밀번호 찾기 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -25,7 +25,13 @@
 			    <ul class="nav navbar-nav ml-auto">
 				    <li class="nav-item">
 				    	<div style="margin-right: 10px">
-				    		<button type="button" id="sidebarCollapse" class="btn btn-myPage" onclick="location.href='myPage'">MY</button>
+				    		<c:if test="${empty sessionScope.nowUser}">
+				    			<a class="nav-link" href="goJoinMember">회원가입</a>
+				    		</c:if>
+				    		<c:if test="${not empty sessionScope.nowUser}">
+				    			<!-- <button type="button" id="sidebarCollapse" class="btn btn-myPage" onclick="location.href='myPage'">MY</button> 혜인 원본 -->
+				    			<a class="nav-link" href="myPage">마이페이지</a>
+				    		</c:if>
 				    	</div>
 				    </li>
 			    	<li class="nav-item">

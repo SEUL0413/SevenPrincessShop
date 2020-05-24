@@ -20,8 +20,6 @@ public interface spsDAO {
 
 	int countMember();
 
-	ClientVO selectMember();
-
 	ClientVO selectMember(int count);
 
 
@@ -193,7 +191,16 @@ public interface spsDAO {
    ArrayList<ReviewVO> selectList(int product_idx, int startNo);
 	//====================유졍==========================
 
+   //찬호 로그인=============
+int isMember(String id);
 
+int isMemberByPhoneNumber(String phoneNumber);
+
+String findId(String name, String phoneNumber);
+
+void changePwd(String newPw, String client_id);
+
+int findPwCount(String id, String email);
 
 
 }

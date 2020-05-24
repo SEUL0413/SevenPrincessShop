@@ -20,4 +20,15 @@ public class HomeController {
 		}
 		return "shop/index";
 	}
+	
+	@RequestMapping(value = "/goIndex")
+	public String goIndex(HttpServletRequest request, Model model) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "shop/index";
+	}
+
 }

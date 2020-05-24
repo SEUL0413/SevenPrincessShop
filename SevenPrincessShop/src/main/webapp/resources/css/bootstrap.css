@@ -8974,37 +8974,37 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 
-/* �׺�� ���� �۾�*/
+/* 占쌓븝옙占� 占쏙옙占쏙옙 占쌜억옙*/
 #collapsibleNavbar{
 	width: 30%; 
 	float:none; 
 	margin:0 auto;
 }
 
-/* �׺�� ���� �۾�*/
+/* 占쌓븝옙占� 占쏙옙占쏙옙 占쌜억옙*/
 .centered {
 	margin-left: auto;
 	margin-right: auto;
 }
 
 
-/* ���ι�� ����Ʈ�� ���� */      
+/* 占쏙옙占싸뱄옙占� 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙 */      
 .jumbotron{
 	background-color: #d4c8cc;
 	text-shadow: white 2px 2px 2px;
 	}      
 
   
-/* ��Ӵٿ� ȣ�� ���� */
+/* 占쏙옙鍛牟占� 호占쏙옙 占쏙옙占쏙옙 */
 .dropdown-item:hover{
 	background-color: #f5eaef;
 	font-weight: 900;
 	} 
 	
-/* ���� ��� Ȩ ��ũ */   
+/* 占쏙옙占쏙옙 占쏙옙占� 홈 占쏙옙크 */   
 
 
-/* ��� �ٿ� ��ư  */   
+/* 占쏙옙占� 占쌕울옙 占쏙옙튼  */   
 #menuList > li{
 	padding-left:60px; 
 	padding-right: 60px; 
@@ -9012,18 +9012,18 @@ a.text-dark:hover, a.text-dark:focus {
 	border-left: solid 1px ; 
 	font-size: medium;}
 
-/* ��Ӵٿ� ȣ�� �ڵ� ��ġ��  */
+/* 占쏙옙鍛牟占� 호占쏙옙 占쌘듸옙 占쏙옙치占쏙옙  */
 .dropdown-toggle::after {
     display:none;
 }
 
-/* ��Ӵٿ� ȣ�� �� �ڵ� ��ġ�� */
+/* 占쏙옙鍛牟占� 호占쏙옙 占쏙옙 占쌘듸옙 占쏙옙치占쏙옙 */
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
 }
 
-/* ī�� �����̴� ���� */
+/* 카占쏙옙 占쏙옙占쏙옙占싱댐옙 占쏙옙占쏙옙 */
 .carousel-inner{
   width:80%;
   max-height: 500px !important;
@@ -9032,7 +9032,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 /*
-ī�� �����̴� ���� ����ũ�� �ְ������ �ּ�����
+카占쏙옙 占쏙옙占쏙옙占싱댐옙 占쏙옙占쏙옙 占쏙옙占쏙옙크占쏙옙 占쌍곤옙占쏙옙占쏙옙占� 占쌍쇽옙占쏙옙占쏙옙
 .carousel-inner > .carousel-item > img {
 	height: 300px;
 }
@@ -9064,13 +9064,13 @@ a.text-dark:hover, a.text-dark:focus {
 .navbar { padding: 1; background: #444; backface-visibility: hidden; }
 
 
-/****************************************************************************����*/
-/* ���̺��� th �±� */
+/****************************************************************************占쏙옙占쏙옙*/
+/* 占쏙옙占싱븝옙占쏙옙 th 占승깍옙 */
 .mf .container{
 	width: 70%
 }
 
-/* ���̺��� th �±� */
+/* 占쏙옙占싱븝옙占쏙옙 th 占승깍옙 */
 .fc .form-control{
 	width: 200px;
 	}
@@ -9084,7 +9084,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .ta .container #listNum{ text-align: right; }
 
-/* ���̺��� th �±� */
+/* 占쏙옙占싱븝옙占쏙옙 th 占승깍옙 */
 .tm .container .table th{text-align: center;}
 
 
@@ -9095,14 +9095,14 @@ a.text-dark:hover, a.text-dark:focus {
 .ta .container .table #taCoTaTd {text-align: right;}
 
 
-/* �� ���� */
+/* 占쏙옙 占쏙옙占쏙옙 */
 .gs {
 	width: 80%;
 	
 }
 
 
-/* 마이페이지 버튼 */
+/* 留덉씠�럹�씠吏� 踰꾪듉 */
 .btn-myPage {
   color: #fff;
   background-color: #c6a3af;
@@ -9141,7 +9141,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 
-/*마이페이지 a링크*/
+/*留덉씠�럹�씠吏� a留곹겕*/
 .aLink-myPage:link{
 	text-decoration:none;
 	color:#ad8dae;
@@ -9159,7 +9159,7 @@ a.text-dark:hover, a.text-dark:focus {
 	color:#ad8dae;
 }
 
-/*마이페이지 정보수정 버튼*/
+/*留덉씠�럹�씠吏� �젙蹂댁닔�젙 踰꾪듉*/
 .btn-edit {
   color: #fff;
   background-color: #918086;
@@ -9198,7 +9198,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 
-/*게시판 답변 버튼*/
+/*寃뚯떆�뙋 �떟蹂� 踰꾪듉*/
 .bg{
 		display: inline-block;
    		 margin: 0 10px 0 0;
@@ -9215,7 +9215,71 @@ a.text-dark:hover, a.text-dark:focus {
 
 
 
-/****************************************************************************����*/
+.loginForm{
+  width: 350px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+.loginForm{
+    max-width: 350px;
+  }
+}
+
+@media (min-width: 768px) {
+.loginForm{
+    max-width: 350px;
+  }
+}
+
+@media (min-width: 992px) {
+.loginForm{
+    max-width: 350px;
+  }
+}
+
+@media (min-width: 1200px) {
+.loginForm{
+    max-width: 350px;
+  }
+}
+
+.form-signin img{
+	margin-right: 80px;
+}
+
+#inputId{
+	margin-top: 40px;
+}
+#inputPassword{
+	margin-top: 10px;
+}
+.loginBtn{
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.ch_Btn{
+	color: #fff;
+    background-color: #636060;
+    border-color: #eaeaea;
+}
+.has-danger .form-control-danger {
+    background-image: url(data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9534f' viewBox='-2 -2 7 7'%3E%3Cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3E%3Ccircle r='.5'/%3E%3Ccircle cx='3' r='.5'/%3E%3Ccircle cy='3' r='.5'/%3E%3Ccircle cx='3' cy='3' r='.5'/%3E%3C/svg%3E);
+}
+.has-danger .form-control {
+    border-color: #d9534f;
+}
+.form-control-danger, .form-control-success, .form-control-warning {
+    padding-right: 2.25rem;
+    background-repeat: no-repeat;
+    background-position: center right .5625rem;
+    -webkit-background-size: 1.125rem 1.125rem;
+    background-size: 1.125rem 1.125rem;
+}
+/****************************************************************************占쏙옙占쏙옙*/
 
 
 /*# sourceMappingURL=bootstrap.css.map */
