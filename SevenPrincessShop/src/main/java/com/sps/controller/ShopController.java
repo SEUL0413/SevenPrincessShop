@@ -31,15 +31,85 @@ public class ShopController {
    @Autowired
    SqlSession shopSqlSession;
    
+// 명훈이 추가 05.25/////////////////////////  
+   @RequestMapping(value="/")
+	public String index(HttpServletRequest request, Model model) {
+		System.out.println("@@@@@@@@@@ index() 메소드 실행 @@@@@@@@@@");
+		
+		spsDAO mapper = shopSqlSession.getMapper(spsDAO.class);
+		
+//		bestItem은 stock_status가 payOK된 데이터들 중 hit를 내림차순으로 정렬한 후 페이지에 띄워준다.
+		ArrayList<ProductVO> bestList = mapper.bestListDescByIdx();
+		ArrayList<ProductVO> topList = mapper.topListDescByIdx();
+		ArrayList<ProductVO> bottomList = mapper.bottomListDescByIdx();
+		ArrayList<ProductVO> onePieceList = mapper.onePieceListDescByIdx();
+		ArrayList<ProductVO> outerList = mapper.outerListDescByIdx();
+		ArrayList<ProductVO> acsList = mapper.acsListDescByIdx();
+		
+		/*
+			topList는 8, 7, 6, 5, 4, 3, 2, 1로 가는데 product 테이블의 인덱스 10, 9인
+			bottomList는 10, 9로 된다.
+		*/ 
+		
+		int bestCount = mapper.selectBestCount(); 				// 메인 페이지에 보여줄 베스트 상품 이미지 개수(8개)
+		int topCount = mapper.selectTopCount(); 				// 메인 페이지에 보여줄 상의 카테고리 상품 이미지 개수(8개)
+		int bottomCount = mapper.selectBottomCount(); 			// 메인 페이지에 보여줄 상의 카테고리 상품 이미지 개수(8개)
+		int onePieceCount = mapper.selectOnePieceCount(); 		// 메인 페이지에 보여줄 원피스 카테고리 상품 이미지 개수(8개)
+		int outerCount = mapper.selectOuterCount(); 			// 메인 페이지에 보여줄 아우터 카테고리 상품 이미지 개수(8개)
+		int acsCount = mapper.selectAcsCount(); 				// 메인 페이지에 보여줄 악세사리 카테고리 상품 이미지 개수(8개)
+		
+		model.addAttribute("bestList", bestList);	
+		model.addAttribute("topList", topList);
+		model.addAttribute("bottomList", bottomList);
+		model.addAttribute("onePieceList", onePieceList);
+		model.addAttribute("outerList", outerList);
+		model.addAttribute("acsList", acsList);
+		
+		model.addAttribute("bestCount", bestCount);
+		model.addAttribute("topCount", topCount);
+		model.addAttribute("bottomCount", bottomCount);
+		model.addAttribute("onePieceCount", onePieceCount);
+		model.addAttribute("outerCount", outerCount);
+		model.addAttribute("acsCount", acsCount);
+		
+		return "shop/index";
+	}
+// 명훈이 추가 05.25/////////////////////////   
    
-   @RequestMapping(value="/showCategory")
-   public String showCategory(HttpServletRequest request, Model model) {
-      
-      String cNum = request.getParameter("cNum");
-      model.addAttribute("cNum", cNum);
-      
-      return "shop/showCategory";
-   }
+   
+// 명훈이 추가 05.25/////////////////////////   
+   @RequestMapping(value="showCategory")
+	public String showCategory(HttpServletRequest request, Model model) {
+		System.out.println("@@@@@@@@@@ showCategory() 메소드 실행 @@@@@@@@@@");
+		
+		spsDAO mapper = shopSqlSession.getMapper(spsDAO.class);
+		
+//		categoryNum이라는 카테고리 숫자를 넘겨주기
+		String categoryNum = request.getParameter("cNum");
+		System.out.println(categoryNum);
+		model.addAttribute("categoryNum", categoryNum);
+		
+//		카테고리 별 제품 데이터들을 pList에 저장한다.
+		ArrayList<ProductVO> pList = mapper.getPList(categoryNum);
+		System.out.println(pList);
+		
+//		product_imgPath에서 따온 category number
+		int imgCategory = mapper.selectCategory(categoryNum);
+		System.out.println(imgCategory);
+		
+//		for (int i = 0; i < pList.size(); i++) { System.out.println(pList.get(i)); }
+//		for (int i = 0; i < pList.size(); i++) { System.out.println(pList.get(i).getProduct_category()); }
+//		System.out.println(imgCategory);
+		
+		model.addAttribute("pList", pList);
+		model.addAttribute("imgCategory", imgCategory);
+		
+		return "shop/showCategory";
+	}
+// 명훈이 추가 05.25/////////////////////////  
+   
+   
+   
    
 //   찬호 옵션 찾기
 @RequestMapping("/getOptionValues")
@@ -89,7 +159,7 @@ public class ShopController {
 
   
 //   유정 상품 상세페이지
-@RequestMapping(value = "/productInfo", method = RequestMethod.GET)
+@RequestMapping(value = "/productInfo")
 public String productInfo(HttpSession session,HttpServletRequest request, Model model) {
    System.out.println("컨트롤러의 productInfo() 메소드 실행");
    spsDAO mapper = shopSqlSession.getMapper(spsDAO.class);
@@ -99,6 +169,19 @@ public String productInfo(HttpSession session,HttpServletRequest request, Model 
 //   상품 정보 가져오기
    ProductVO productVO = new ProductVO();
    productVO = mapper.getProductInfo(product_idx);
+   
+//   명훈이 삽입 부분 //////////////////////////////////////////////////////
+
+   //	카테고리 번호를 임시로 담아둘 변수
+	int hit = mapper.increment(Integer.parseInt(product_idx)); 
+	model.addAttribute("productVO", productVO);
+	model.addAttribute("product_hit", hit);
+	model.addAttribute("product_imgPath", productVO.getProduct_imgPath());
+	model.addAttribute("product_imgPathStock", productVO.getProduct_imgPathStock());
+	model.addAttribute("product_category", productVO.getProduct_category());
+	model.addAttribute("product_idx", productVO.getProduct_idx());
+//  명훈이 삽입 부분 ////////////////////////////////////////////////////////
+   
    
 //   사이즈 리스트에 가져오기(ORDER BY stock_idx DESC)
    ArrayList<String> size = mapper.getSize(product_idx);
@@ -122,7 +205,7 @@ public String productInfo(HttpSession session,HttpServletRequest request, Model 
 	reviewList.initReviewList2(pageSize, totalCount, currentPage);
 	System.out.println(reviewList.getStartNo());
 	reviewList.setReviewList(mapper.selectList(Integer.parseInt(product_idx), reviewList.getStartNo()));
-	System.out.println(reviewList.getReviewList().get(0).getReview_imgPath());
+//	System.out.println(reviewList.getReviewList().get(0).getReview_imgPath());
 
 	model.addAttribute("reviewList", reviewList);
 	model.addAttribute("currentPage", currentPage);
@@ -133,9 +216,17 @@ public String productInfo(HttpSession session,HttpServletRequest request, Model 
    
    return "shop/productInfo";
 }
-
-
-
+// 명훈이 추가 05.25/////////////////////////
+@RequestMapping("/increment")
+public String increment(HttpServletRequest request, Model model) {
+	System.out.println("@@@@@@@@@@ increment() 메소드 실행 @@@@@@@@@@");
+	spsDAO mapper = shopSqlSession.getMapper(spsDAO.class);
+	int idx = Integer.parseInt(request.getParameter("product_idx"));
+	mapper.increment(idx);
+	model.addAttribute("product_idx", idx);
+	return "redirect:shop/index";
+}
+//명훈이 추가 05.25/////////////////////////
 
 //   유정 장바구니에 담기
 @RequestMapping(value = "/insertCart", method = RequestMethod.GET)

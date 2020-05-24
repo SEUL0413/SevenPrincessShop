@@ -14,6 +14,14 @@ import com.sps.vo.ReviewVO;
 
 public interface spsDAO {
 
+	
+	
+	
+	
+	
+	
+	
+// 찬호 05.25//////////////////////////////////
 	ClientVO selectById(String client_id);
 	
 	void insertMember(ClientVO clientVO);
@@ -21,7 +29,18 @@ public interface spsDAO {
 	int countMember();
 
 	ClientVO selectMember(int count);
+	
+	int isMember(String id);
 
+	int isMemberByPhoneNumber(String phoneNumber);
+
+	String findId(String name, String phoneNumber);
+
+	void changePwd(String newPw, String client_id);
+
+	int findPwCount(String id, String email);
+
+// 찬호 05.25//////////////////////////////////
 
 
 	
@@ -191,16 +210,48 @@ public interface spsDAO {
    ArrayList<ReviewVO> selectList(int product_idx, int startNo);
 	//====================유졍==========================
 
-   //찬호 로그인=============
-int isMember(String id);
 
-int isMemberByPhoneNumber(String phoneNumber);
 
-String findId(String name, String phoneNumber);
+// 명훈 추가 05.25////////////////////////////////////////////
+	
+//	홈페이지 메인 
+	ArrayList<ProductVO> getPList(String cNum);			// 카테고리를 클릭하면 나오는 페이지(showCategory.jsp)에 데이터를 넘겨줄 메소드
+	ArrayList<String> getSize(int product_idx);
+	ArrayList<String> getColor(int product_idx);
+	ProductVO getProductInfo(int product_idx);
+	int increment(int product_idx);
 
-void changePwd(String newPw, String client_id);
+	ArrayList<ProductVO> bestListDescByIdx();
+	ArrayList<ProductVO> topListDescByIdx();
+	ArrayList<ProductVO> bottomListDescByIdx();
+	ArrayList<ProductVO> onePieceListDescByIdx();
+	ArrayList<ProductVO> outerListDescByIdx();
+	ArrayList<ProductVO> acsListDescByIdx();
+	
+	int selectBestCount();
+	int selectTopCount();
+	int selectBottomCount();
+	int selectOnePieceCount();
+	int selectOuterCount();
+	int selectAcsCount();
 
-int findPwCount(String id, String email);
+	int selectCategory(String categoryNum); // nav에서 얻어온 categoryNum에 따른 product_category 얻어오기
+	
+	int increment(String product_idx);
+	
+// 명훈 추가 05.25////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

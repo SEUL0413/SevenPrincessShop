@@ -1,7 +1,5 @@
 package com.sps.vo;
 
-import java.sql.Date;
-
 public class ProductVO {
 
 	private int product_idx;				// 상품 인덱스
@@ -14,12 +12,10 @@ public class ProductVO {
 	private String product_imgPath;			// 상품 사진 경로 (ex "/images/productImages/01/01_01/01_01" => .jpg나 _상세사진 숫자.jpg 따로 추가)
 	private int product_imgPathStock;		// 상세 이미지 개수(반복문에 필요)
 
-	public ProductVO() {
-	}
-
+	public ProductVO() { }
+	
 	public ProductVO(int product_idx, String product_name, int product_price, int product_category,
-			String product_registerDate, int product_hit, int product_stock, String product_imgPath,
-			int product_imgPathStock) {
+			String product_registerDate, int product_hit, int product_stock, String product_imgPath, int product_imgPathStock) {
 		super();
 		this.product_idx = product_idx;
 		this.product_name = product_name;
@@ -27,6 +23,16 @@ public class ProductVO {
 		this.product_category = product_category;
 		this.product_registerDate = product_registerDate;
 		this.product_hit = product_hit;
+		this.product_stock = product_stock;
+		this.product_imgPath = product_imgPath;
+		this.product_imgPathStock = product_imgPathStock;
+	}
+
+	public ProductVO(int product_idx, String product_name, int product_price, int product_stock, String product_imgPath, int product_imgPathStock) {
+		super();
+		this.product_idx = product_idx;
+		this.product_name = product_name;
+		this.product_price = product_price;
 		this.product_stock = product_stock;
 		this.product_imgPath = product_imgPath;
 		this.product_imgPathStock = product_imgPathStock;
@@ -107,11 +113,10 @@ public class ProductVO {
 	@Override
 	public String toString() {
 		return "ProductVO [product_idx=" + product_idx + ", product_name=" + product_name + ", product_price="
-				+ product_price + ", product_category=" + product_category + ", product_registerDate="
-				+ product_registerDate + ", product_hit=" + product_hit + ", product_stock=" + product_stock
-				+ ", product_imgPath=" + product_imgPath + ", product_imgPathStock=" + product_imgPathStock + "]";
+				+ product_price + ", product_category=" + product_category + ", product_subCategory="
+				+ ", product_registerDate=" + product_registerDate + ", product_hit="
+				+ product_hit + ", product_stock=" + product_stock + ", product_imgPath=" + product_imgPath
+				+ ", product_imgPathStock=" + product_imgPathStock + "]";
 	}
-	
-	
 	
 }

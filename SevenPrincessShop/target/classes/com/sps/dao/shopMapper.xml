@@ -25,12 +25,6 @@
 </select>
 
 
-<!-- 유정 특정 상품 정보 가지고 오기 -->
-<select id="getProductInfo" parameterType="String" resultType="com.sps.vo.ProductVO">
-	SELECT * 
-	FROM PRODUCT
-	WHERE product_idx = #{param1}
-</select>
 
 <!-- 찬호 옵션 찾기 -->
 <select id="findOption" parameterType="String" resultType="String">
@@ -69,6 +63,123 @@
         ) TT LIMIT #{param2},5;
 	]]>
 </select>
+
+
+
+
+
+
+<!-- 명훈 추가 05.25 -->
+<select id="getPList" parameterType="String" resultType="com.sps.vo.ProductVO">
+		select * 
+		from (SELECT * FROM product ORDER BY product_idx DESC LIMIT 0, 1000) AS A 
+		where product_category = #{param1}; <!-- param1은 String 타입의 cNum이 넘어옴. -->
+	</select>
+	
+	<select id="selectCategory" parameterType="String" resultType="int">
+		select product_category from product where product_category = #{param1} limit 1;
+	</select>
+	
+	<!-- index 페이지에서 HIT ITEM의 정보들을 가져오는 sql -->
+	<select id="bestListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product ORDER BY product_hit DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 상의 카테고리의 정보들을 가져오는 sql -->
+	<select id="topListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 1 and product_category <= 4 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 하의 카테고리의 정보들을 가져오는 sql -->
+	<select id="bottomListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 5 and product_category <= 8 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 원피스 카테고리의 정보들을 가져오는 sql -->
+	<select id="onePieceListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 9 and product_category <= 11 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 아우터 카테고리의 정보들을 가져오는 sql -->
+	<select id="outerListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 12 and product_category <= 15 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 악세사리 카테고리의 정보들을 가져오는 sql -->
+	<select id="acsListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 16 and product_category <= 18 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+
+	<!-- 히트 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectBestCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product ORDER BY product_hit DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 상의 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectTopCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 1 AND product_category <= 4 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 하의 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectBottomCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 5 AND product_category <= 8 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 원피스 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectOnePieceCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 9 AND product_category <= 11 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 아우터 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectOuterCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 12 AND product_category <= 15 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 악세사리 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectAcsCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 16 AND product_category <= 18 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+
+	<!-- 특정 상품 정보 가지고 오기 -->
+	
+	<select id="getProductInfo" parameterType="String" resultType="com.sps.vo.ProductVO">
+		SELECT * 
+		FROM PRODUCT
+		WHERE product_idx = #{param1}
+	</select>
+	
+	<!-- 상품 조회수 올리기 -->
+	<update id="increment" parameterType="int">
+		update product set product_hit = product_hit + 1 where product_idx = #{product_idx}
+	</update>
+<!-- 명훈 추가 05.25 -->
+
+
+
 
 
 

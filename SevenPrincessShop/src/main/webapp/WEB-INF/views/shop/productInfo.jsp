@@ -9,7 +9,6 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/css_js_link.html"%>
-<%@ include file="/WEB-INF/views/include/css_js_link.html"%>
 
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -286,6 +285,7 @@ function showOption(size){
                   <tr>
                      <th>SIZE</th>
                      <td class="size">
+                     
                      <select id="sizeSel" onclick="sizeOptionDelete()" onchange="showOption(this.value);">
                         <option id="none" value="sizeIsNone">옵션 선택</option>
                         <c:if test="${sizeNum > 0}">
