@@ -42,7 +42,7 @@
 		<div id="content" class="p-4 p-md-5">
 			<!-- myPage top bar 설정 -->
 			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
-		   <h2>1:1 문의</h2><br/>
+		   <h2>고객센터</h2><br/>
 		   
 		    <!-- 페이지 번호 사용하기 위해 qboardList 세팅 --> 
 			<c:set var="info" value="${info}" />

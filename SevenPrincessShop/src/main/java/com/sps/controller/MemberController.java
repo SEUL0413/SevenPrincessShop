@@ -142,6 +142,18 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 		
 	}
 	
+	
+	@RequestMapping(value="/logout")
+	public String logout(HttpSession session, HttpServletRequest request, Model model) {
+		
+				session.removeAttribute("nowUser");
+		
+			return "redirect:/";
+			
+	} 
+	
+	
+	
 	//joinSendCode
 	@RequestMapping(value="/joinSendCode")
 	@ResponseBody

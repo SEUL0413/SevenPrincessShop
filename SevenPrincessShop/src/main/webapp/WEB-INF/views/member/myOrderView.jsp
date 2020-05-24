@@ -47,6 +47,12 @@
 			<c:set var="counts" value="${counts}"/>  <!-- 리뷰가 작성된 글인지 판단할 데이터(count) 리스트 -->
 			
 			<form>
+			
+			<c:if test="${list1.size()==0}">
+				<h5 align="center">주문 목록이 없습니다.</h5>
+			</c:if>
+			
+			<c:if test="${list1.size()!=0}">
 				<c:forEach var = "list1" items="${list1}" varStatus="status"> 
 					<table align="center" style="width:80%;border:2; bordercolor:#D8D8D8;text-align: center">
 							<tr style="background-color: #F2F2F2;height:50px">
@@ -103,9 +109,10 @@
 							</tr>
 						</table><br/>
 					</c:forEach>
-				</form>
-			</div>
+				</c:if>
+			</form>
 		</div>
+	</div>
 	
 	<!-- footer 설정 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

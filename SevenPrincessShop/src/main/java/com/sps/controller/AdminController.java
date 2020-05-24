@@ -44,6 +44,11 @@ public class AdminController {
 		return "admin/adminMain";
 	}
 	
+	//관리자 css 테스트
+		@RequestMapping(value = "/adminMain")
+		public String adminMain(Locale locale, Model model) {	
+			return "redirect:memberList";
+		}
 	
 	
 	

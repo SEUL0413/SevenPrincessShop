@@ -54,7 +54,7 @@
 		<div id="content" class="p-4 p-md-5">
 			<!-- myPage top bar 설정 -->
 			<%@ include file="/WEB-INF/views/include/myTopBar.jsp"%>
-			<h2 style="margin-bottom: 30px;">1:1 문의</h2><hr/>
+			<h2 style="margin-bottom: 30px;">고객센터</h2><hr/>
 			
 			<div style="width:60%">
 				<form action="insertQ" method="post">
