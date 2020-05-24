@@ -36,7 +36,7 @@
 				
 				else{
 					alert("환영합니다!");
-					location.href='goIndex';
+					location.href='/controller/';
 				}
 				
 			},
