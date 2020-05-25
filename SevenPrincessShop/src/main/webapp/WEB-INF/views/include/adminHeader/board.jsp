@@ -88,6 +88,24 @@
               <span><h5>문의 게시판 조회</h5></span>
               </a>
           </li>
+          <li class="sub-menu">
+            <a class="dcjq-parent" href="productUpload">
+              <i class="fa fa-book"></i>
+              <span><h5>상품 업로드</h5></span>
+              </a>
+          </li>
+          <li class="sub-menu">
+            <a class="dcjq-parent" href="salesCheck">
+              <i class="fa fa-book"></i>
+              <span><h5>매출 조회</h5></span>
+              </a>
+          </li>
+           <li class="sub-menu">
+            <a class="dcjq-parent" href="salesGraph">
+              <i class="fa fa-book"></i>
+              <span><h5>매출 그래프</h5></span>
+              </a>
+          </li>
         </ul>
         <!-- sidebar menu end-->
       </div>

@@ -20,9 +20,8 @@ public class JoinListVO {
 	
 	private String startDate;
 	private String endDate;
-	
-	
-	
+
+
 	public String getStartDate() {
 		return startDate;
 	}

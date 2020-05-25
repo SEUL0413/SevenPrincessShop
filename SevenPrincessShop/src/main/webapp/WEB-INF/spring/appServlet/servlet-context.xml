@@ -32,6 +32,10 @@
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>
 
+	<beans:bean id="filePath" class="java.lang.String">
+		<beans:constructor-arg value="C:\Users\user\git\SPS5\SevenPrincessShop\src\main\webapp\resources\images\test\"/>
+		
+	</beans:bean>
 	
 	<!-- 드라이버 정보 빈 -->
 	<beans:bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

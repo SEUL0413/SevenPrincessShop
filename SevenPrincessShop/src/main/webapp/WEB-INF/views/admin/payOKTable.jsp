@@ -12,39 +12,30 @@
 <title>PayOK</title>
 	<script type="text/javascript">
 	
-	//제발되게 해주세요... 제발..
-	function changeStatus(btn){
-		//alert("드렁옴");
-		
- 	 	$.ajax({
-		alert("123");
-			//async : false,
-			//setting
-			type: "POST",
-			url: "payOKResult",
-			dataType:"json",
-			data: {param:"${test.orderListVO.orderList_idx}"}
-			//success
-			success : function(){
-
-				alert("db업뎃끝.");
-				
-				var target = $("#target"+btn);
-				target.html("Send");
-				
-				
-				
-				//$("#"+btn)
-
-			},
-			
-			//Exception
-			error: function (jqXHR, textStatus, errorThrown) {
-				alert("오류가 발생하였습니다.");
-			}   
-			  
-		}); 
+	function test(s) {
+		alert("판매 처리 되었습니다.");
+ 		window.location.href='payOKTableResult?orderlist_idx=' + s;
 	}
+ 	
+ 	 window.onload = function(){
+	      var k = "${key}";
+	      if(k=="product_name"){
+	          document.getElementById("1").setAttribute("selected", "selected");
+	      }else if(k=="client_id"){
+	          document.getElementById("2").setAttribute("selected", "selected");
+	      }else if(k=="product_price"){
+	          document.getElementById("3").setAttribute("selected", "selected");
+	      }
+		};
+		
+		function changeSelect() {
+			
+			var opt = document.getElementById("searchKey");
+			var optText = opt.options[opt.selectedIndex].text;
+
+			document.getElementById("searchValue").value = '';
+		
+		}
  	</script>
  	
  	
@@ -62,16 +53,14 @@
 				<h2>PayOK</h2>
 				<div class="row" >		
 					<div class="col-xs-2 fc" style="margin-right:10px">
-						<select id="searchKey" name="searchKey" class="form-control" style="width: 160px;height:33px">
-					 			 <option id="1" value="orderList_idx">orderList_idx</option>
-					 			 <option id="2" value="product_name">제품명</option>
-					 			 <option id="3" value="orderList_status">판매 상태</option>
-					  			 <option id="4" value="client_id">고객ID</option>
-					  			 <option id="5" value="product_price">금액</option>
+						<select id="searchKey" name="searchKey" class="form-control" onchange="changeSelect()" style="width: 160px;height:33px">
+					 			 <option id="1" value="product_name">제품명</option>
+					  			 <option id="2" value="client_id">고객ID</option>
+					  			 <option id="3" value="product_price">금액</option>
 						</select> 
 					</div>			
 					<div class="col-xs-2">
-						<input type="text" name="searchValue" class="form-control" value="${value}">
+						<input type="text" name="searchValue" id="searchValue" class="form-control" value="${value}">
 					</div>
 				</div>
 				<div class="form-group row">		
@@ -98,14 +87,14 @@
 					<div id="listNum">${count}개</div>
 					<table class="table table-hover">
 						<tr>
-							<th><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
-							<th>판매제품</th>
-							<th><a href="salesTable?orderby=product_name">제품명</a></th>
-							<th><a href="salesTable?orderby=orderList_status">판매상태</a></th>
-							<th><a href="salesTable?orderby=client_id">고객 ID</a></th>
-							<th><a href="salesTable?orderby=product_price">금액</a></th>	
-							<th><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
-							<th>판매하기</th>	 
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
+							<th style="text-align: center;">판매제품</th>
+							<th style="text-align: center;"><a href="salesTable?orderby=product_name">제품명</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_status">판매상태</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=client_id">고객 ID</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=product_price">금액</a></th>	
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
+							<th style="text-align: center;">판매하기</th>	 
 						</tr>
 						
 						<c:forEach var="test" items="${joinList.joinList}" varStatus="i"> 
@@ -117,7 +106,8 @@
 							<td style="vertical-align: middle;">${test.clientVO.client_id }</td>
 							<td style="vertical-align: middle;">${test.productVO.product_price}</td>
 							<td style="vertical-align: middle;">${test.orderListVO.orderList_orderDate}</td>
-							<td style="vertical-align: middle;"><input id="${i.index}" type="button" value="판매하기" onclick="changeStatus(this);"/></td>
+							<td style="vertical-align: middle;"><input type="button" value="판매하기" 
+					onclick="test(${test.orderListVO.orderList_idx});"/></td>
 		
 						</tr>
 						</c:forEach> 

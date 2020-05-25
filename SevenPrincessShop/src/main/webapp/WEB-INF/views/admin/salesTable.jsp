@@ -21,6 +21,15 @@
 	          document.getElementById("5").setAttribute("selected", "selected");
 	      }
 		};
+		
+		function changeSelect() {
+			
+			var opt = document.getElementById("searchKey");
+			var optText = opt.options[opt.selectedIndex].text;
+
+			document.getElementById("searchValue").value = '';
+		
+		}
  	</script>
 </head>
 <body>
@@ -36,7 +45,7 @@
 				<h2>판매목록</h2>
 				<div class="row" >		
 					<div class="col-xs-2 fc" style="margin-right:10px">
-						<select id="searchKey" name="searchKey" class="form-control" style="width: 160px;height:33px">
+						<select id="searchKey" name="searchKey" class="form-control" onchange="changeSelect()" style="width: 160px;height:33px">
 					 			 <option id="1" value="orderList_idx">orderList_idx</option>
 					 			 <option id="2" value="product_name">제품명</option>
 					 			 <option id="3" value="orderList_status">판매 상태</option>
@@ -45,7 +54,7 @@
 						</select> 
 					</div>			
 					<div class="col-xs-2">
-						<input type="text" name="searchValue" class="form-control" value="${value}">
+						<input type="text" name="searchValue" class="form-control" id="searchValue" value="${value}">
 					</div>
 				</div>
 				<div class="form-group row">		
@@ -64,7 +73,7 @@
 				</div>	
 			</form>
 			
-					
+			<c:set var="orderby" value="${orderby}"/>			
 					
 			<!-- 테이블 -->			
 			<div class="ta">
@@ -72,13 +81,13 @@
 					<div id="listNum">${count}개</div>
 					<table class="table table-hover">
 						<tr>
-							<th><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
-							<th>판매제품</th>
-							<th><a href="salesTable?orderby=product_name">제품명</a></th>
-							<th><a href="salesTable?orderby=orderList_status">판매상태</a></th>
-							<th><a href="salesTable?orderby=client_id">고객 ID</a></th>
-							<th><a href="salesTable?orderby=product_price">금액</a></th>	
-							<th><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
+							<th style="text-align: center;">판매제품</th>
+							<th style="text-align: center;"><a href="salesTable?orderby=product_name">제품명</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_status">판매상태</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=client_id">고객 ID</a></th>
+							<th style="text-align: center;"><a href="salesTable?orderby=product_price">금액</a></th>	
+							<th style="text-align: center;"><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
 						</tr>
 						
 						<c:forEach var="test" items="${joinList.joinList}"> 

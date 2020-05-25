@@ -26,8 +26,13 @@
 ​
 
 <body class="zc-body">
-  ​
+  <!-- 관리자 header 설정 -->
+<%@ include file="/WEB-INF/views/include/adminHeader/member.jsp"%>
+	  <!--main content start-->
+      <section id="main-content">
+     		<section class="wrapper">
   <div id="myChart" class="chart--container">
+  <h1>매출 그래프</h1>​
     <a href="https://www.zingchart.com/" rel="noopener" class="zc-ref">Powered by ZingChart</a>
   </div>
 
@@ -37,6 +42,136 @@
       backgroundColor: '#ecf2f6',
       
        graphset: [
+    	   
+    	   /* 베스트 아이템(조회수) */
+    	   {
+    		      type: 'bar',
+    		      backgroundColor: '#fff',
+    		      borderWidth: '1px',
+    		      borderColor: '#dae5ec',
+    		      width: '64%',
+    		      height: '30%',
+    		      x: '34%',
+    		      y: '0%',
+    		      title: {
+    		        text: 'BEST ITEM',
+    		        marginTop: '7px',
+    		        marginLeft: '9px',
+    		        backgroundColor: 'none',
+    		        fontColor: '#707d94',
+    		        fontFamily: 'Arial',
+    		        fontSize: '11px',
+    		        fontWeight: 'bold',
+    		        shadow: false,
+    		        textAlign: 'left'
+    		      },
+    		      plot: {
+    		        tooltip: {
+    		          padding: '5px 10px',
+    		          backgroundColor: '#707e94',
+    		          borderRadius: '6px',
+    		          fontColor: '#fff',
+    		          fontFamily: 'Arial',
+    		          fontSize: '11px',
+    		          shadow: false
+    		        },
+    		        animation: {
+    		          delay: 500,
+    		          effect: 'ANIMATION_SLIDE_BOTTOM'
+    		        },
+    		        barWidth: '33px',
+    		        hoverState: {
+    		          visible: false
+    		        }
+    		      },
+    		      plotarea: {
+    		        margin: '45px 20px 38px 45px'
+    		      },
+    		      scaleX: {
+    		        values: ['${monthBestItem[0].product_name}', '${monthBestItem[1].product_name}', '${monthBestItem[2].product_name}',
+    		        	'${monthBestItem[3].product_name}', '${monthBestItem[4].product_name}', '${monthBestItem[5].product_name}'],
+    		        guide: {
+    		          visible: false
+    		        },
+    		        item: {
+    		          paddingTop: '2px',
+    		          fontColor: '#8391a5',
+    		          fontFamily: 'Arial',
+    		          fontSize: '11px'
+    		        },
+    		        itemsOverlap: true,
+    		        lineColor: '#d2dae2',
+    		        maxItems: 9999,
+    		        offsetY: '1px',
+    		        tick: {
+    		          lineColor: '#d2dae2',
+    		          visible: false
+    		        }
+    		      },
+    		      scaleY: {
+    		        values: '0:300:100',
+    		        guide: {
+    		          rules: [
+    		            {
+    		              lineWidth: '0px',
+    		              rule: '%i == 0'
+    		            },
+    		            {
+    		              alpha: 0.4,
+    		              lineColor: '#d2dae2',
+    		              lineStyle: 'solid',
+    		              lineWidth: '1px',
+    		              rule: '%i > 0'
+    		            }
+    		          ]
+    		        },
+    		        item: {
+    		          paddingRight: '5px',
+    		          fontColor: '#8391a5',
+    		          fontFamily: 'Arial',
+    		          fontSize: '10px'
+    		        },
+    		        lineColor: 'none',
+    		        maxItems: 4,
+    		        maxTicks: 4,
+    		        tick: {
+    		          visible: false
+    		        }
+    		      },
+    		      series: [
+    		        {
+    		          values: [parseInt("${monthBestItem[0].product_hit}"), parseInt("${monthBestItem[1].product_hit}"),
+    		        	  parseInt("${monthBestItem[2].product_hit}"), parseInt("${monthBestItem[3].product_hit}"), 
+    		        	  parseInt("${monthBestItem[4].product_hit}"), parseInt("${monthBestItem[5].product_hit}")],
+    		          styles: [
+    		            {
+    		              backgroundColor: '#4dbac0'
+    		            },
+    		            {
+    		              backgroundColor: '#25a6f7'
+    		            },
+    		            {
+    		              backgroundColor: '#ad6bae'
+    		            },
+    		            {
+    		              backgroundColor: '#707d94'
+    		            },
+    		            {
+    		              backgroundColor: '#f3950d'
+    		            },
+    		            {
+    		              backgroundColor: '#e62163'
+    		            },
+    		            {
+    		              backgroundColor: '#4e74c0'
+    		            },
+    		            {
+    		              backgroundColor: '#9dc012'
+    		            }
+    		          ]
+    		        }
+    		      ]
+    		    },
         
         /* 월별 판매 금액 */
         {
@@ -45,11 +180,11 @@
           borderColor: '#dae5ec',
           borderWidth: '1px',
           width: '30%',
-          height: '90%',
+          height: '85%',
           x: '2%',
-          y: '10%',
+          y: '0%',
           title: {
-            text: 'MONTH SALES PRICE',
+            text: '월별 매출 금액',
             marginTop: '7px',
             marginLeft: '9px',
             backgroundColor: 'none',
@@ -198,11 +333,11 @@
           borderColor: '#dae5ec',
           borderWidth: '1px',
           width: '64%',
-          height: '63%',
+          height: '53%',
           x: '34%',
-          y: '10%',
+          y: '32%',
           title: {
-            text: 'MONTH SALES COUNT',
+            text: '월별 판매 건수',
             marginTop: '7px',
             marginLeft: '12px',
             backgroundColor: 'none',
@@ -374,7 +509,10 @@
               shadow: false
             } */
           ]
-        }
+        },
+        
+        
+        
       ]
     };
 
@@ -385,6 +523,11 @@
       width: '100%'
     });
   </script>
+  
+  		</section>
+	</section>
+	<!-- 관리자 footer 설정 -->
+	<%@ include file="/WEB-INF/views/include/adminFooter.jsp"%>
 </body>
 
 </html>

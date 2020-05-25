@@ -24,10 +24,19 @@
 	          document.getElementById("6").setAttribute("selected", "selected");    
 	      }else if(k=="client_address"){
 	          document.getElementById("7").setAttribute("selected", "selected");
-	      }    
-	      
-	      
+	      }          
 	};
+	
+	function changeSelect() {
+		
+		var opt = document.getElementById("searchKey");
+		var optText = opt.options[opt.selectedIndex].text;
+
+		document.getElementById("searchValue").value = '';
+	
+	}
+	
+
 	</script>
 </head>
 <body>
@@ -45,7 +54,7 @@
 				
 					<div class="row" >
 						<div class="col-xs-2 fc">
-							<select id="searchKey" name="searchKey" class="form-control" style="width: 160px;height:33px ">
+							<select id="searchKey" name="searchKey" class="form-control" onchange="changeSelect()" style="width: 160px;height:33px ">
 					 			 <option id="1" value="client_idx ">client_idx</option>
 					 			 <option id="2" value="client_id ">ID</option>
 					 			 <option id="3" value="client_name ">이름</option>
@@ -57,7 +66,7 @@
 						</div>
 						
 						<div class="col-xs-2">
-							<input type="text" name="searchValue" class="form-control" value="${value}">
+							<input type="text" name="searchValue" class="form-control" id="searchValue" value="${value}">
 						</div>
 						<div class="row col-xs-2 sf">		
 							<input class="btn btn-default"  type="submit" value="전송"> 

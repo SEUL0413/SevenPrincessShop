@@ -11,6 +11,7 @@ import com.sps.vo.OrderListVO;
 import com.sps.vo.ProductVO;
 import com.sps.vo.Qboard;
 import com.sps.vo.ReviewVO;
+import com.sps.vo.StockVO;
 
 public interface spsDAO {
 
@@ -50,46 +51,57 @@ public interface spsDAO {
 	
 	
 	
-	
-	//판매 목록
-//	List<JoinVO> selectSales(Map<String, String> map);
-//	Integer countSales(Map<String, String> map);
-	
+
 	//판매건수
 	Integer countSales(Map<String, Object> map);
 	//판매목록
 	List<JoinVO> selectSales(Map<String, Object> map);
 
-	
-	
-	
-
 	//회원 수
 	int countClient(Map<String, Object> map);
 	//회원목록
 	ArrayList<ClientVO> selectClientList(Map<String, Object> map);
-	
-	
 	//해당 회원의 주문 내역 
 	List<JoinVO> selectOrderList(int client_idx);
 	
-	
-	
-	
-	
+
+	//월별 판매 완료 건수
 	int monthSalesCount(String date);
-	
+	//월별 판매 취소 건수
 	int monthCancelCount(String date);
-
+	//월별 판매 금액
 	Integer monthSalesPrice(String date);
-
-	int selectGoodsIdx();
-
-	int countSalesPayOK(Map<String, Object> map);
-
-	List<JoinVO> payOKTable(Map<String, Object> map);
-	
+	//베스트 아이템(전체 조회수로만 검색)
 	ArrayList<ProductVO> monthBestItem();
+
+
+	//결제완료 건수 
+	int countSalesPayOK(Map<String, Object> map);
+	//판매관리 테이블
+	List<JoinVO> payOKTable(Map<String, Object> map);
+	//판매 업데이트 (PayOK=>send로 업데이트)
+	void updateStatus(String orderList_idx);
+	
+	//product_index 1씩 증가 시키기위한 update쿼리
+	void updateProductIndex(int product_category);
+	//product_index 가져오기
+	Integer productIndex(int product_category);
+	//product테이블 insert
+	void insertProduct(ProductVO productVO);
+	//product_idx 최근값 가져오기
+	Integer getProductIdx();
+	//stock테이블 insert
+	void insertStock(StockVO stockVO);
+	
+	
+	Integer countSearchSales(Map<String, Object> map);
+
+	List<JoinVO> selectSearchSales(Map<String, Object> map);
+
+	Integer totalSales(Map<String, Object> map);
+
+	List<ClientVO> testclient();
+
 	
 
 	//=========================05/20 혜인==========================================

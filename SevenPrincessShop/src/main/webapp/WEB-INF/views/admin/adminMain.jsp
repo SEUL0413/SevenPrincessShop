@@ -11,6 +11,10 @@
 	<a href="salesTable">판매기록 test<br/>
 	<a href="payOKTable">payOK test<br/>
 	<a href="allBoard">게시판 관리 test<br/>
+	<a href="productUpload">상품업로드 test<br/>
+	<a href="salesGraph">판매 차트 test<br/>
+	<a href="salesCheck">매출조회<br/>
+
 	
 
 

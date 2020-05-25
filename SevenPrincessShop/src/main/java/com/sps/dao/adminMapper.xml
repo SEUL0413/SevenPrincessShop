@@ -300,12 +300,29 @@
       SELECT product_name, product_hit FROM product ORDER BY product_hit DESC LIMIT 6;
    </select>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+
 		<!-- 판매기록 개수 가져오기 -->
 	<!-- resultType이 int일 경우 null 에러가 나서 Integer로 설정  -->
 		<!-- 
 			처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
 			처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
 		  -->
+
 	<select id="countSalesPayOK" parameterType="map" resultType="java.lang.Integer">		
 		select 
 			count(*) AS count 
@@ -331,12 +348,6 @@
 	
 	
 	
-	
-	<!-- 판매기록 조인문 -->
-		<!-- 
-		처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
-		처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
-	  -->
 	<select id="payOKTable" parameterType="map" resultMap="joinMap">
 		select 
 			O.orderList_idx,
@@ -369,12 +380,184 @@
 						AND O.orderList_orderDate <= '${endDate}'
 					]]>
 				</if>
-			</if>
-			
+			</if>		
 			order by ${orderby}
 			LIMIT #{startPage}, #{pageSize}	
 	</select> 
 	
+		
+	<update id="updateStatus" parameterType="String">
+		UPDATE orderlist SET orderList_status = "send" WHERE orderlist_idx = #{param1}
+	</update>	
+	
+	
+	
+	<update id="updateProductIndex" parameterType="int">
+	
+		UPDATE PRODUCT
+		SET product_index = (SELECT * FROM (SELECT MAX(product_index) FROM PRODUCT a) AS b) + 1
+		WHERE product_category = #{param1};
+	</update>
+	
+	<select id="productIndex" parameterType="int" resultType="java.lang.Integer">
+		SELECT MAX(product_index) FROM product where product_category = #{param1}
+	</select>
+	
+	
+	
+	
+	<insert id="insertStock" parameterType="com.sps.vo.StockVO">
+		INSERT INTO stock(stock_product_idx, stock_size, stock_color, stock_stock)
+		VALUES(#{stock_product_idx}, #{stock_size}, #{stock_color}, #{stock_stock});
+	</insert>
+	
+	
+	<insert id="insertProduct" parameterType="com.sps.vo.ProductVO">
+		insert into product(product_name, product_price, product_category, product_registerDate,product_imgPath)
+		values (#{product_name}, #{product_price}, #{product_category}, #{product_registerDate}, #{product_imgPath})
+	</insert>
+	
+	
+	<select id="getProductIdx" resultType="java.lang.Integer">
+		SELECT MAX(product_idx) FROM product;	
+	</select>
+
+		
+	
+	
+	
+	
+	
+		<select id="countSearchSales" parameterType="map" resultType="java.lang.Integer">		
+		select 
+			count(*) AS count 
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and O.orderlist_status = 'send'
+			<choose>
+				<when test="!year.equals('') and month.equals('')">
+					and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+				</when>
+				<when test="!year.equals('') and !month.equals('')">
+					and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+				</when>
+			</choose>
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and !endDate.equals('')">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+				<if test="product_name != null and !product_name.equals('')">
+					and P.product_name LIKE '%${product_name}%'
+				</if>
+			
+	</select> 
+	
+	
+	
+	
+	<!-- 판매기록 조인문 -->
+		<!-- 
+		처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+		처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+	  -->
+	<select id="selectSearchSales" parameterType="map" resultMap="joinMap">
+		select 
+			P.product_imgPath,
+			P.product_name,
+			C.client_id,
+			P.product_price,
+			O.orderList_orderDate
+			<!-- 
+				더이상 데이터베이스에 추가할 컬럼이 없으면 select * from 으로 하기
+				(DB에 컬럼이 계속 추가되는거 같아서 지금은 검색할 컬럼을 하나하나 지정해주었는데 나중에 변경할것!)			
+			-->
+	
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and O.orderlist_status = 'send'
+				<choose>
+					<when test="!year.equals('') and month.equals('')">
+						and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+					</when>
+					<when test="!year.equals('') and !month.equals('')">
+						and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+					</when>
+				</choose>
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and !endDate.equals('')">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+				<if test="product_name != null and !product_name.equals('')">
+					and P.product_name LIKE '%${product_name}%'
+				</if>
+			
+			
+
+			LIMIT #{startPage}, #{pageSize}	
+	</select> 
+	
+	
+	
+	
+	
+	
+	<select id="totalSales" parameterType="map" resultType="java.lang.Integer">
+		select 
+
+			sum(P.product_price)
+		
+	
+		from
+			OrderList O,
+			Client C,
+			Product P
+		where 
+			O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+			and O.orderlist_status = 'send'
+				<choose>
+					<when test="!year.equals('') and month.equals('')">
+						and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+					</when>
+					<when test="!year.equals('') and !month.equals('')">
+						and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+					</when>
+				</choose>
+				<if test="searchValue !=null and !searchValue.equals('') ">
+					and ${searchKey} LIKE '%${searchValue}%'
+				</if>
+				<if test="!startDate.equals('') and !endDate.equals('')">
+					<![CDATA[
+						and O.orderList_orderDate >= '${startDate}'
+						AND O.orderList_orderDate <= '${endDate}'
+					]]>
+				</if>
+				<if test="product_name != null and !product_name.equals('')">
+					and P.product_name LIKE '%${product_name}%'
+				</if>
+			
+	</select> 
+		
+	<select id="testclient" resultType="com.sps.vo.ClientVO">
+      SELECT * FROM client
+   </select>
 		
 	
 
