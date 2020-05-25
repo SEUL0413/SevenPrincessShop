@@ -30,6 +30,24 @@
 			document.getElementById("searchValue").value = '';
 		
 		}
+		
+		
+		
+		
+		var sortData;
+		
+		
+
+		
+		 function goPage(currentPage){
+				alert(sortData);
+		    	$("#searchFrom").attr("action",("salesTable?currentPage="+currentPage+"&orderby="+sortData));
+		    	$("#searchFrom").submit();
+		    
+		    }
+		
+		
+		
  	</script>
 </head>
 <body>
@@ -40,8 +58,10 @@
       	  <section id="main-content">
      		  <section class="wrapper">
 
+
+
 			<!-- 검색창 -->
-			<form action="salesTable" method="post" class="container gs" style="margin-top: 50px">
+			<form id="searchFrom" action="" method="post" class="container gs" style="margin-top: 50px">
 				<h2>판매목록</h2>
 				<div class="row" >		
 					<div class="col-xs-2 fc" style="margin-right:10px">
@@ -73,6 +93,8 @@
 				</div>	
 			</form>
 			
+			
+			
 			<c:set var="orderby" value="${orderby}"/>			
 					
 			<!-- 테이블 -->			
@@ -81,13 +103,13 @@
 					<div id="listNum">${count}개</div>
 					<table class="table table-hover">
 						<tr>
-							<th style="text-align: center;"><a href="salesTable?orderby=orderList_idx">orderList_idx</a></th>
+							<th style="text-align: center;"><a id="orderList_idx" onclick="goListSort(this.id)">orderList_idx</a></th>
 							<th style="text-align: center;">판매제품</th>
-							<th style="text-align: center;"><a href="salesTable?orderby=product_name">제품명</a></th>
-							<th style="text-align: center;"><a href="salesTable?orderby=orderList_status">판매상태</a></th>
-							<th style="text-align: center;"><a href="salesTable?orderby=client_id">고객 ID</a></th>
-							<th style="text-align: center;"><a href="salesTable?orderby=product_price">금액</a></th>	
-							<th style="text-align: center;"><a href="salesTable?orderby=orderList_orderDate">주문일자</a></th>	 
+							<th style="text-align: center;"><a id="product_name" onclick="goListSort(this.id)">제품명</a></th>
+							<th style="text-align: center;"><a id="orderList_status" onclick="goListSort(this.id)">판매상태</a></th>
+							<th style="text-align: center;"><a id="client_id" onclick="goListSort(this.id)">고객 ID</a></th>
+							<th style="text-align: center;"><a id="product_price" onclick="goListSort(this.id)">금액</a></th>	
+							<th style="text-align: center;"><a id="orderList_orderDate" onclick="goListSort(this.id)">주문일자</a></th>	 
 						</tr>
 						
 						<c:forEach var="test" items="${joinList.joinList}"> 
@@ -125,9 +147,9 @@
 									</c:if>
 		
 									<c:if test="${i != joinList.currentPage}">
+									
 										<input class="button button1" type="button" value="${i}" 
-											onclick="location.href='?currentPage=${i}&searchKey=${joinList.searchKey}&searchValue=${joinList.searchValue}	&startDate=${joinList.startDate}&endDate=${joinList.endDate}'"	
-											title="${i}페이지로 이동합니다." />
+											onclick="goPage(this.value)"/>
 									</c:if>
 								</c:forEach> 
 								

@@ -20,7 +20,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -197,17 +196,6 @@ public class AdminController {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	//////////////////////////////판매목록///////////////////////////////////////
 	@RequestMapping(value ="/salesTable")
 	public String salesTable(HttpServletRequest request, Model model, JoinListVO joinList) {
@@ -301,9 +289,7 @@ public class AdminController {
 			//월별 판매 금액을 담을 ArrayList
 			ArrayList<Integer> monthSalesPrice = new ArrayList<Integer>();
 			//베스트 아이템을 담을 ArrayList
-			ArrayList<ProductVO> monthBestItem = mapper.monthBestItem();
-			
-			
+			ArrayList<ProductVO> monthBestItem = mapper.monthBestItem();		
 			
 			String date = "";
 			Integer salesPrice;  
@@ -334,8 +320,7 @@ public class AdminController {
 					monthSalesPrice.add(salesPrice);
 				}
 			}
-			
-			
+				
 			System.out.println(monthSalesCount);
 			System.out.println(monthCancelCount);
 			System.out.println(monthSalesPrice);
@@ -570,8 +555,7 @@ public class AdminController {
 			try {
 				currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			} catch (NumberFormatException e) { }
-			
-			
+						
 			//검색값 받아오기
 			String searchKey = request.getParameter("searchKey");
 			String searchValue = request.getParameter("searchValue");
@@ -592,8 +576,7 @@ public class AdminController {
 			else joinList.setEndDate(endDate);
 			
 			System.out.println("startDate : " + joinList.getStartDate() + " endDate : " + joinList.getEndDate());
-			System.out.println("searchKey : " +   searchKey);
-			System.out.println("searchValue : " + searchValue);
+			System.out.println("searchKey : " +   searchKey + "searchValue : " + searchValue);
 			
 			//맵에 검색값과 기간설정값을 저장한다
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -615,16 +598,12 @@ public class AdminController {
 			map.put("pageSize", joinList.getPageSize());
 			System.out.println("컨트롤러의 joinList메소드의 map값 : " + map);
 			
-			
+			//클릭시 정렬하기위해 orderby값을 받아온다.
 			String orderby = request.getParameter("orderby"); 
-			if(orderby == null) {
-				orderby = "orderList_idx";
-			}
-			System.out.println(orderby);
-			
+			if(orderby == null) {	orderby = "orderList_idx";	}
+			System.out.println("orderby : "+ orderby);			
 			map.put("orderby", orderby);
-			
-			
+						
 			//전체 판매기록을 가져온다
 			joinList.setJoinList(mapper.payOKTable(map));
 			System.out.println(joinList);
@@ -632,15 +611,12 @@ public class AdminController {
 			//salesTable에 판매건수와 가져온 판매기록을 넘겨준다.
 			model.addAttribute("count",count);
 			model.addAttribute("joinList",joinList);
-			
-			
+						
 			return "admin/payOKTable";
 		}
 		
 		
-		
-		
-		
+			
 		
 		//주문상태 변경 후 redirect
 		@RequestMapping(value = "/payOKTableResult")
@@ -657,8 +633,6 @@ public class AdminController {
 		
 		
 		
-		
-		
 		//상품등록 페이지
 		@RequestMapping(value = "/productUpload")
 		public String file(Locale locale, Model model) {
@@ -668,7 +642,6 @@ public class AdminController {
 
 			return "admin/productUpload";
 		}
-		
 		
 		
 		
@@ -689,26 +662,26 @@ public class AdminController {
 			System.out.println("Product_category : "+ request.getParameter("subSelect"));
 			productVO.setProduct_category(Integer.parseInt(request.getParameter("subSelect")));
 			int product_category = productVO.getProduct_category();
+			//product_price값에서 ,를 split해서 없애준다.
 			String[] test = request.getParameter("p_price").split(",");
 			String p = "";
 			for (int i = 0; i < test.length; i++) {
 				p+=test[i];
 			}
-			System.out.println(p);
-			
-			
+			System.out.println("split한 product_price : " + p);
 			productVO.setProduct_price(Integer.parseInt(p));
+			
 			//인덱스 1 증가 시켜주기
 			mapper.updateProductIndex(product_category);
 			//최근 인덱스 가져오기
 			int product_index = mapper.productIndex(product_category);
-			//product_imgPath값 설정
+			//DB에 저장할 product_imgPath값 설정
 			String product_imgPath = "./resources/images/productImages/"+product_category+ "_" + product_index;
 			productVO.setProduct_imgPath(product_imgPath);
-			productVO.setProduct_registerDate(today);
+			productVO.setProduct_registerDate(today);	//오늘날짜 db에 넣어주기 위해 set
 						
 			System.out.println("insert할 productVO : " + productVO);
-			mapper.insertProduct(productVO);
+			mapper.insertProduct(productVO);	//상품 업로드
 						
 			//stock테이블에 insert하기 위해 product_idx, size, color, stock 값 셋팅 
 			int product_idx = mapper.getProductIdx();
@@ -733,9 +706,7 @@ public class AdminController {
 	        List<MultipartFile> multi = mtfRequest.getFiles("multi");//다중파일
 	        
 	        //저장할 파일 경로 ->servlet-context에서 변경(filePath 맨 위에 선언)
-	        String path = filePath;
-	        
-	        
+	        String path = filePath;	        
 	        
 	        String extension = FilenameUtils.getExtension(file.getOriginalFilename()); //파일 확장자 가져오기
 	        String safeFile = path + product_category+ "_" + product_index + "_1" + "."+extension; //저장할 파일명 선언
@@ -760,14 +731,11 @@ public class AdminController {
 	    }
 		
 		
-		
-		
-		
+
 		
 		//상품등록 페이지
 		@RequestMapping(value = "/salesCheck")
 		public String salesCheck(Locale locale, Model model) {
-
 			return "admin/salesCheck";
 		}
 		
@@ -777,7 +745,7 @@ public class AdminController {
 		
 		/////////////매출조회
 		@RequestMapping(value = "/salesTerm")
-		public String salesCheck(HttpServletRequest request, Model model, JoinListVO joinList, ModelMap modelMap, HttpServletResponse response) {
+		public String salesCheck(HttpServletRequest request, Model model, JoinListVO joinList, HttpServletResponse response) {
 			spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);	
 
 			//브라우저 화면에 출력할 글의 개수를 정한다.
@@ -790,6 +758,10 @@ public class AdminController {
 
 			String year = request.getParameter("YEAR");
 			String month = request.getParameter("MONTH");
+			model.addAttribute("year",year);
+			model.addAttribute("month",month);
+			System.out.println("year : "+ year);
+			System.out.println("month : " +month);
 			
 			//기간 검색 값 받아오기
 			String startDate = request.getParameter("startDate");
@@ -815,11 +787,9 @@ public class AdminController {
 					if(10> Integer.parseInt(month)) {	month = "0" + month;	}
 				month = year+"-"+month;
 			}catch (NumberFormatException e) {System.out.println(month);}
-			System.out.println("year : "+ year);
-			System.out.println("month : " +month);
 			
-			model.addAttribute("year",year);
-			model.addAttribute("month",month);
+			
+		
 			
 			//기간 설정을 안했을 경우
 			if(startDate == null) joinList.setStartDate("");
@@ -881,9 +851,7 @@ public class AdminController {
 			
 			model.addAttribute("count",count);
 			model.addAttribute("joinList",joinList);
-			
-		
-	         
+			         
 			return "admin/salesCheck";
 		}
 		
