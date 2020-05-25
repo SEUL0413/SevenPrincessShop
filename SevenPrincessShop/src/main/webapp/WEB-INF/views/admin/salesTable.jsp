@@ -34,14 +34,23 @@
 		
 		
 		
-		var sortData;
-		
+		function goListSort(id){
+			$("#searchFrom").attr("action",("salesTable?currentPage="+${cp} +"&orderby="+ id));
+	    	$("#searchFrom").submit();
+		}
 		
 
 		
 		 function goPage(currentPage){
-				alert(sortData);
-		    	$("#searchFrom").attr("action",("salesTable?currentPage="+currentPage+"&orderby="+sortData));
+			 	$("#searchFrom").attr("action","");
+			 	
+			 	if(${ob} == null){
+		    		$("#searchFrom").attr("action",("salesTable?currentPage="+currentPage+"&orderby=orderList_idx"));
+			 	}
+			 	
+			 	else{
+			 		$("#searchFrom").attr("action",("salesTable?currentPage="+currentPage+"&orderby="+'${ob}'));
+			 	}
 		    	$("#searchFrom").submit();
 		    
 		    }
@@ -95,7 +104,6 @@
 			
 			
 			
-			<c:set var="orderby" value="${orderby}"/>			
 					
 			<!-- 테이블 -->			
 			<div class="ta">
@@ -131,8 +139,8 @@
 							<td align="center" colspan="7">
 								<!-- 처음으로, 10페이지 앞으로 --> 
 								<c:if test="${joinList.startPage > 1}">
-									<input type="button" value="start page" onclick="location.href='?currentPage=1'" title="첫 페이지로 이동합니다." />
-									<input type="button" value="-10 page" onclick="location.href='?currentPage=${joinList.startPage - 1}'" title="이전 10 페이지로 이동합니다." />
+									<input type="button" value="start page" onclick="location.href='?currentPage=1&orderby=${ob}'" title="첫 페이지로 이동합니다." />
+									<input type="button" value="-10 page" onclick="location.href='?currentPage=${joinList.startPage - 1}&orderby=${ob}'" title="이전 10 페이지로 이동합니다." />
 								</c:if> 
 								<c:if test="${joinList.startPage <= 1}">
 									<input type="button" value="start page" disabled="disabled" title="이미 첫 페이지 입니다." />
@@ -147,7 +155,6 @@
 									</c:if>
 		
 									<c:if test="${i != joinList.currentPage}">
-									
 										<input class="button button1" type="button" value="${i}" 
 											onclick="goPage(this.value)"/>
 									</c:if>
@@ -156,10 +163,10 @@
 								<!-- 마지막으로, 10페이지 뒤로 --> 
 								<c:if test="${joinList.endPage < joinList.totalPage}">
 									<input type="button" value="+10 page"
-										onclick="location.href='?currentPage=${joinList.endPage + 1}'"
+										onclick="location.href='?currentPage=${joinList.endPage + 1 }&orderby=${ob}'"
 										title="다음 10 페이지로 이동합니다." />
 									<input type="button" value="end page"
-										onclick="location.href='?currentPage=${joinList.totalPage}'"
+										onclick="location.href='?currentPage=${joinList.totalPage}&orderby=${ob}'"
 										title="마지막 페이지로 이동합니다." />
 								</c:if> 
 								<c:if test="${joinList.endPage >= joinList.totalPage}">

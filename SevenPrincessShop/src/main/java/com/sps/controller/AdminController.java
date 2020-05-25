@@ -208,7 +208,7 @@ public class AdminController {
 	try {
 	currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	} catch (NumberFormatException e) { }
-
+	model.addAttribute("cp",currentPage);
 
 	//검색값 받아오기
 	String searchKey = request.getParameter("searchKey");
@@ -255,11 +255,12 @@ public class AdminController {
 
 
 	String orderby = request.getParameter("orderby"); 
+	System.out.println(orderby);
 	if(orderby == null) {
 	orderby = "orderList_idx";
 	}
 	System.out.println(orderby);
-
+	model.addAttribute("ob",orderby);
 	map.put("orderby", orderby);
 
 
