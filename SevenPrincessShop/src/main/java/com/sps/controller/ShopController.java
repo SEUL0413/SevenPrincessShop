@@ -134,7 +134,7 @@ public class ShopController {
       		for (int i = 0; i < optionList.size(); i++) {
       			getStock = mapper.findOptionStock(product_idx, size, optionList.get(i));
       			System.out.println("Running For roof ("+i+") : " + optionList.get(i));
-      			if(getStock.equals("0")) {
+      			if(Integer.parseInt(getStock) <= 0) {
       				jsonArray.add(optionList.get(i) + "[품절]");
       			}else if(Integer.parseInt(getStock) < 5) {
       				jsonArray.add(optionList.get(i) + " (재고 : " + getStock + ")");

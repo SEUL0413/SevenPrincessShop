@@ -32,23 +32,24 @@ function showOption(size){
       data: {param:size, param2:"${productVO.product_idx}"},
       
       
-      //success
-      success: function(result){
-         var c = 0;
-         $("#colorSel").find("option").remove().end().append("<option id='none2' value='colorIsNone'>옵션 선택</option>");
-         $.each(result, function(i){
-            $("#colorSel").append("<option id='" + i +"'value='"+result[i]+"'>"+result[i]+"</option>")
-            c++;
-         }); 
-            
-            //set Disible
-            for (var i = 0; i < c; i++) {
-               var el = $("#"+i);
-               if(el.val().split("[")[1]=="품절]"){
-                  $(el).attr('disabled','disabled');
-               }
-            }
-      },
+    //success
+		success: function(result){
+			var c = 0;
+			$("#colorSel").find("option").remove().end().append("<option id='none2' value='colorIsNone'>옵션 선택</option>");
+			$.each(result, function(i){
+				$("#colorSel").append("<option id='option" + i +"'value='"+result[i]+"'>"+result[i]+"</option>")
+				c++;
+			}); 
+				
+				//set Disible
+				for (var i = 0; i < c; i++) {
+					var el = $("#option"+i);
+					if(el.val().split("[")[1]=="품절]"){
+						$(el).attr('disabled','disabled');
+					}
+				}
+		
+		},
       
       //Exception
       error: function (jqXHR, textStatus, errorThrown) {
@@ -286,7 +287,7 @@ function showOption(size){
                      <th>SIZE</th>
                      <td class="size">
                      
-                     <select id="sizeSel" onclick="sizeOptionDelete()" onchange="showOption(this.value);">
+                     <select id="sizeSel" onchange="showOption(this.value);">
                         <option id="none" value="sizeIsNone">옵션 선택</option>
                         <c:if test="${sizeNum > 0}">
                            <c:forEach var="i" begin="0" end="${sizeNum-1}" step="1">
