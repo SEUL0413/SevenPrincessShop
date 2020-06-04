@@ -381,8 +381,16 @@ function sample4_execDaumPostcode() {
 					<tr>
 						<td colspan="2"><input type="text" class="form-control" id="sample4_extraAddress"  name="client_detailAddress" placeholder="상세주소 입력"  style="width: 600px"/></td>
 					</tr>
+					
 				
 				</table>
+					 <div style="display: none">
+                     <input type="text" id="sample4_postcode" placeholder="우편번호">
+                     <input type="button" class="btn btn-myPage" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" style="width: 130px"><br>
+                     <input type="text" id="sample4_roadAddress" placeholder="도로명주소">
+                     <span id="guide" style="color:#999;display:none"></span>
+                     <input type="text" id="sample4_extraAddress" placeholder="참고항목">
+       			  </div>
 			</div> 
 			
 			

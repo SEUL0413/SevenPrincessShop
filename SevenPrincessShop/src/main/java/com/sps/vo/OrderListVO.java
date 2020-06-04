@@ -11,6 +11,7 @@ public class OrderListVO {
 	private String  orderList_product_name;	// 주문 상품 이름
 	private String orderList_address;		// 주문 주소  
 	private String orderList_detailAddress;	// 주문 상세 주소 
+	private String orderList_addressNumber;	// 주문 우편번호 	
 	private String orderList_status;		// 주문 상태 (장바구니, 주문완료, 배달 준비, 배달 중, 배달 완료)
 	private String orderList_size;			// 주문 사이즈
 	private String orderList_color;			// 주문 색상
@@ -85,6 +86,14 @@ public class OrderListVO {
 		this.orderList_detailAddress = orderList_detailAddress;
 	}
 
+	public String getOrderList_addressNumber() {
+		return orderList_addressNumber;
+	}
+
+	public void setOrderList_addressNumber(String orderList_addressNumber) {
+		this.orderList_addressNumber = orderList_addressNumber;
+	}
+
 	public String getOrderList_status() {
 		return orderList_status;
 	}
@@ -130,9 +139,11 @@ public class OrderListVO {
 		return "OrderListVO [orderList_idx=" + orderList_idx + ", orderList_client_idx=" + orderList_client_idx
 				+ ", orderList_client_name=" + orderList_client_name + ", orderList_product_idx="
 				+ orderList_product_idx + ", orderList_product_name=" + orderList_product_name + ", orderList_address="
-				+ orderList_address + ", orderList_detailAddress=" + orderList_detailAddress + ", orderList_status="
-				+ orderList_status + ", orderList_size=" + orderList_size + ", orderList_color=" + orderList_color
-				+ ", orderList_stock=" + orderList_stock + ", orderList_orderDate=" + orderList_orderDate + "]";
+				+ orderList_address + ", orderList_detailAddress=" + orderList_detailAddress
+				+ ", orderList_addressNumber=" + orderList_addressNumber + ", orderList_status=" + orderList_status
+				+ ", orderList_size=" + orderList_size + ", orderList_color=" + orderList_color + ", orderList_stock="
+				+ orderList_stock + ", orderList_orderDate=" + orderList_orderDate + "]";
 	}
+
 	
 }

@@ -539,6 +539,56 @@
 	<select id="testclient" resultType="com.sps.vo.ClientVO">
       SELECT * FROM client
    </select>
+   
+   <!-- 검색 시 product 안의 데이터 개수를 계산하는 메소드 -->
+	<select id="allCountProduct" parameterType="map" resultType="int">
+		select count(*) from product
+		<if test="!searchKey.equals('')">
+			<if test="searchValue != null and !searchValue.equals('') ">
+			where
+				${searchKey} LIKE '%${searchValue}%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 상품목록 select -->
+	<select id="selectProductList" parameterType="map" resultType="com.sps.vo.ProductVO">
+			select 
+				*
+			from 
+				product
+			<if test="!searchKey .equals('')">
+				<if test="searchValue != null and !searchValue.equals('') ">
+				where
+					${searchKey} LIKE '%${searchValue}%'
+				</if>
+			</if>
+			order by product_idx desc
+			LIMIT #{startPage}, #{pageSize};
+	</select>
+	
+	<!-- 관리자 모드 : stockTable 글 삭제 -->
+	<delete id="deleteP" parameterType="int">
+		delete from product where product_idx = #{param1};
+	</delete>
+	
+	<!-- 재고 제품 Insert하는 sql -->
+	<insert id="stockInsert">
+		insert into product (product_name, product_price, product_category, product_stock) 
+		values (#{product_name}, #{product_price}, #{product_category}, #{product_stock});
+	</insert>
+	
+	<!-- 재고 게시글을 수정하는 sql -->
+	<update id="stockUpdate" parameterType="com.sps.vo.ProductVO">
+		update product set product_name = #{product_name}, product_price = #{product_price},
+		product_category = #{product_category}, product_stock = #{product_stock}
+		where product_idx = #{product_idx};
+	</update>
+	
+	<!-- product idx로 정보 가져오기 -->
+	<select id="pickProduct" parameterType="int" resultType="com.sps.vo.ProductVO">
+		SELECT * FROM product WHERE product_idx = #{param1};
+	</select>
 		
 	
 

@@ -63,7 +63,7 @@
 	          	<img src="${pageContext.request.contextPath}/resources/myPage/images/sample.png" width="100px" height="95px"/>
 	          </span>
           </div>
-          <h5 class="centered">Sam Soffes</h5>
+          <h5 class="centered">${nowUser.client_name} 님</h5>
           <li class="mt">
             <a class="dcjq-parent" href="memberList">
               <i class="fa fa-dashboard"></i>
@@ -92,6 +92,12 @@
             <a class="dcjq-parent" href="productUpload">
               <i class="fa fa-book"></i>
               <span><h5>상품 업로드</h5></span>
+              </a>
+          </li>
+          <li class="sub-menu">
+            <a class="dcjq-parent" href="stockTable">
+              <i class="fa fa-book"></i>
+              <span><h5>재고 관리</h5></span>
               </a>
           </li>
           <li class="sub-menu">

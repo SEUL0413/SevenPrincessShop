@@ -3,12 +3,10 @@ package com.sps.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -336,7 +334,7 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 			
 				model.addAttribute("email",email);
 			
-				return "member/login"; //로그인 화면 구현되면 로그인창으로 포워드 하기!!
+				return "member/findPwResult"; //로그인 화면 구현되면 로그인창으로 포워드 하기!!
 			  }
 		}	
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 비밀번호 찾기 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@	
@@ -513,6 +511,8 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 			
 			ArrayList<OrderListVO> cartListO;
 			ArrayList<ProductVO> cartListP;
+			//상품 -> 옵션별 현재 잔여 재고수량
+			ArrayList<Integer> stocks = new ArrayList<Integer>();
 			
 			System.out.println("******************cartView 메서드 실행*****************");
 			//현재 유저 VO
@@ -531,10 +531,18 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 			for(int i=0;i<cartListO.size();i++) {
 				int product_idx = cartListO.get(i).getOrderList_product_idx();
 				cartListP.add(mapper.cartListP(product_idx));
+				System.out.println(product_idx+" , "+cartListO.get(i).getOrderList_size()+ " , "+cartListO.get(i).getOrderList_color());
+				stocks.add(mapper.getTableStock(product_idx+"",cartListO.get(i).getOrderList_size(),cartListO.get(i).getOrderList_color()));
+				System.out.println(stocks.get(i));
 			}
+			
+			
 			
 			model.addAttribute("listO",cartListO); //사이즈,색상,개수
 			model.addAttribute("listP",cartListP); //상품이름,상품 이미지, 상품 가격
+			model.addAttribute("stocks",stocks);
+			
+			
 			
 			System.out.println("******************cartView 메서드 끝*****************");
 			return "member/cartView";
@@ -582,35 +590,34 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 		
 		
 		//장바구니 주문 status 변경
-		@RequestMapping(value = "/updateStatus")
-		public String updateStatus(HttpSession session,HttpServletRequest request, Model model) {
-			
-			System.out.println("******************updateStatus 메서드 실행*****************");
-			//현재 유저 VO
-			ClientVO vo = (ClientVO) session.getAttribute("nowUser");
-			//현재 유저 idx
-			int client_idx = vo.getClient_idx();
-			
-			spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
-			
-			String idxs = request.getParameter("idxs");
-			if(idxs.equals("all")) {  						//전체 주문일때
-				System.out.println(client_idx);
-				mapper.allStatus(client_idx);
-			}else {                                         //선택 주문일때
-				String[] indexs = idxs.split("_");
-				
-				for(int i=0;i<indexs.length;i++) {
-					if(indexs[i]!="" && indexs[i]!=null) {
-						//장바구니 idx 인자로 넘겨 실행
-						mapper.selectStatus(Integer.parseInt(indexs[i])); 
-					}
-				}
-			}
-			System.out.println("******************updateStatus 메서드 끝*****************");
-			
-			return "redirect:cartView"; 
-		}
+	      @RequestMapping(value = "/updateStatus")
+	      public String updateStatus(HttpSession session,HttpServletRequest request, Model model) {
+	         
+	         System.out.println("******************updateStatus 메서드 실행*****************");
+	         //현재 유저 VO
+	         ClientVO vo = (ClientVO) session.getAttribute("nowUser");
+	         //현재 유저 idx
+	         int client_idx = vo.getClient_idx();
+	         
+	         spsDAO mapper = memberSqlSession.getMapper(spsDAO.class);
+	         
+	         String idxs = request.getParameter("idxs");
+	            
+	         String[] indexs = idxs.split("_");
+	         
+	         for(int i=0;i<indexs.length;i++) {
+	            if(indexs[i]!="" && indexs[i]!=null) {
+	               System.out.println(indexs[i]);
+	               //장바구니 idx 인자로 넘겨 실행
+	               mapper.selectStatus(Integer.parseInt(indexs[i])); 
+	            }
+	         }
+	         System.out.println("******************updateStatus 메서드 끝*****************");
+	         
+	         return "redirect:pay"; 
+	      }
+		
+		
 		
 		
 		//주문 목록 view(orderList_status 가 cart,ready가 아닌 데이터만 추출) 
@@ -883,7 +890,10 @@ public String searchId(HttpServletRequest request, Model model, String target) {
 			
 			//저장 이름 지정
 			String extension = FilenameUtils.getExtension(mf.getOriginalFilename());
-			String fileName = "review_"+orderIdx+"."+extension; 
+			String fileName ="";
+			if(extension!="" && extension!=null) {
+				fileName = "review_"+orderIdx+"."+extension;
+			} 
 	        
 			//파일 이미지 경로
 			String safeFile = root_path+attach_path+fileName; 

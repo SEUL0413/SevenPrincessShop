@@ -127,6 +127,11 @@
 		update orderList set orderList_status='ready' WHERE orderList_idx = #{param1};
 	</update>
 	
+	<!-- 장바구니 옵션별 stock 개수 -->
+	<select id="getTableStock" parameterType="String" resultType="int">
+      SELECT stock_stock FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2} AND stock_color = #{param3};
+   </select>
+	
 	<!-- 주문 목록 출력(OrderListVO) -->
 	<select id="myOrderO" parameterType="int" resultType="com.sps.vo.OrderListVO">
 		SELECT * FROM orderList WHERE orderlist_status NOT IN('cart','ready') and orderlist_client_idx=#{param1} order by orderList_idx desc;

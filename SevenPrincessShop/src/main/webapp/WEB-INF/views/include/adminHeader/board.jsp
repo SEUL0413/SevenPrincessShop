@@ -26,7 +26,7 @@
 
 </head>
 
-<!-- 문의 게시판용 header  -->	
+<!-- 결제 내역 조회용 header  -->	
 <body>
   <section id="container">
     <!-- **********************************************************************************************************************************************************
@@ -63,7 +63,7 @@
 	          	<img src="${pageContext.request.contextPath}/resources/myPage/images/sample.png" width="100px" height="95px"/>
 	          </span>
           </div>
-          <h5 class="centered">Sam Soffes</h5>
+          <h5 class="centered">${nowUser.client_name} 님</h5>
           <li class="mt">
             <a class="dcjq-parent" href="memberList">
               <i class="fa fa-dashboard"></i>
@@ -95,12 +95,18 @@
               </a>
           </li>
           <li class="sub-menu">
+            <a class="dcjq-parent" href="stockTable">
+              <i class="fa fa-book"></i>
+              <span><h5>재고 조회</h5></span>
+              </a>
+          </li>
+          <li class="sub-menu">
             <a class="dcjq-parent" href="salesCheck">
               <i class="fa fa-book"></i>
               <span><h5>매출 조회</h5></span>
               </a>
           </li>
-           <li class="sub-menu">
+          <li class="sub-menu">
             <a class="dcjq-parent" href="salesGraph">
               <i class="fa fa-book"></i>
               <span><h5>매출 그래프</h5></span>
@@ -111,87 +117,86 @@
       </div>
     </aside>
     <!--sidebar end-->
+    
+     <!-- js placed at the end of the document so the pages load faster -->
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery/jquery.min.js"></script>
+	
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/bootstrap/js/bootstrap.min.js"></script>
+	  <script class="include" type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/jquery.dcjqaccordion.2.7.js"></script>
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.scrollTo.min.js"></script>
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.nicescroll.js" type="text/javascript"></script>
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.sparkline.js"></script>
+	  <!--common script for all pages-->
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/common-scripts.js"></script>
+	  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/gritter/js/jquery.gritter.js"></script>
+	  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/gritter-conf.js"></script>
+	  <!--script for this page-->
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/sparkline-chart.js"></script>
+	  <script src="${pageContext.request.contextPath}/resources/admin/lib/zabuto_calendar.js"></script>
+	  <script type="text/javascript">
+		  $(document).ready(function() {
+		      var unique_id = $.gritter.add({
+		        // (string | mandatory) the heading of the notification
+		        title: 'SPS 관리자 모드에 접속!',
+		        // (string | mandatory) the text inside the notification
+		        text: '닫기 단추를 사용하려면 마우스로 이동하세요. 로고 옆에 있는 버튼을 클릭하면 왼쪽 사이드바를 숨길 수 있습니다',
+		        // (string | optional) the image to display on the left
+		        image: '${pageContext.request.contextPath}/resources/images/pageImages/logo2.png',
+		        // (bool | optional) if you want it to fade out on its own or just sit there
+		        sticky: false,
+		        // (int | optional) the time you want it to be alive for before fading out
+		        time: 8000,
+		        // (string | optional) the class name you want to apply to that specific message
+		        class_name: 'my-sticky-class'
+		      });
+	
+	      return false;
+	    });
+	  </script>
+	  <script type="application/javascript">
+	    $(document).ready(function() {
+	      $("#date-popover").popover({
+	        html: true,
+	        trigger: "manual"
+	      });
+	      $("#date-popover").hide();
+	      $("#date-popover").click(function(e) {
+	        $(this).hide();
+	      });
+	
+	      $("#my-calendar").zabuto_calendar({
+	        action: function() {
+	          return myDateFunction(this.id, false);
+	        },
+	        action_nav: function() {
+	          return myNavFunction(this.id);
+	        },
+	        ajax: {
+	          url: "show_data.php?action=1",
+	          modal: true
+	        },
+	        legend: [{
+	            type: "text",
+	            label: "Special event",
+	            badge: "00"
+	          },
+	          {
+	            type: "block",
+	            label: "Regular event",
+	          }
+	        ]
+	      });
+	    });
+	
+	    function myNavFunction(id) {
+	      $("#date-popover").hide();
+	      var nav = $("#" + id).data("navigation");
+	      var to = $("#" + id).data("to");
+	      console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+	    }
+	  </script>
   
  
- 
-  <!-- js placed at the end of the document so the pages load faster -->
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery/jquery.min.js"></script>
-
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/bootstrap/js/bootstrap.min.js"></script>
-  <script class="include" type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/jquery.dcjqaccordion.2.7.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.scrollTo.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.nicescroll.js" type="text/javascript"></script>
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/jquery.sparkline.js"></script>
-  <!--common script for all pages-->
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/common-scripts.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/gritter/js/jquery.gritter.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/lib/gritter-conf.js"></script>
-  <!--script for this page-->
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/sparkline-chart.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/admin/lib/zabuto_calendar.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      var unique_id = $.gritter.add({
-        // (string | mandatory) the heading of the notification
-        title: 'SPS 관리자 모드에 접속!',
-        // (string | mandatory) the text inside the notification
-        text: '닫기 단추를 사용하려면 마우스로 이동하세요. 로고 옆에 있는 버튼을 클릭하면 왼쪽 사이드바를 숨길 수 있습니다',
-        // (string | optional) the image to display on the left
-        image: '${pageContext.request.contextPath}/resources/images/pageImages/logo2.png',
-        // (bool | optional) if you want it to fade out on its own or just sit there
-        sticky: false,
-        // (int | optional) the time you want it to be alive for before fading out
-        time: 8000,
-        // (string | optional) the class name you want to apply to that specific message
-        class_name: 'my-sticky-class'
-      });
-
-      return false;
-    });
-  </script>
-  <script type="application/javascript">
-    $(document).ready(function() {
-      $("#date-popover").popover({
-        html: true,
-        trigger: "manual"
-      });
-      $("#date-popover").hide();
-      $("#date-popover").click(function(e) {
-        $(this).hide();
-      });
-
-      $("#my-calendar").zabuto_calendar({
-        action: function() {
-          return myDateFunction(this.id, false);
-        },
-        action_nav: function() {
-          return myNavFunction(this.id);
-        },
-        ajax: {
-          url: "show_data.php?action=1",
-          modal: true
-        },
-        legend: [{
-            type: "text",
-            label: "Special event",
-            badge: "00"
-          },
-          {
-            type: "block",
-            label: "Regular event",
-          }
-        ]
-      });
-    });
-
-    function myNavFunction(id) {
-      $("#date-popover").hide();
-      var nav = $("#" + id).data("navigation");
-      var to = $("#" + id).data("to");
-      console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-    }
-  </script>
-  
 </body>
 
 </html>

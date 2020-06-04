@@ -106,7 +106,7 @@ function add_textbox(){
 <body>
 
 <!-- 관리자 header 설정 -->
-<%@ include file="/WEB-INF/views/include/adminHeader/member.jsp"%>
+<%@ include file="/WEB-INF/views/include/adminHeader/upload.jsp"%>
 	  <!--main content start-->
       <section id="main-content">
      		<section class="wrapper">

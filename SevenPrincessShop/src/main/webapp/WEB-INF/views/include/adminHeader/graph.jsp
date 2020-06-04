@@ -26,9 +26,8 @@
 
 </head>
 
-<!-- 판매 기록 조회용 header  -->	
+<!-- 결제 내역 조회용 header  -->	
 <body>
-  
   <section id="container">
     <!-- **********************************************************************************************************************************************************
         TOP BAR CONTENT & NOTIFICATIONS
@@ -64,7 +63,7 @@
 	          	<img src="${pageContext.request.contextPath}/resources/myPage/images/sample.png" width="100px" height="95px"/>
 	          </span>
           </div>
-          <h5 class="centered">Sam Soffes</h5>
+          <h5 class="centered">${nowUser.client_name} 님</h5>
           <li class="mt">
             <a class="dcjq-parent" href="memberList">
               <i class="fa fa-dashboard"></i>
@@ -84,7 +83,7 @@
               </a>
           </li>
           <li class="sub-menu">
-            <a class="dcjq-parent" href="allBoard">
+            <a class="dcjq-parent" href="allBoard" onclick="categoryChange(this.id)" id="4">
               <i class="fa fa-book"></i>
               <span><h5>문의 게시판 조회</h5></span>
               </a>
@@ -93,6 +92,12 @@
             <a class="dcjq-parent" href="productUpload">
               <i class="fa fa-book"></i>
               <span><h5>상품 업로드</h5></span>
+              </a>
+          </li>
+          <li class="sub-menu">
+            <a class="dcjq-parent" href="stockTable">
+              <i class="fa fa-book"></i>
+              <span><h5>재고 관리</h5></span>
               </a>
           </li>
           <li class="sub-menu">
@@ -190,8 +195,6 @@
 	      console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
 	    }
 	  </script>
-  
- 
   
  
 </body>

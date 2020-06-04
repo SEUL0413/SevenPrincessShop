@@ -71,7 +71,7 @@
               </a>
           </li>
           <li class="sub-menu">
-            <a class="active" href="salesTable">
+            <a class="dcjq-parent" href="salesTable">
               <i class="fa fa-desktop"></i>
               <span><h5>판매 기록 조회</h5></span>
               </a>
@@ -95,7 +95,7 @@
               </a>
           </li>
           <li class="sub-menu">
-            <a class="dcjq-parent" href="stockTable">
+            <a class="active" href="stockTable">
               <i class="fa fa-book"></i>
               <span><h5>재고 관리</h5></span>
               </a>

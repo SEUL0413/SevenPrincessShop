@@ -254,11 +254,59 @@ public interface spsDAO {
 // 명훈 추가 05.25////////////////////////////////////////////
 
 
+//	동호 DAO  ////////////////////////////////////////////////
+	   
+// 바로구매 정보 가져오기
+	ArrayList<OrderListVO> cartListdPay(int orderlist_client_idx);
+	ArrayList<OrderListVO> cartListPay(String orderlist_client_idx);
 
 
+// stock 개수 내리기
+	void stockSell(String stock_stock, String product_idx, String stock_size, String stock_color);
+
+//	전제 stock 수정
+	void productUpdate(String product_idx, String product_idx2);
+
+// 주문정보 가져오기
+	ArrayList<OrderListVO> cartListPayYet(String orderlist_client_idx);
+
+// status payOK로 변경
+	void allStatus(String string, String orderlist_orderDate, String clinet_address, String clinet_detailAddress,
+			String clinet_addressNumber, String client_idx);
 
 
+	// 바로 구매 정보 넘겨주고 stock 구매완료(payOK)로 설정
+	void dPayInsertOrderList(String orderlist_client_idx, String orderList_product_idx, String orderList_address,
+			String orderList_detailAddress, String orderList_addressNumber, String orderList_size,
+			String orderList_color, String orderList_stock, String orderList_orderDate);
 
+	void dPayInsertOrderList(ClientVO vo);
+
+
+//	옵션별 stock 구하기
+	int getTableStock(String product_idx, String stock_size, String stock_color);
+
+	
+
+	
+
+// 동호 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	int allCountProduct(Map<String, Object> map);	// 글의 총 수량
+
+	ArrayList<ProductVO> selectProduct();			// 재고 관리 글들을 불러오는 메소드
+
+	ArrayList<ProductVO> selectProductList(Map<String, Object> map); // 
+
+	void deleteP(int parseInt); // 재고 게시글을 삭제하는 메소드
+
+	void stockInsert(ProductVO productVO); // 재고 제품 추가하는 메소드
+
+	void stockUpdate(ProductVO vo); // 재고 게시글을 수정하는 메소드
+	
+	ProductVO pickProduct(int product_idx); // 수정하길 원하는 재고 게시글을 불러오는 메소드
+
+	void backCart();
 
 
 

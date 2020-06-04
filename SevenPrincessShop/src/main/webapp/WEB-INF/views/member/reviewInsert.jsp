@@ -57,11 +57,14 @@
 		color: orange;
 	}
 </style>
+
 <script type="text/javascript">
 
+	$(window).on('beforeunload', function() {
+	    return '이 페이지를 벗어나면 현재 작성중인 내용이 지워집니다.';
+	});
 
 	function gradeChk(id){  //id : 별점 개수 (ex 3개)
-	
 		for(let i=0;i<5;i++){
 			let star = document.getElementById(i+1);
 			star.innerHTML = "★";
@@ -118,7 +121,7 @@
 
 			<h2>구매후기 작성</h2><hr/>
 		
-			<form name="insertReview" action="insertR?orderIdx=${order.orderList_idx}&productIdx=${product.product_idx}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
+			<form name="insertReview" class="form" action="insertR?orderIdx=${order.orderList_idx}&productIdx=${product.product_idx}" enctype="multipart/form-data" method="post" accept-charset="UTF-8">
 				<table style="width:700px">
 						<tr style="background-color: #F2F2F2;height:50px">
 							<th colspan="2" style="text-align: left">&nbsp;&nbsp;주문일 : ${order.orderList_orderDate}</th>

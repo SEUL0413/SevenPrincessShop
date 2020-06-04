@@ -95,7 +95,7 @@
 		 		</tr>
 		 		<tr>
 		 			<td>받는주소</td>
-		 			<td>${nowUser.client_address} ${nowUser.client_detailAddress}</td>
+		 			<td>${o.orderList_address} ${o.orderList_detailAddress}</td>
 		 		</tr>
 		 	</table>
 		 	<hr/>

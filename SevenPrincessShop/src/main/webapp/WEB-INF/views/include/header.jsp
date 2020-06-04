@@ -26,8 +26,8 @@
 			alert("로그인 후 이용해주세요");
 			location.href="login";
 		}
-		else if(flag=='1'){location.href="cartView";}
-		else if(flag=='2'){location.href="qnaBoard";}
+		else if(flag=='10'){location.href="cartView";}
+		else if(flag=='20'){location.href="qnaBoard";}
 		
 	}
 </script>
@@ -72,10 +72,10 @@
 				    </li>
 				  	<c:if test="${sessionScope.nowUser.client_registerDate!='0000-00-00 00:00'}">
 					    <li class="nav-item">
-					    	<a class="nav-link" onclick="isLogin(this.id)" id="1">장바구니</a>
+					    	<a class="nav-link" onclick="isLogin(this.id)" id="10">장바구니</a>
 					    </li> 
 					    <li class="nav-item">
-					    	<a class="nav-link" onclick="isLogin(this.id)" id="2">고객센터</a>
+					    	<a class="nav-link" onclick="isLogin(this.id)" id="20">고객센터</a>
 					    </li>
 				    </c:if>
 		   	 	</ul>

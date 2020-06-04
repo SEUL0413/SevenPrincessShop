@@ -29,6 +29,7 @@ import com.sps.vo.AboardVO;
 import com.sps.vo.ClientListVO;
 import com.sps.vo.JoinListVO;
 import com.sps.vo.JoinVO;
+import com.sps.vo.ProductListVO;
 import com.sps.vo.ProductVO;
 import com.sps.vo.Qboard;
 import com.sps.vo.QboardList;
@@ -855,6 +856,176 @@ public class AdminController {
 			         
 			return "admin/salesCheck";
 		}
+		
+//		재고관리 테이블
+			@RequestMapping(value = "/stockTable")
+			public String stockTable(HttpServletRequest request, Model model, ProductListVO productList) {
+				System.out.println("***************stockTable() 메서드 시작****************");
+				
+				spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+				
+				int pageSize = 10; // 보여줄 글의 개수
+				int currentPage = 1;
+				
+				// view 에서 넘어오는 현재페이지 정보
+				try {
+					currentPage = Integer.parseInt(request.getParameter("currentPage")); 
+				}
+				catch (NumberFormatException e) { }
+				
+				// 검색값을 가져온다
+				String searchKey = request.getParameter("searchKey");
+				String searchValue = request.getParameter("searchValue");
+				
+				// 검색한 값을 화면에 유지하기위해 값을 보내놓는다.
+				model.addAttribute("key", searchKey);
+				model.addAttribute("value",searchValue);
+				
+				// 검색키가 없을 경우
+				if (searchKey == null) productList.setSearchKey("product_idx");
+				else productList.setSearchKey(searchKey);
+				
+				// 검색값이 없을 경우
+				if (searchValue == null) productList.setSearchValue("");
+				else productList.setSearchValue(searchValue);
+				
+				System.out.println("searchKey : " + productList.getSearchKey());
+				System.out.println("searchValue : " + productList.getSearchValue());
+				
+				// mapper에서 검색값을 불러올 map을 만든다.		
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("searchKey", productList.getSearchKey());
+				map.put("searchValue", productList.getSearchValue());
+				
+				//선언했던 map에 startPage,pageSize를 더 넣어준다.
+				map.put("startPage", productList.getStartNo());
+				map.put("pageSize", productList.getPageSize());
+				System.out.println("startPage : " + productList.getStartNo());
+				System.out.println("pageSize : " + productList.getPageSize());
+				System.out.println("컨트롤러의 memberList메소드의 map값 : " + map);
+				
+				int totalCount = mapper.allCountProduct(map); // 글의 총 수량
+				
+//				페이지 초기화
+				productList.initProductList(pageSize, totalCount, currentPage);
+				
+				productList.setProductList(mapper.selectProductList(map));
+				System.out.println(currentPage);
+				System.out.println("초기화 한 productList " + productList);
+				
+				System.out.println(totalCount);
+				
+				model.addAttribute("totalCount", totalCount);
+				model.addAttribute("productList", productList); 
+				
+				System.out.println("***************stockTable() 메서드 끝****************");
+				return "admin/stockTable";
+			}
+			
+			// 관리자 모드 게시판 글 삭제
+			@RequestMapping(value="/deleteP")
+			public String deleteP(HttpServletRequest request,Model model,HttpServletResponse response) throws IOException {
+				System.out.println("**************deleteP() 메서드 실행***************");
+
+				// 매퍼생성
+				spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+				
+				// 삭제할 목록들의 product_idx를 배열에 세팅 
+				String idxs = request.getParameter("idxs");
+				String[] indexs = idxs.split("_");
+				System.out.println(idxs);
+				for (int i = 0; i < indexs.length; i++) {
+					System.out.println(indexs[i]);
+				}
+				
+				System.out.println(indexs.length);
+				
+				for(int i = 0; i < indexs.length; i++) {
+					if(indexs[i] != "" && indexs[i] != null) {
+						// product_idx를 인자로 넘겨 실행
+						mapper.deleteP(Integer.parseInt(indexs[i]));
+					}
+				}
+				
+				// 완료후 alert 띄어주기
+				model.addAttribute("delete_msg","제품 글 삭제가 완료되었습니다.");
+				
+				System.out.println("***************deleteP() 메서드 끝****************");
+				
+				return "admin/stockTable";
+			}
+			
+			// 관리자 모드 stockInsert 화면으로 가기
+			@RequestMapping(value="/stockInsert")
+			public String stockInsert(HttpServletRequest request, Model model) {
+				System.out.println("***************stockInsert() 메서드 시작****************");
+				System.out.println("***************stockInsert() 메서드 끝****************");
+				return "admin/stockInsert";
+			}
+			
+//			관리자 모드 재고 Insert Mapping
+			@RequestMapping("/stockInsertOK")
+			public String stockInsertOK(HttpServletRequest request, Model model, ProductVO productVO) {
+				System.out.println("***************stockInsertOK() 메서드 시작****************");
+				
+				spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+				
+//				기입한 정보들을 테이블에 넣어주는 mapper
+				mapper.stockInsert(productVO);
+				
+				System.out.println("***************stockInsertOK() 메서드 끝****************");
+				return "redirect:stockTable";
+			}
+			
+			@RequestMapping("/stockUpdate")
+			public String stockUpdate(HttpServletRequest request, Model model) {
+				System.out.println("***************stockUpdate() 메서드 시작****************");
+				
+				spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+				
+				// 삭제할 목록들의 product_idx를 배열에 세팅 
+				String idx = request.getParameter("idx");
+				
+//				vo 객체 안에 product_idx에 따른 삭제할 목록 하나를 저장한다.
+				ProductVO vo = mapper.pickProduct(Integer.parseInt(idx));
+
+//				stockUpdate.jsp에 idx와 vo를 넘겨준다.
+				model.addAttribute("idx", idx);
+				model.addAttribute("vo", vo);
+				
+				return "admin/stockUpdate";
+			}
+			
+			@RequestMapping("/stockUpdateOK")
+			public String stockUpdateOK(HttpServletRequest request, Model model) {
+				System.out.println("***************stockUpdateOK() 메서드 시작****************");
+				
+				spsDAO mapper = adminSqlSession.getMapper(spsDAO.class);
+				
+//				stockUpdate.jsp에서 수정한 정보들을 받아와 변수에 저장한다.
+				int product_idx = Integer.parseInt(request.getParameter("product_idx"));
+				String product_name = request.getParameter("product_name");
+				int product_price = Integer.parseInt(request.getParameter("product_price"));
+				int product_category = Integer.parseInt(request.getParameter("product_category"));
+				int product_stock = Integer.parseInt(request.getParameter("product_stock"));
+
+//				vo 객체에 수정한 내용들을 저장하기
+				ProductVO vo = new ProductVO();
+				vo.setProduct_idx(product_idx);
+				vo.setProduct_name(product_name);
+				vo.setProduct_price(product_price);
+				vo.setProduct_category(product_category);
+				vo.setProduct_stock(product_stock);
+				
+//				저장 내용들을 테이블에서 수정시키기
+				mapper.stockUpdate(vo);
+				
+//				수정 완료 시 메시지 띄우기
+				model.addAttribute("update_msg", "제품 글 수정이 완료되었습니다.");
+				
+				System.out.println("***************stockUpdateOK() 메서드 끝****************");
+				return "admin/stockTable";
+			}
 		
 
 	
