@@ -133,7 +133,6 @@
                            
                         </td>
                         
-                        
                         <!--5.상품 주문개수 -->
                         <td align="center">
                            <div class="row" style="margin-left: 20px">
@@ -143,7 +142,7 @@
                                        <c:set var="s_stock" value="${s.get(status.index)}"/>
                                        <c:set var="o_stock" value="${o.orderList_stock}"/>
                                        
-                                       <select name="amount" id="selectStock" value="${o.orderList_stock}" class="form-control" style="width:55px">
+                                       <select name="amount" id="${status.current.orderList_idx}" value="${o.orderList_stock}" class="form-control" style="width:75px">
                                              <!-- 잔여 재고보다 주문개수가 적은 경우 -->
                                              <c:if test="${s_stock>=o_stock}">
                                                    <!-- 4 3 잔여재고가 5보다 작을 경우 -->

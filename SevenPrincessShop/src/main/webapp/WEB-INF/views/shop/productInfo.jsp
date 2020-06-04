@@ -83,9 +83,9 @@ function showOption(size){
 //   옵션 선택
    function selectOptionend() {
        try{
-          	color = $("#colorSel option:selected").val().split(" ")[0];
+             color = $("#colorSel option:selected").val().split(" ")[0];
           }catch(e){
-       	   color = $("#colorSel option:selected").val();
+             color = $("#colorSel option:selected").val();
           }
       for (var i = 0; i < sizeList.length; i++) {
          if(sizeList[i] == $("#sizeSel option:selected").val() && colorList[i] == color){
@@ -111,25 +111,25 @@ function showOption(size){
                
                var cc;
 
-	           try{
-	        	   cc = $("#colorSel option:selected").val().split(" : ")[1].split(")")[0];
-	           }
-        	    catch (e) {
-        	    	cc=5;
-				}
-        			
-        		
+              try{
+                 cc = $("#colorSel option:selected").val().split(" : ")[1].split(")")[0];
+              }
+               catch (e) {
+                  cc=5;
+            }
+                 
+              
                
 
                
 
-            		for (var i = 1; i <= cc; i++) {
-                      	stockOption =   stockOption +"<option value='" + i + "'>"+ i +"</option>";
-                   	}
+                  for (var i = 1; i <= cc; i++) {
+                         stockOption =   stockOption +"<option value='" + i + "'>"+ i +"</option>";
+                      }
       
                
                
-      			
+               
                
                
                $("#orderOption").append("<tr id = '" + count 
@@ -195,19 +195,22 @@ function showOption(size){
    
 //   장바구니 클릭
     function cart(){
-   if (client=="비회원"){
+   if (client==""){
          alert("로그인이 필요합니다.");
          return false; 
-      }else if($('.selOption').length == 0){
+    }else if("${nowUser.client_registerDate}" == "0000-00-00 00:00"){
+       alert("관리자 모드에서는 주문이 불가능합니다.");
+        return false; 
+   }else if($('.selOption').length == 0){
          alert("선택된 상품이 없습니다.");
          return false; 
       }
       alert("상품 "+ $('.selOption').length + "개가 장바구니에 담겼습니다.");
       
       for (var i = 0; i < sizeList.length; i++) {
-    	  if(sizeList[i]!=""|| colorList[i]!="" || stockList[i]!=""){
-         	sendCode += sizeList[i]+"_"+colorList[i]+"_"+stockList[i]+"/"; 
-    	  }
+         if(sizeList[i]!=""|| colorList[i]!="" || stockList[i]!=""){
+            sendCode += sizeList[i]+"_"+colorList[i]+"_"+stockList[i]+"/"; 
+         }
       }
       var confirmFlag = confirm("장바구니로 이동하시겠습니까?");
          var idx = ${productVO.product_idx};
@@ -217,18 +220,21 @@ function showOption(size){
     var idx = ${productVO.product_idx};
 //   바로 결제 클릭
     function pay(){
-       if (client=="비회원"){
+       if (client==""){
          alert("로그인이 필요합니다.");
-         return false; 
+         return false;
+       }else if("${nowUser.client_registerDate}" == "0000-00-00 00:00"){
+          alert("관리자 모드에서는 주문이 불가능합니다.");
+           return false; 
       }else if($('.selOption').length == 0){
          alert("선택된 상품이 없습니다.");
          return false; 
       }
       for (var i = 0; i < sizeList.length; i++) {
-	    	  if(sizeList[i]!=""|| colorList[i]!="" || stockList[i]!=""){
-	           	sendCode += sizeList[i]+"_"+colorList[i]+"_"+stockList[i]+"/"; 
-	      	  }      
-    	  }
+            if(sizeList[i]!=""|| colorList[i]!="" || stockList[i]!=""){
+                 sendCode += sizeList[i]+"_"+colorList[i]+"_"+stockList[i]+"/"; 
+              }      
+         }
          var idx = ${productVO.product_idx};
          location.href = "dPay?orderList_client_idx=" + ${nowUser.client_idx} + "&orderList_product_idx=" + idx +"&selectCode="+sendCode;
    }
@@ -446,15 +452,15 @@ function showOption(size){
          <c:set var="review_content" value="${fn:replace(fn:trim(list[i].review_content), '<', '&lt;')}"/>
          <c:set var="review_content" value="${fn:replace(review_content, '>', '&gt;')}"/>
          <c:if test="${list[i].review_imgPath !=''}">
-         	<img class="imgTag" src="${pageContext.request.contextPath}/resources/images/reviewImages/${list[i].review_imgPath}" alt="이미지 파일을 찾을 수 없습니다."/><br/>
-    	 </c:if> 
+            <img class="imgTag" src="${pageContext.request.contextPath}/resources/images/reviewImages/${list[i].review_imgPath}" alt="이미지 파일을 찾을 수 없습니다."/><br/>
+        </c:if> 
             ${list[i].review_content}
       </td>
    </tr>
   
       <tr><td colspan="4"></td></tr>
    </c:forEach>
-      		
+            
    
    
    

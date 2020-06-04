@@ -200,7 +200,7 @@
 			
 					<c:if test="${info.endPage >= info.totalPage}">
 							<input type="button" value="&gt;" disabled="disabled" class="btn btn-secondary" title="다음 10 페이지가 없습니다."/>
-						<input type="button" value="&gt;&gt;" class="btn btn-secondary444" disabled="disabled" title="이미 마지막 페이지 입니다."/>
+						<input type="button" value="&gt;&gt;" class="btn btn-secondary" disabled="disabled" title="이미 마지막 페이지 입니다."/>
 					</c:if>
 				</div><br/><br/>
 			</form>

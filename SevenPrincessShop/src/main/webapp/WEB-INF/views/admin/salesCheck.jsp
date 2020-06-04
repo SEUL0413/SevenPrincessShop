@@ -162,6 +162,8 @@
 				<td width="35%"><fmt:formatNumber value="${totalSales}" pattern="#,###"/>원</td>
 			</tr>
 		</table>
+		
+		</c:if>
 			
 		
 		
@@ -185,7 +187,6 @@
 					</td>
 				</tr>
 			</c:forEach>
-		</c:if>
 		
 		
 		<!-- 페이지 이동 버튼 -->
@@ -193,24 +194,25 @@
 					<td align="center" colspan="5">
 						<!-- 처음으로, 10페이지 앞으로 --> 
 						<c:if test="${joinList.startPage > 1}">
-							<input type="button" value="start page" onclick="location.href='?currentPage=1'" title="첫 페이지로 이동합니다." />
-							<input type="button" value="-10 page" onclick="location.href='?currentPage=${joinList.startPage - 1}'" title="이전 10 페이지로 이동합니다." />
+							<input type="button" class="btn btn-secondary" value="&lt;&lt;" onclick="location.href='?currentPage=1'" title="첫 페이지로 이동합니다." />
+							<input type="button" class="btn btn-secondary" value="&lt;" onclick="location.href='?currentPage=${joinList.startPage - 1}'" title="이전 10 페이지로 이동합니다." />
 						</c:if> 
 						<c:if test="${joinList.startPage <= 1}">
-							<input type="button" value="start page" disabled="disabled" title="이미 첫 페이지 입니다." />
-							<input type="button" value="-10 page" disabled="disabled" title="이전 10 페이지가 없습니다." />
+							<input type="button" class="btn btn-secondary" value="&lt;&lt;" disabled="disabled" title="이미 첫 페이지 입니다." />
+							<input type="button" class="btn btn-secondary" value="&lt;" disabled="disabled" title="이전 10 페이지가 없습니다." />
 						</c:if> 
 						
 						
 						<!-- 페이지 이동 --> 
 						<c:forEach var="i" begin="${joinList.startPage}" end="${joinList.endPage}" step="1">
-							<c:if test="${i == joinList.currentPage}">
-								<input class="button button2" type="button" value="${i}" disabled="disabled" />
+							
+							<c:if test="${i!=0 && i == joinList.currentPage}">
+								<input class="button button2 btn btn-secondary"  type="button" value="${i}" disabled="disabled" />
 							</c:if>
 
-							<c:if test="${i != joinList.currentPage}">
+							<c:if test="${i!=0 && i != joinList.currentPage}">
 								
-									<input class="button button1" type="button" value="${i}" 
+									<input class="button button1 btn btn-secondary" type="button" value="${i}" 
 									 onclick="goPage(this.value)"/>
 									
 							</c:if>
@@ -218,17 +220,17 @@
 						
 						<!-- 마지막으로, 10페이지 뒤로 --> 
 						<c:if test="${joinList.endPage < joinList.totalPage}">
-							<input type="button" value="+10 page"
+							<input type="button" value="&gt;" class="btn btn-secondary"
 								onclick="location.href='?currentPage=${joinList.endPage + 1}'"
 								title="다음 10 페이지로 이동합니다." />
-							<input type="button" value="end page"
+							<input type="button" value="&gt;&gt;" class="btn btn-secondary"
 								onclick="location.href='?currentPage=${joinList.totalPage}'"
 								title="마지막 페이지로 이동합니다." />
 						</c:if> 
-						<c:if test="${joinList.endPage >= joinList.totalPage}">
-							<input type="button" value="+10 page" disabled="disabled"
+						<c:if test="${not empty joinList.currentPage && joinList.endPage >= joinList.totalPage}">
+							<input type="button" class="btn btn-secondary" value="&gt;" disabled="disabled"
 								title="다음 10 페이지가 없습니다." />
-							<input type="button" value="end page" disabled="disabled"
+							<input type="button" class="btn btn-secondary" value="&gt;&gt;" disabled="disabled"
 								title="이미 마지막 페이지 입니다." />
 						</c:if>
 					</td>

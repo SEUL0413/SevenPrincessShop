@@ -49,7 +49,6 @@
    }
    
    
-   
    //장바구니 모든 내역 삭제
    function deleteAll(){
       $("input[name=chk]").each(function(){
@@ -62,8 +61,8 @@
    //주문 개수를 바꾸기 위해선 orderList_idx(주문번호)와 변경할 orderList_stock(주문개수)가 필요!
    //c:forEach 반복문에서 해당 턴의 값을 가져와야 하므로 varStatus 속성을 이용해 value에 세팅한 후 값을 받는다.
    function stockChange(idx){  // idx : 해당 주문 번호
-      
-      let re_stock = $("#selectStock option:selected").val();
+      let temp = document.getElementById(idx);
+      let re_stock = temp.options[temp.selectedIndex].value;
       alert("주문 수량이 적용되었습니다!");
       location.href="updateStock?idx="+idx+"&re_stock="+re_stock;
    }
