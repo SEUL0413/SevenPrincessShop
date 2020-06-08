@@ -72,10 +72,6 @@
        <id property="product_registerDate" column="product_registerDate"/>
        <id property="product_hit" column="product_hit"/>
        <id property="product_imgPath" column="product_imgPath"/>
-       <id property="product_Sstock" column="product_Sstock"/>
-       <id property="product_Mstock" column="product_Mstock"/>
-       <id property="product_Lstock" column="product_Lstock"/>
-       <id property="product_Fstock" column="product_Fstock"/>
        <id property="product_stock" column="product_stock"/>
     </resultMap>
    
@@ -523,8 +519,15 @@
             product
          <if test="!searchKey .equals('')">
             <if test="searchValue != null and !searchValue.equals('') ">
-            where
-               ${searchKey} LIKE '%${searchValue}%'
+            	<if test="searchKey.equals('product_category')">
+            		 where
+            		 ${searchKey} LIKE '${searchValue}'
+            	</if>
+            	<if test="!searchKey.equals('product_category')">
+            		where
+               		${searchKey} LIKE '%${searchValue}%'
+            	</if>
+         
             </if>
          </if>
          order by product_idx desc

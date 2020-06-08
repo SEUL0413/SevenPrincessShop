@@ -214,9 +214,33 @@ public class AdminController {
    //검색값 받아오기
    String searchKey = request.getParameter("searchKey");
    String searchValue = request.getParameter("searchValue");
-   //검색한 값을 화면에 유지하기위해 값을 보내놓는다.
-   model.addAttribute("key", searchKey);
-   model.addAttribute("value",searchValue);
+  
+ //검색 설정을 안했을 경우
+ 	if(searchKey == null) searchKey = "orderList_idx";
+ 	if(searchValue == null) searchValue = "";
+
+ 	//검색한 값을 화면에 유지하기위해 값을 보내놓는다.
+ 	model.addAttribute("key", searchKey);
+ 	model.addAttribute("value",searchValue);
+
+ 	
+ 	if(searchKey != null & searchKey.equals("orderList_status")) {
+ 		switch (searchValue) {
+ 		case "장바구니":
+ 			searchValue = "cart";
+ 			break;
+ 		case "주문 취소":
+ 			searchValue = "CXL";
+ 			break;
+ 		case "결제 완료":
+ 			searchValue = "payOK";
+ 			break;
+ 		case "배송 완료":
+ 			searchValue = "send";
+ 			break;
+ 		}
+ 	}
+ 	System.out.println("searchValue" + searchValue);
 
    //기간 검색 값 받아오기
    String startDate = request.getParameter("startDate");
@@ -877,20 +901,48 @@ public class AdminController {
          String searchKey = request.getParameter("searchKey");
          String searchValue = request.getParameter("searchValue");
          
+         
+         if(searchKey == null) searchKey = "product_idx";
+         if(searchValue == null) searchValue = "";
+         
          // 검색한 값을 화면에 유지하기위해 값을 보내놓는다.
          model.addAttribute("key", searchKey);
          model.addAttribute("value",searchValue);
-         
          // 검색키가 없을 경우
          if (searchKey == null) productList.setSearchKey("product_idx");
          else productList.setSearchKey(searchKey);
-         
          // 검색값이 없을 경우
          if (searchValue == null) productList.setSearchValue("");
          else productList.setSearchValue(searchValue);
          
          System.out.println("searchKey : " + productList.getSearchKey());
          System.out.println("searchValue : " + productList.getSearchValue());
+         
+         
+     	if(searchKey != null & searchKey.equals("product_category")) {
+    		switch (searchValue) {
+    		case "블라우스":	productList.setSearchValue("1");	break;
+    		case "티셔츠":	productList.setSearchValue("2");	break;
+    		case "맨투맨":	productList.setSearchValue("3");	break;
+    		case "후드":	productList.setSearchValue("4");	break;
+    		case "청바지":	productList.setSearchValue("5");	break;
+    		case "반바지":	productList.setSearchValue("6");	break;
+    		case "와이트 팬츠":	productList.setSearchValue("7");	break;
+    		case "스커트":	productList.setSearchValue("8");	break;
+    		case "롱원피스":	productList.setSearchValue("9");	break;
+    		case "숏원피스":	productList.setSearchValue("10");	break;
+    		case "민소매":	productList.setSearchValue("11");	break;
+    		case "코트":	productList.setSearchValue("12");	break;
+    		case "자켓":	productList.setSearchValue("13");	break;
+    		case "가디건":	productList.setSearchValue("14");	break;
+    		case "패딩":	productList.setSearchValue("15");	break;
+    		case "가방":	productList.setSearchValue("16");	break;
+    		case "신발":	productList.setSearchValue("17");	break;
+    		case "모자":	productList.setSearchValue("18");	break;
+    		}
+    	}
+         
+     	System.out.println("searchKey : " + searchKey + " " + "searchValue : " + searchValue);
          
          // mapper에서 검색값을 불러올 map을 만든다.      
          Map<String, Object> map = new HashMap<String, Object>();
