@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sps.dao.spsDAO">
+
+
+<!-- 유정 특정 상품 컬러 종류 -->
+<select id="getColor" parameterType="String" resultType="String">
+   SELECT stock_color 
+   FROM STOCK
+   WHERE stock_product_idx = #{param1}
+   GROUP BY stock_color
+   ORDER BY stock_idx DESC;
+</select>
+
+
+
+<!-- 유정 특정 상품 사이즈 종류 -->
+<select id="getSize" parameterType="String" resultType="String">
+   SELECT stock_size 
+   FROM STOCK
+   WHERE stock_product_idx = #{param1}
+   GROUP BY stock_size
+   ORDER BY stock_idx DESC
+</select>
+
+
+
+<!-- 찬호 옵션 찾기 -->
+<select id="findOption" parameterType="String" resultType="String">
+	SELECT stock_color FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2}
+</select>
+
+<!-- 찬호 옵션별 재고 찾기 -->
+<select id="findOptionStock" parameterType="String" resultType="String">
+	SELECT stock_stock FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2} AND stock_color = #{param3};
+</select>
+
+<!-- 유정 장바구니에 담기 -->
+<insert id="insertCart" parameterType="String">
+   INSERT INTO ORDERLIST
+   (orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock, orderList_orderDate)
+   VALUES
+   (#{param1}, #{param2}, 'cart', #{param3}, #{param4}, #{param5}, #{param6});
+</insert>
+
+
+
+<!-- 유정 테이블에 저장된 전체 글의 개수를 얻어온다. -->
+<select id="selectCount" resultType="int">
+	SELECT count(*) FROM review WHERE review_product_idx = #{param1};
+</select>
+
+<!-- 유정 한 페이지 분량의 글  -->
+<select id="selectList" parameterType="int" resultType="com.sps.vo.ReviewVO">
+	<![CDATA[
+     SELECT * FROM (
+        SELECT c.client_name AS review_client_name,  r.review_content, r.review_productGrade, r.review_writeDate, r.review_imgPath 
+        FROM review r  JOIN CLIENT c
+        ON r.review_client_idx = c.client_idx 
+        WHERE r.review_product_idx = #{param1}
+        ORDER BY r.review_idx DESC
+        ) TT LIMIT #{param2},5;
+	]]>
+</select>
+
+
+
+
+
+
+<!-- 명훈 추가 05.25 -->
+<select id="getPList" parameterType="String" resultType="com.sps.vo.ProductVO">
+		select * 
+		from (SELECT * FROM product ORDER BY product_idx DESC LIMIT 0, 1000) AS A 
+		where product_category = #{param1}; <!-- param1은 String 타입의 cNum이 넘어옴. -->
+	</select>
+	
+	<select id="selectCategory" parameterType="String" resultType="int">
+		select product_category from product where product_category = #{param1} limit 1;
+	</select>
+	
+	<!-- index 페이지에서 HIT ITEM의 정보들을 가져오는 sql -->
+	<select id="bestListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product ORDER BY product_hit DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 상의 카테고리의 정보들을 가져오는 sql -->
+	<select id="topListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 1 and product_category <= 4 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 하의 카테고리의 정보들을 가져오는 sql -->
+	<select id="bottomListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 5 and product_category <= 8 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 원피스 카테고리의 정보들을 가져오는 sql -->
+	<select id="onePieceListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 9 and product_category <= 11 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 아우터 카테고리의 정보들을 가져오는 sql -->
+	<select id="outerListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 12 and product_category <= 15 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+	
+	<!-- index 페이지에서 악세사리 카테고리의 정보들을 가져오는 sql -->
+	<select id="acsListDescByIdx" resultType="com.sps.vo.ProductVO">
+		<![CDATA[
+			SELECT * FROM product where product_category >= 16 and product_category <= 18 ORDER BY product_idx DESC LIMIT 0, 8;
+		]]>
+	</select>
+
+	<!-- 히트 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectBestCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product ORDER BY product_hit DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 상의 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectTopCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 1 AND product_category <= 4 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 하의 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectBottomCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 5 AND product_category <= 8 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 원피스 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectOnePieceCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 9 AND product_category <= 11 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 아우터 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectOuterCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 12 AND product_category <= 15 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+	
+	<!-- 악세사리 카테고리 상품 이미지의 갯수를 가져오기 -->
+	<select id="selectAcsCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM (SELECT * FROM product WHERE product_category >= 16 AND product_category <= 18 ORDER BY product_idx DESC LIMIT 0, 8) AS A;
+		]]>
+	</select>
+
+	<!-- 특정 상품 정보 가지고 오기 -->
+	
+	<select id="getProductInfo" parameterType="String" resultType="com.sps.vo.ProductVO">
+		SELECT * 
+		FROM PRODUCT
+		WHERE product_idx = #{param1}
+	</select>
+	
+	<!-- 상품 조회수 올리기 -->
+	<update id="increment" parameterType="int">
+		update product set product_hit = product_hit + 1 where product_idx = #{product_idx}
+	</update>
+<!-- 명훈 추가 05.25 -->
+
+
+<!-- 동호 xml 설정 -->
+
+<!-- 동호  주문내역 : OrderListVO Pay -->
+   <select id="cartListPayYet" parameterType="String" resultType="com.sps.vo.OrderListVO">
+	<!-- SELECT orderList_product_idx,orderList_size,orderList_color,orderList_stock FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1}; -->
+      SELECT * FROM orderList WHERE orderList_status = "ready" and orderList_client_idx=#{param1};
+   </select>
+   
+	<!-- 동호  주문내역 : OrderListVO Pay -->
+   <select id="cartListPay" parameterType="String" resultType="com.sps.vo.OrderListVO">
+	<!-- SELECT orderList_product_idx,orderList_size,orderList_color,orderList_stock FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1}; -->
+      SELECT * FROM orderList WHERE orderList_status = "ready" and orderList_client_idx=#{param1};
+   </select>
+   
+	<!-- 동호  주문내역 : OrderListVO dPay -->
+   <select id="cartListdPay" parameterType="int" resultType="com.sps.vo.OrderListVO">
+	<!-- SELECT orderList_product_idx,orderList_size,orderList_color,orderList_stock FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1}; -->
+      SELECT * FROM orderList WHERE orderList_status = "dPay" and orderList_client_idx=#{param1};
+   </select>
+   
+   <!-- 동호 주문내역 : OrderListVO -->
+   <select id="cartListO" parameterType="int" resultType="com.sps.vo.ProductVO">
+      SELECT * FROM orderList WHERE orderList_idx=#{param1};
+   </select>
+   
+	<!-- 동호 주문내역 : ProductVO -->
+   <select id="cartListP" parameterType="int" resultType="com.sps.vo.ProductVO">
+      SELECT * FROM product WHERE product_idx=#{param1};
+   </select>
+   
+	<!-- 동호 장바구니를 전체 주문하면 status를 ready -> payOK로 변경  -->
+   <update id="allStatus" parameterType="String">
+      update orderList set orderList_status=#{param1}, orderList_orderDate=#{param2}, orderList_address=#{param3},orderList_detailAddress=#{param4},orderList_addressNumber=#{param5}
+       WHERE orderList_client_idx = #{param6} AND orderList_status = "ready";
+   </update>
+   
+   <!-- stock 테이블 수정 -->
+   <update id="stockSell" parameterType="String">
+     update stock set stock_stock = stock_stock-#{param1} WHERE stock_product_idx =#{param2} AND stock_size = #{param3} AND stock_color = #{param4};
+   </update>
+   
+   <!-- 전체 stock 수정 -->
+   <update id="productUpdate" parameterType="String">
+   	UPDATE PRODUCT SET product_stock=(SELECT SUM(stock_stock) FROM STOCK WHERE stock_product_idx =#{param1}) WHERE product_idx=#{param2};
+	</update>
+   
+   
+	<!-- 동호
+	임의로 넣어준 주문 상품목록을 dPay에 담았다가 pay페이지로 이동시  삭제 후
+	결제 완료시 상품목록을 insert 해준다. 
+	-->
+	
+	
+	<!-- 동호 바로구매에서 넘어온 주문내역 insert -->   
+	<insert id="dPayInsertOrderList" parameterType="com.sps.vo.ClientVO">
+   INSERT INTO ORDERLIST (orderList_client_idx, orderList_product_idx, orderList_address, orderList_detailAddress, orderList_addressNumber , orderList_Status, orderList_size, orderList_color, orderList_stock, orderList_orderDate) VALUES
+   (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, 'payOK', #{param6}, #{param7}, #{param8}, #{param9});
+	</insert>
+	
+	<!-- 동호 문자API -->
+	<select id="isMemberByPhoneNumber" resultType="int">
+		select count(*) from client where client_phoneNumber=#{param1}
+	</select>
+	
+	<!-- 동호 뒤로가기시 ready를 cart로 변경 -->
+   <update id="backCart" parameterType="String">
+   update orderList set orderList_status='cart' 
+   where orderList_status='ready';
+   </update>
+	
+
+
+</mapper>

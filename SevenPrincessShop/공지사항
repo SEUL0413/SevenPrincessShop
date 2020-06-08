@@ -1,0 +1,101 @@
+
+
+각각 폴더 밑 프로젝트에
+'읽어주세요.txt' 가 있습니다.
+한번씩 읽어주세요.
+
+이 텍스트 파일에는 모두가 글을 적어서 올려주셔도 됩니다
+서꼬인거, 질문, 에러처리 곤란 아이디어 등등
+
+서로서로 모르는거 도와가며 잘 진행해봅시다!!
+
+
+
+05.01 MasterBrach 변동사항
+- 프로젝트생성
+- Sample 회원가입예제 및 프레임 구성
+- 각종 디펜던시 추가 
+- 상세는 각각 하위폴더 txt파일 확인
+
+conmment: 이제 각자 시작하면 될듯 셋팅끝..
+
+////////////////////////////////////////////////////////////////05.01 찬호
+
+
+
+
+헤더 푸터 네브 링크 카드 인클루드 완성
+
+-메인 index 페이지 탄생
+-헤더의 각 버튼별 페이지 링크연결 완료
+-로그인 Test진행 : 마이바티스 다중 매퍼 테스트 / 세션변수 저장 테스트
+	> Test 진행순서 '/' > shopController > index.jsp > 로그인버튼 > memberController > 
+		>login.jsp > 제출버튼 클릭 > memberController > DAO > Mapper > DB > memberController > session에 저장 > index.jsp
+
+////////////////////////////////////////////////////////////////05.10 찬호
+
+
+
+회원목록, 해당회원 주문목록, 판매목록 구현
+http://localhost:8080/controller/admin 으로 테스트
+
+AdminController 수정
+	-memberMain 메소드 생성  //실행을 위한 테스트 메소드(지울것)
+	-memberList 메소드 생성
+	-salesTable 메소드 생성
+	-clientOrderList 메소드 생성
+
+ClientListVO 수정
+JoinVO 생성
+JoinListVO 생성
+
+adminMapper 수정
+
+view
+adminMain //테스트를 위한 페이지(지울것)
+memberList //회원목록
+clientOrderList //해당 회원 주문 목록
+salesTable   //판매목록
+
+
+판매목록 수정할점
+	컬럼명 클릭 시 정렬할것,
+	페이징 버튼 css 수정할 것,
+	orderList_idx 를 rownum으로 대체할것
+
+회원목록 수정할 점
+	컬럼명 클릭 시 정렬할것,
+	페이징 버튼 css 수정할 것,
+	client_idx를 rownum으로 대체할것
+	날짜 검색기능 구현할 것
+
+주문내역 수정할 점
+	css 수정
+
+또 수정할점이나 부족한점 알려주세용ㅠ
+
+////////////////////////////////////////////////////////////////05.16 가슬
+
+
+
+
+Info
+Project : SevenPrincessShop
+Develop : GitHub
+FrameWork : Spring MVC
+ServerLanguage : java
+DBconnect : Mybatis
+DataBase : Mysql
+html : HTML5
+css : css3,bootstrap
+sideScript : javaScript, jqeury
+
+team : SevenPrincess
+이찬호
+정혜인
+임명훈
+신동호
+전예솜
+최가슬
+최유정
+

@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sps.dao.spsDAO">
+
+   <insert id="insertMember" parameterType="com.sps.vo.ClientVO">
+      insert into client (client_name, client_id, client_password, client_birthday, client_phoneNumber, client_address, client_registerDate)
+      values (#{client_name}, #{client_id}, #{client_password}, #{client_birthday}, #{client_phoneNumber}, #{client_address}, #{client_registerDate})
+   </insert>
+   
+
+   <select id="selectMember" parameterType="int" resultType="com.sps.vo.ClientVO">
+      SELECT * FROM CLIENT WHERE client_idx = #{param1};
+   </select>
+   
+
+   <!-- 전체 회원 수 -->
+   <select id="countMember" resultType="int">
+      select count(*) from client
+   </select>
+   
+   <!-- 전체 stock 수정 -->
+      <update id="optionUpdate" parameterType="String">
+         UPDATE PRODUCT SET product_stock=(SELECT SUM(stock_stock) FROM STOCK WHERE stock_product_idx =#{param1}) WHERE product_idx=#{param2};
+   </update>
+   
+   
+   
+   
+   
+
+<!-- @@@@@@@@@@@@@@관리자 페이지@@@@@@@@@@@@@@ -->
+
+   
+   <!-- Join하기 위한 준비 -->   
+   <resultMap type="com.sps.vo.OrderListVO" id="orderMap">
+      <id property="orderList_idx" column="orderList_idx"/>
+      <id property="orderList_client_idx" column="orderList_client_idx"/>
+      <id property="orderList_product_idx" column="orderList_product_idx"/>
+      <id property="orderList_status" column="orderList_status"/>
+      <id property="orderList_orderDate" column="orderList_orderDate"/>
+      <id property="orderList_size" column="orderList_size"/>
+      <id property="orderList_color" column="orderList_color"/>
+      <id property="orderList_stock" column="orderList_stock"/>
+      <id property="orderList_address" column="orderList_address"/>
+      <id property="orderList_detailAddress" column="orderList_detailAddress"/>
+      <id property="orderList_addressNumber" column="orderList_addressNumber"/>
+      
+      
+      
+   </resultMap>
+    
+    <resultMap type="com.sps.vo.ClientVO" id="clientMap">
+       <id property="client_idx" column="client_idx"/>
+       <id property="client_id" column="client_id"/>
+       <id property="client_name" column="client_name"/>
+       <id property="client_password" column="client_password"/>
+       <id property="client_birthday" column="client_birthday"/>
+       <id property="client_phoneNumber" column="client_phoneNumber"/>
+       <id property="client_address" column="client_address"/>
+       <id property="client_registerDate" column="client_registerDate"/>
+       <id property="client_email" column="client_email"/>
+       <id property="client_detailAddress" column="client_detailAddress"/>
+    </resultMap>
+
+    <resultMap type="com.sps.vo.ProductVO" id="productMap">
+       <id property="product_idx" column="product_idx"/>
+       <id property="product_name" column="product_name"/>
+       <id property="product_price" column="product_price"/>
+       <id property="product_category" column="product_category"/>
+       <id property="product_registerDate" column="product_registerDate"/>
+       <id property="product_hit" column="product_hit"/>
+       <id property="product_imgPath" column="product_imgPath"/>
+       <id property="product_stock" column="product_stock"/>
+    </resultMap>
+   
+    <resultMap type="com.sps.vo.JoinVO" id="joinMap">
+       <collection property="orderListVO" resultMap="orderMap"/>
+       <collection property="clientVO" resultMap="clientMap"/>
+       <collection property="productVO" resultMap="productMap"/>         
+    </resultMap>
+
+   
+   <!-- 판매기록 개수 가져오기 -->
+   <!-- resultType이 int일 경우 null 에러가 나서 Integer로 설정  -->
+      <!-- 
+         처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+         처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+        -->
+   <select id="countSales" parameterType="map" resultType="java.lang.Integer">      
+      select 
+         count(*) AS count 
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         <if test="searchKey != null">
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and !endDate.equals('')">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+         </if>
+   </select> 
+   
+   
+   
+   
+   <!-- 판매기록 조인문 -->
+      <!-- 
+      처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+      처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+     -->
+   <select id="selectSales" parameterType="map" resultMap="joinMap">
+      select 
+         *
+   
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         <if test="searchKey != null">
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and startDate != null 
+                     and !endDate.equals('') and startDate != null">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+         </if>
+         
+         order by ${orderby} DESC
+         LIMIT #{startPage}, #{pageSize}   
+   </select> 
+
+   
+
+
+   <!-- 회원목록의 전체 개수 -->
+   <select id="countClient" parameterType="java.util.HashMap" resultType="int">
+      select count(*) from client
+      <if test="!searchKey .equals('')">
+         <if test="searchValue !=null and !searchValue.equals('') ">
+         where
+            ${searchKey} LIKE '%${searchValue}%'
+         </if>
+      </if>
+   </select>
+   
+   
+   
+   <!-- 회원목록 select -->
+   <select id="selectClientList" parameterType="map" resultType="com.sps.vo.ClientVO">
+   
+      <![CDATA[
+         select 
+            *       
+         from 
+            client
+         where
+            client_idx > 0 and ${searchKey} LIKE '%${searchValue}%'
+         order by client_idx desc
+         LIMIT #{startPage}, #{pageSize}
+      ]]>
+
+   </select>
+   
+   
+
+
+   <!-- 해당 회원 주문내역 조인문 -->
+   <select id="selectOrderList" parameterType="int" resultMap="joinMap">
+
+      select 
+         *
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and C.client_idx = #{client_idx}
+         and O.orderList_status != 'cart'
+         
+   </select>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   <!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
+   
+   <!--  관리자 모드 : 답변/미답변 체크-->
+   <select id="boardChk" parameterType="int" resultType="int">
+      SELECT count(*) FROM aboard where aboard_qboard_idx=#{param1};
+   </select>
+
+   <!-- 관리자 모드 : Q보드의 총 개수 출력 -->
+   <select id="allCountQ" resultType="int">
+      select count(*) from qboard;
+   </select>
+   
+   <!-- 관리자 모드 : Q(질문)의 한 페이지 분량 출력-->
+   <select id="allSelectQ" parameterType="int" resultType="com.sps.vo.Qboard">
+      SELECT * FROM (
+         SELECT * FROM qboard order by qboard_idx desc
+      ) TT LIMIT #{param1},#{param2};
+   </select>
+   
+   <!-- 관리자 모드 : 답변테이블 추출 -->
+   <select id="allSelectA" resultType="com.sps.vo.AboardVO">
+      SELECT * FROM aboard WHERE aboard_qboard_idx = ANY (SELECT qboard_idx FROM qboard);
+   </select>
+   
+   <!-- 관리자 모드 : 오늘 날짜로 생성된 질문글 개수 체크 -->
+   <select id="dateCount" resultType="int">
+      SELECT COUNT(*) FROM qboard WHERE qboard_date LIKE #{param1};
+   </select>
+   
+   <!-- 관리자 모드 : 답변글 aboard에 insert -->
+   <insert id="insertAnswer" parameterType="com.sps.vo.AboardVO">
+      insert into aboard(aboard_qboard_idx,aboard_title,aboard_content,aboard_date)
+      values(#{aboard_qboard_idx},#{aboard_title},#{aboard_content},#{aboard_date});
+   </insert>
+   
+   <!-- 관리자 모드 : QnA 게시판 글 삭제 -->
+   <delete id="deleteQ" parameterType="int">
+      delete from qboard where qboard_idx = #{param1};
+   </delete>
+   
+   <!-- ///////////////////////////05/20 혜인 끝//////////////////////////////////////// -->
+   
+   
+   
+      <!-- 월별 판매 건수 그래프 "%"+#{param2}+"%"   '+1+"%"' -->
+   <select id="monthSalesCount" parameterType="String" resultType="int">
+      select count(*) from orderlist 
+      where orderlist_orderDate like CONCAT('%', #{param1}, '%')
+            and (orderlist_status = 'payOK' or orderlist_status = 'send')
+   </select>
+   
+   
+      <!-- 월별 판매 취소 건수 그래프 -->
+   <select id="monthCancelCount" parameterType="String" resultType="int">
+      select count(*) from orderlist 
+      where orderlist_orderDate like CONCAT('%', #{param1}, '%')
+            and orderlist_status = 'cancel'
+   </select>
+   
+   
+   <!-- 월별 판매 금액 그래프 -->
+   <select id="monthSalesPrice" parameterType="String" resultType="java.lang.Integer">
+      select SUM(O.orderList_stock*P.product_price) 
+      from OrderList O, Product P
+      where O.orderList_product_idx = P.product_idx
+       and O.orderlist_orderDate like CONCAT('%', #{param1}, '%')         
+   </select>
+   
+   <!-- 베스트 아이템 그래프 -->
+   <!-- 조회수가 높은 순으로 6개를 가져온다 -->
+   <select id="monthBestItem" parameterType="map" resultType="com.sps.vo.ProductVO">
+      SELECT product_name, product_hit FROM product ORDER BY product_hit DESC LIMIT 6;
+   </select>
+   
+   
+
+      <!-- PayOK상태인 개수 가져오기 -->
+   <select id="countSalesPayOK" parameterType="map" resultType="java.lang.Integer">      
+      select 
+         count(*) AS count 
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and orderList_status = "payOK"
+         <if test="searchKey != null">
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and !endDate.equals('')">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+         </if>
+   </select> 
+   
+   
+   <!-- PayOK상태 테이블 가져오기 -->
+   <select id="payOKTable" parameterType="map" resultMap="joinMap">
+      select 
+         *
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and orderList_status = "payOK"
+         <if test="searchKey != null">
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and startDate != null 
+                     and !endDate.equals('') and startDate != null">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+         </if>      
+         order by ${orderby}
+         LIMIT #{startPage}, #{pageSize}   
+   </select> 
+   
+      
+      <!-- payOK에서 send로 상태를 바꿔준다 -->
+   <update id="updateStatus" parameterType="String">
+      UPDATE orderlist SET orderList_status = "send" WHERE orderlist_idx = #{param1}
+   </update>   
+   
+   
+   <!-- product_index 값을 1 증가시킨다. -->
+   <update id="updateProductIndex" parameterType="int">
+      UPDATE PRODUCT
+      SET product_index = (SELECT * FROM (SELECT MAX(product_index) FROM PRODUCT a) AS b) + 1
+      WHERE product_category = #{param1};
+   </update>
+   
+   
+   <!-- 제일 마지막에 입력된 product_Index값을 가져온다. -->
+   <select id="productIndex" parameterType="int" resultType="java.lang.Integer">
+      SELECT MAX(product_index) FROM product where product_category = #{param1}
+   </select>
+   
+   
+   <!-- 상품 업로드할 상품의 옵션을 등록한다.-->
+   <insert id="insertStock" parameterType="com.sps.vo.StockVO">
+      INSERT INTO stock(stock_product_idx, stock_size, stock_color, stock_stock)
+      VALUES(#{stock_product_idx}, #{stock_size}, #{stock_color}, #{stock_stock});
+   </insert>
+   
+   <!-- 상품 업로드할 상품을 등록한다 -->
+   <insert id="insertProduct" parameterType="com.sps.vo.ProductVO">
+      insert into product(product_name, product_price, product_category, product_registerDate,product_imgPath)
+      values (#{product_name}, #{product_price}, #{product_category}, #{product_registerDate}, #{product_imgPath})
+   </insert>
+   
+   <!-- 마지막에  -->
+   <select id="getProductIdx" resultType="java.lang.Integer">
+      SELECT MAX(product_idx) FROM product;   
+   </select>
+
+      
+   
+   
+   
+   
+   
+      <select id="countSearchSales" parameterType="map" resultType="java.lang.Integer">      
+      select 
+         count(*) AS count 
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and O.orderlist_status = 'send'
+         <choose>
+            <when test="!year.equals('') and month.equals('')">
+               and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+            </when>
+            <when test="!year.equals('') and !month.equals('')">
+               and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+            </when>
+         </choose>
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and !endDate.equals('')">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+            <if test="product_name != null and !product_name.equals('')">
+               and P.product_name LIKE '%${product_name}%'
+            </if>
+         
+   </select> 
+   
+   
+   
+   
+   <!-- 판매기록 조인문 -->
+      <!-- 
+      처음 실행하면 검색키의 값이 무조건 null이 들어가기 때문에 null이 아닐시에만 검색조건을 실행하고
+      처음 실행하면 기간검색의 값은 공백으로 들어가도록 설정해놓았기 때문에 공백이 아닐시에만 검색 조건을 실행하는 쿼리
+     -->
+   <select id="selectSearchSales" parameterType="map" resultMap="joinMap">
+      select 
+         *
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and O.orderlist_status = 'send'
+            <choose>
+               <when test="!year.equals('') and month.equals('')">
+                  and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+               </when>
+               <when test="!year.equals('') and !month.equals('')">
+                  and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+               </when>
+            </choose>
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and !endDate.equals('')">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+            <if test="product_name != null and !product_name.equals('')">
+               and P.product_name LIKE '%${product_name}%'
+            </if>
+         
+         
+
+         LIMIT #{startPage}, #{pageSize}   
+   </select> 
+   
+   
+   
+   
+   
+   
+   <select id="totalSales" parameterType="map" resultType="java.lang.Integer">
+      select 
+
+         sum(P.product_price)
+      
+   
+      from
+         OrderList O,
+         Client C,
+         Product P
+      where 
+         O.orderList_client_idx = C.client_idx AND O.orderList_product_idx = P.product_idx
+         and O.orderlist_status = 'send'
+            <choose>
+               <when test="!year.equals('') and month.equals('')">
+                  and O.orderList_orderDate LIKE CONCAT('%', #{year}, '%')
+               </when>
+               <when test="!year.equals('') and !month.equals('')">
+                  and O.orderList_orderDate LIKE CONCAT('%', #{month}, '%')
+               </when>
+            </choose>
+            <if test="searchValue !=null and !searchValue.equals('') ">
+               and ${searchKey} LIKE '%${searchValue}%'
+            </if>
+            <if test="!startDate.equals('') and !endDate.equals('')">
+               <![CDATA[
+                  and O.orderList_orderDate >= '${startDate}'
+                  AND O.orderList_orderDate <= '${endDate}'
+               ]]>
+            </if>
+            <if test="product_name != null and !product_name.equals('')">
+               and P.product_name LIKE '%${product_name}%'
+            </if>
+         
+   </select> 
+      
+   <select id="testclient" resultType="com.sps.vo.ClientVO">
+      SELECT * FROM client
+   </select>
+   
+   <!-- 검색 시 product 안의 데이터 개수를 계산하는 메소드 -->
+   <select id="allCountProduct" parameterType="map" resultType="int">
+      select count(*) from product
+      <if test="!searchKey.equals('')">
+         <if test="searchValue != null and !searchValue.equals('') ">
+         where
+            ${searchKey} LIKE '%${searchValue}%'
+         </if>
+      </if>
+   </select>
+   
+   <!-- 상품목록 select -->
+   <select id="selectProductList" parameterType="map" resultType="com.sps.vo.ProductVO">
+         select 
+            *
+         from 
+            product
+         <if test="!searchKey .equals('')">
+            <if test="searchValue != null and !searchValue.equals('') ">
+            	<if test="searchKey.equals('product_category')">
+            		 where
+            		 ${searchKey} LIKE '${searchValue}'
+            	</if>
+            	<if test="!searchKey.equals('product_category')">
+            		where
+               		${searchKey} LIKE '%${searchValue}%'
+            	</if>
+         
+            </if>
+         </if>
+         order by product_idx desc
+         LIMIT #{startPage}, #{pageSize};
+   </select>
+   
+   <!-- 관리자 모드 : stockTable 글 삭제 -->
+   <delete id="deleteP" parameterType="int">
+      delete from product where product_idx = #{param1};
+   </delete>
+   
+   
+   <!-- 관리자 모드 : stockOption 삭제 -->
+   <delete id="delOption" parameterType="String">
+      delete from stock where stock_idx = #{param1};
+   </delete>
+   
+
+   
+   <!-- 옵션 테이블 재고 수정 -->
+   <update id="stockTableUpdate" parameterType="String">
+      update stock set stock_stock = #{param1} WHERE stock_idx =#{param2} AND stock_size = #{param3} AND stock_color = #{param4};
+   </update>
+   
+   <!-- 재고 게시글을 수정하는 sql -->
+   <update id="stockUpdate" parameterType="com.sps.vo.ProductVO">
+      update product set product_name = #{product_name}, product_price = #{product_price},
+      product_category = #{product_category}, product_stock=(SELECT SUM(stock_stock) FROM STOCK WHERE stock_product_idx =#{product_idx})
+      where product_idx = #{product_idx};
+   </update>
+   
+   
+   <!-- product idx로 정보 가져오기 -->
+   <select id="pickProduct" parameterType="int" resultType="com.sps.vo.ProductVO">
+      SELECT * FROM product WHERE product_idx = #{param1};
+   </select>
+   
+   <!-- 옵션별 목록 가져오기 -->
+   <select id="pickProductOption" parameterType="int" resultType="com.sps.vo.StockVO">
+      SELECT * FROM stock WHERE stock_product_idx = #{param1};
+   </select>
+   
+   
+	<!-- memberList 화면 =>  관리자 지정 update문 -->
+	<update id="adminMemberUpdate" parameterType="String">
+		update CLIENT set client_registerDate = '0000-00-00 00:00' where client_idx = #{param1};
+	</update>
+	
+	<!-- memberList 화면 =>  관리자 해제 delete문 -->
+	<delete id="adminMemberDelete" parameterType="String">
+		delete from CLIENT where client_idx = #{param1};
+	</delete>
+      
+   
+
+</mapper>

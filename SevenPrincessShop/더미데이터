@@ -1,0 +1,83 @@
+
+# 임시데이터
+
+
+# CLIENT sql
+
+INSERT INTO CLIENT
+(client_name, client_id, client_password, client_email, client_birthday, client_phoneNumber, client_address) 
+VALUES 
+('최유정', 'may', '1111', 'may@may.com', '1999-05-24', '010-4802-2176','경기도 남양주시 도제원로 19 104동 202호');
+
+INSERT INTO CLIENT
+(client_name, client_id, client_password, client_email, client_birthday, client_phoneNumber, client_address) 
+VALUES 
+('신동호', 'shin', '2222', 'shin@shin.com', '1995-10-14', '010-2041-3384','경기도 용인시 어딘가에 거주');
+
+# PRODUCT sql
+INSERT INTO PRODUCT
+(product_name, product_price, product_category, product_imgPath)
+VALUES
+('파란 하늘을 담은 청남방', 23000, 01, './images/productImages/01/01_01/01_01');  # path는 .jpg나 _상세사진 숫자.jpg 따로 추가해야함
+
+
+# STOCK sql
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'S', '살구', 10);
+
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'S', '블랙', 8);
+
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'M', '살구', 6);
+
+INSERT INTO STOCK
+(stock_product_idx, stock_size, stock_color, stock_stock)
+VALUES
+(1, 'M', '블랙', 5);
+
+
+# PRODUCT테이블 stock 수정
+UPDATE PRODUCT 
+SET 
+product_stock= (SELECT SUM(stock_stock) FROM STOCK WHERE stock_product_idx =1)
+WHERE product_idx=1;
+
+# ORDERLIST 테이블 
+
+INSERT INTO ORDERLIST
+(orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock)
+VALUES
+(1, 1, 'basket', 'F', '살구', 2);
+
+INSERT INTO ORDERLIST
+(orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock)
+VALUES
+(1, 1, 'basket', 'F', '블랙', 1);
+
+INSERT INTO ORDERLIST
+(orderList_client_idx, orderList_product_idx, orderList_Status, orderList_size, orderList_color, orderList_stock)
+VALUES
+(2, 1, 'basket', 'F', '블랙', 1);
+
+# ORDERLIST 테이블 JOIN문
+# CLIENT테이블 인덱스와 일치한 SATUS가 basket인  PRODUCT 테이블의 상품명 가지고 오기
+SELECT p.product_name, o.orderList_size, o.orderList_color, o.orderList_stock
+FROM ORDERLIST o JOIN PRODUCT p	# 알파벳은 별명 지은 거
+ON o.orderList_product_idx = p.product_idx
+WHERE orderList_Status =  'basket' AND orderList_client_idx =1;
+
+SELECT stock_color 
+FROM STOCK
+WHERE stock_product_idx =1
+GROUP BY stock_color;
+
+
+
+

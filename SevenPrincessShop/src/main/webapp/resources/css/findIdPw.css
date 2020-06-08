@@ -1,0 +1,127 @@
+@charset "UTF-8";
+Skip to content
+Why GitHub? 
+Team
+Enterprise
+Explore 
+Marketplace
+Pricing 
+Search
+
+Sign in
+Sign up
+LCHI-Git
+/
+SPS
+100
+ Code
+ Issues 0
+ Pull requests 3 Actions
+ Projects 0
+ Security 0
+ Insights
+Join GitHub today
+GitHub is home to over 50 million developers working together to host and review code, manage projects, and build software together.
+
+SPS/SevenPrincessShop/src/main/webapp/resources/css/findIdPw.css
+ user 로그인/비번찾기구현_가슬
+b148aa5 27 days ago
+81 lines (68 sloc)  3.65 KB
+  
+/* .pageTitle{font-size:18px; font-weight:bold;margin-bottom:30px;clear:both;padding-bottom:10px;} */
+.pageTitle {
+   margin-bottom:30px;
+   font-size:14px;
+   color:#2e2e2e;
+   font-weight:600;   
+   clear:both;
+   font-family: 'Roboto','NanumGothic-Bold',Arial,"ë ‹ì›€",Dotum,'Apple SD Gothic Neo',AppleGothic,sans-serif;
+}
+
+.mypage{padding:15px;} /* ë§ˆì ´íŽ˜ì ´ì§€ ì»¨í… ì¸  ì˜ ì—  */
+.mypage .pageSubTitle{font-size:14px;font-weight:bold;margin-bottom:20px;}
+.helpText{color:#5f5f5f;font-size:11px;}
+/* .btn{font-size:17px;font-weight:bold !important;color:#fff !important;background:#525252;border-radius:0px !important;padding:7px 25px !important;} */
+.btn {
+   color: #fff;
+    background: #333;
+    border: 1px solid #2b2b2b;
+    font-size: 11px;
+    font-family: 'Roboto','NanumGothic-Regular',Arial,"ë ‹ì›€",Dotum,'Apple SD Gothic Neo',AppleGothic,sans-serif;
+    text-align: center;
+    letter-spacing: 0px;
+    text-decoration: none;
+}
+.btn:hover{background:#727272;}
+.btn.white{background:#fff;border:1px solid #525252;color:#525252 !important;}
+.btn.white:hover{background:#f5f5f5;}
+.btn.gray{background:#f5f5f5;border:1px solid #525252;color:#525252 !important;}
+.btn.gray:hover{background:#fff;}
+.btn.red{background:#dd4b39;color:#fff !important;}
+.btn.red:hover{background:#b92c28;color:#fff !important;}
+.btn.navy{background:#4e5668;}
+
+.btn.gray:hover{background:#fff;}
+.bold{font-weight:bold;}
+.btn.btn-sm{padding:5px 20px !important;font-size:12px !important;}
+.btn-md{padding:10px 30px !important;}
+.btn-big{padding:20px 50px !important;}
+.btn-xs{padding:5px 10px !important;font-size:11px !important;}
+
+.mypage{padding:15px;} /* ë§ˆì ´íŽ˜ì ´ì§€ ì»¨í… ì¸  ì˜ ì—  */
+.mypage .pageSubTitle{font-size:14px;font-weight:bold;margin-bottom:20px;}
+
+
+.col-xs-20per,.col-sm-20per,.col-md-20per,.col-lg-20per{
+   position: relative;
+     min-height: 1px;
+     padding-right: 15px;
+     padding-left: 15px;
+     float:left;
+}
+
+table{width:400px;border-radius: 20px}
+th{width: 170px;}
+tr{height: 70px;background-color: #F2F2F2}
+
+
+.col-xs-20per {width: 20% !important;}
+@media (min-width: 768px) {.col-sm-20per {width: 20% !important;}}
+@media (min-width: 992px) {.col-md-20per {width: 20% !important;}}
+@media (min-width: 1200px) {.col-lg-20per {width: 20% !important;}}
+
+/* ì•„ì ´ë””/íŒ¨ìŠ¤ì›Œë“œ ì°¾ê¸° ê²°ê³¼ */
+.findResultBox{width:520px;margin:30px auto;padding:30px;box-sizing:border-box;border:1px solid #dedede;border-top:3px solid #5f5f5f;}
+.findResultBox .ttl{font-size:24px;font-weight:bold;border-bottom:1px solid #dedede;padding-bottom:10px;}
+.findResultBox .resultMenu{border-top:1px solid #dedede;padding:10px 0px;margin:10px 0px;}
+.findResultBox .resultMsg{padding:20px 10px;font-size:14px;}
+.findResultBox .resultMsg span{color:#f26e1d;font-weight:bold;}
+.findResultBox .loginBtn{float:right;}
+
+.loginBox .loginBottomBanner{border:1px solid #7d7d7d;border-radius:5px;padding:5px 0px;}
+.loginBox .loginBottomBanner>div{padding:20px 10px;border-right:1px solid #7d7d7d;height:180px;}
+.loginBox .loginBottomBanner>div b{font-size:17px;}
+.loginBox .loginBottomBanner>div.banner4{border-right:0px;}
+.loginBox .joinBtn,.loginBox .loginBtn{width:100%;background:#333333;border-radius:0px;color:#fff;}
+.loginBox .joinBtn:hover,.loginBox .loginBtn:hover{color:#fff;}
+.loginBox .loginBtn{height:83px;}
+.loginBox .joinBtn{height:50px;margin-bottom:50px;}
+
+html,body,div,span,a,ul,li,p,h1,h2,h3,h4,h5,tr,td,th,label,input,select{font-family:'Roboto';}
+html,body,div,a,ul,li,p,h1,h2,h3,h4,h5,tr,td,th,label,input,select{color:#353535;font-size:12px;}
+
+.contentArea{/*max-width:1200px;*/margin:0px auto;/*padding:0px;*/box-sizing:border-box;}
+
+
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

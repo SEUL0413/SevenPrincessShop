@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="clientVO" class="com.sps.vo.ClientVO"/>
+	<bean id="spsDAO" class="com.sps.dao.spsDAO"/>
+	
+	<bean id="clientListVO" class="com.sps.vo.ClientListVO"/>
+	
+	<bean id="orderListVO" class="com.sps.vo.OrderListVO"/>
+	<bean id="productVO" class="com.sps.vo.ProductVO"/>
+	
+	<bean id="joinVO" class="com.sps.vo.JoinVO"/> 
+
+</beans>

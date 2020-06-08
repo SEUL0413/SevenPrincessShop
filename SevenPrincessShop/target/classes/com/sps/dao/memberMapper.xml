@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sps.dao.spsDAO">
+
+
+	<select id="selectById" parameterType="String" resultType="com.sps.vo.ClientVO">
+		SELECT * FROM CLIENT WHERE client_id = #{param1};
+	</select>
+	
+	<select id="countMember" resultType="int">
+		select count(*) from client
+	</select>
+	
+	<select id="isMember" resultType="int" parameterType="String">
+		select count(*) from client where client_id = #{param1};
+	</select>
+
+	<select id="selectMember" parameterType="int" resultType="com.sps.vo.ClientVO">
+		SELECT * FROM CLIENT WHERE client_idx = #{param1};
+	</select>
+	
+	<insert id="insertMember" parameterType="com.sps.vo.ClientVO">
+		INSERT INTO CLIENT
+			(client_name, client_id, client_password, client_email, client_birthday, client_phoneNumber, client_addressNumber, client_address, client_detailAddress, client_registerDate) 
+			VALUES 
+			(#{client_name}, #{client_id}, #{client_password}, #{client_email}, #{client_birthday}, #{client_phoneNumber},#{client_addressNumber},#{client_address},#{client_detailAddress},#{client_registerDate});
+	</insert>
+	
+ 	
+ 	
+ 	
+ 	<select id="isMemberByPhoneNumber" resultType="int">
+		select count(*) from client where client_phoneNumber=#{param1}
+	</select>
+ 	
+ 	
+ 	<!-- 아이디 찾기 -->
+	<select id="findId" parameterType="Map" resultType="String">
+		select client_id from client where client_name = #{param1} and client_phoneNumber = #{param2} 
+	</select>
+	
+
+	<!-- 임시비밀번호로 바꾸기 -->
+	<update id="changePwd" parameterType="Map">
+		update client set client_password = #{param1} where client_id = #{param2} 
+	</update>
+	
+	<!-- 비밀번호 찾는 계정이 있는지 확인 -->
+	<select id="findPwCount" parameterType="Map" resultType="int">
+		select count(*) from client where client_id = #{param1} and client_email = #{param2}
+	</select>
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	<!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 마이페이지 회원 정보 수정-->
+	<update id="updateMember" parameterType="com.sps.vo.ClientVO">
+		update client set 
+			client_password= #{client_password},
+			client_name= #{client_name},
+			client_email = #{client_email}, 
+			client_phoneNumber = #{client_phoneNumber}, 
+			client_address = #{client_address}, 
+			client_detailAddress = #{client_detailAddress},
+			client_addressNumber = #{client_addressNumber}
+		WHERE client_id = #{client_id};
+	</update>
+	
+	<!-- 마이페이지 회원 정보 삭제-->
+	<delete id="deleteMember" parameterType="String">
+		delete from client where client_id=#{param1};	
+	</delete>
+	
+	<!-- 장바구니 출력 : OrderListVO  -->
+	<select id="cartListO" parameterType="int" resultType="com.sps.vo.OrderListVO">
+		<!-- SELECT orderList_product_idx,orderList_size,orderList_color,orderList_stock FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1}; -->
+		SELECT * FROM orderList WHERE orderlist_status = 'cart' and orderlist_client_idx=#{param1} order by orderlist_idx desc;
+	</select>
+	
+	<!-- 장바구니 출력 : ProductVO -->
+	<select id="cartListP" parameterType="int" resultType="com.sps.vo.ProductVO">
+		SELECT * FROM product WHERE product_idx=#{param1};
+	</select>
+	
+	<!-- 장바구니 삭제 -->
+	<delete id="deleteCart" parameterType="int">
+		delete from orderList where orderList_idx=#{param1};	
+	</delete>
+	
+	<!-- 장바구니 수량 변경 -->
+	<update id="updateStock" parameterType="int">
+		update orderList set orderList_stock = #{param1} WHERE orderList_idx = #{param2};
+	</update>
+	
+	<!-- 장바구니 전체 주문 status 변경  -->
+	<update id="allStatus" parameterType="int">
+		update orderList set orderList_status='ready' WHERE orderList_client_idx = #{param1} and orderList_status='cart';
+	</update>
+	
+	<!-- 장바구니 선택 주문 status 변경  -->
+	<update id="selectStatus" parameterType="int">
+		update orderList set orderList_status='ready' WHERE orderList_idx = #{param1};
+	</update>
+	
+	<!-- 장바구니 옵션별 stock 개수 -->
+	<select id="getTableStock" parameterType="String" resultType="int">
+      SELECT stock_stock FROM stock WHERE stock_product_idx = #{param1} AND stock_size = #{param2} AND stock_color = #{param3};
+   </select>
+	
+	<!-- 주문 목록 출력(OrderListVO) -->
+	<select id="myOrderO" parameterType="int" resultType="com.sps.vo.OrderListVO">
+		SELECT * FROM orderList WHERE orderlist_status NOT IN('cart','ready') and orderlist_client_idx=#{param1} order by orderList_idx desc;
+	</select>
+	
+	<!--주문 목록 : 리뷰 작성 완료된 글인지 체크  -->
+	<!-- 리턴값이 0이면 미작성 / 리턴값이 1이면 작성완료 -->
+	<select id="reviewCheck" parameterType="int" resultType="int">
+		SELECT count(*) FROM review WHERE review_orderlist_idx = #{param1};
+	</select>
+	
+	<!-- 주문 상세페이지 : 주문 idx를 이용한 orderListVO 출력 -->
+	<select id="selectOrderVO" parameterType="int" resultType="com.sps.vo.OrderListVO">
+		SELECT * FROM orderList WHERE orderlist_idx=#{param1};
+	</select>
+	
+	<!-- 주문 취소 : status 수정(payOK => cxl)  -->
+	<update id="updateCxl" parameterType="int">
+		update orderList set orderList_status='cxl' WHERE orderList_idx = #{param1};
+	</update>
+	
+	<!-- 1:1문의 : q보드의 총 개수  -->
+	<select id="countQboard" parameterType="int" resultType="int">
+		SELECT count(*) FROM qboard WHERE qboard_client_idx=#{param1};
+	</select>
+	
+	<!-- 1:1문의 : Q(질문)의 한 페이지 분량 출력-->
+	<select id="selectQboard" parameterType="int" resultType="com.sps.vo.Qboard">
+		SELECT * FROM (
+			SELECT * FROM qboard WHERE qboard_client_idx=#{param1}
+			order by qboard_idx desc
+			) TT LIMIT #{param2},#{param3};
+	</select>
+	
+	<!--  1대1문의 : 답변/미답변 체크-->
+	<select id="boardChk" parameterType="int" resultType="int">
+		SELECT count(*) FROM aboard where aboard_qboard_idx=#{param1};
+	</select>
+	
+	<!-- 1대1문의 : 답변테이블 추출 -->
+	<select id="selectAboard" parameterType="int" resultType="com.sps.vo.AboardVO">
+		SELECT * FROM aboard 
+		WHERE aboard_qboard_idx = 
+		ANY (SELECT qboard_idx FROM qboard WHERE qboard_client_idx=#{param1});
+	</select>
+	
+	<!-- 1대1문의 : 질문글 insert -->
+	<insert id="insertQ" parameterType="com.sps.vo.Qboard">
+		insert into qboard(qboard_client_idx,qboard_title,qboard_content,qboard_date,qboard_type)
+		values(#{qboard_client_idx},#{qboard_title},#{qboard_content},#{qboard_date},#{qboard_type});
+	</insert>
+	
+	<!-- 리뷰관리 : 아직 리뷰 작성 안된 주문정보 출력 -->
+	<select id="reviewOrder" parameterType="int" resultType="com.sps.vo.OrderListVO">
+		SELECT * FROM orderlist 
+		WHERE orderlist_idx != ALL(SELECT review_orderlist_idx FROM review) 
+		AND orderlist_client_idx = #{param1} AND orderList_status ="send";
+	</select>
+	
+	<!-- 리뷰관리 : 작성된 리뷰 출력 -->
+	<select id="selectReview" parameterType="int" resultType="com.sps.vo.ReviewVO">
+		select * from review where review_client_idx=#{param1} order by review_idx desc;
+	</select>
+	
+	<!-- 리뷰관리 : 작성한 리뷰 insert -->
+	<insert id="insertReview" parameterType="com.sps.vo.ReviewVO">
+		insert into review(review_client_idx,review_orderList_idx,review_product_idx,review_content,review_productGrade,review_writeDate,review_imgPath)
+		values(#{review_client_idx},#{review_orderList_idx},#{review_product_idx},#{review_content},#{review_productGrade},#{review_writeDate},#{review_imgPath});
+	</insert>
+	
+	<!-- ///////////////////////////05/20 혜인//////////////////////////////////////// -->
+	
+	
+</mapper>
